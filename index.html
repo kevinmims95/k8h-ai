@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K8H Ventures — AI Architecture</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #e6edf3; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+
+/* ── HEADER ── */
+.hdr { background: #161b22; border-bottom: 1px solid #30363d; padding: 0 20px; display: flex; align-items: center; gap: 16px; height: 50px; flex-shrink: 0; }
+.logo { font-size: 16px; font-weight: 800; letter-spacing: -0.5px; white-space: nowrap; }
+.logo .b { color: #58a6ff; } .logo .d { color: #f78166; }
+.nav { display: flex; gap: 3px; }
+.nb { padding: 5px 13px; border-radius: 6px; border: none; background: transparent; color: #8b949e; cursor: pointer; font-size: 13px; transition: all .15s; white-space: nowrap; }
+.nb:hover { background: #21262d; color: #e6edf3; }
+.nb.active { background: #388bfd1a; color: #58a6ff; border: 1px solid #388bfd4d; }
+.hdr-right { margin-left: auto; font-size: 10px; color: #8b949e; background: #21262d; border: 1px solid #30363d; border-radius: 10px; padding: 2px 9px; }
+
+/* ── LAYOUT ── */
+.app { flex: 1; overflow: hidden; position: relative; }
+.view { position: absolute; inset: 0; display: none; overflow: hidden; flex-direction: column; }
+.view.active { display: flex; }
+.scroll { flex: 1; overflow: auto; }
+
+/* ══════════════════════════════════════════════════
+   DEPARTMENTS VIEW
+══════════════════════════════════════════════════ */
+.dept-bar { background: #161b22; border-bottom: 1px solid #30363d; padding: 8px 20px; display: flex; align-items: center; gap: 16px; flex-shrink: 0; flex-wrap: wrap; }
+.dept-bar h2 { font-size: 12px; font-weight: 600; color: #8b949e; white-space: nowrap; }
+.pf-wrap { display: flex; gap: 4px; flex-wrap: wrap; }
+.pf { padding: 4px 11px; border-radius: 20px; border: 1px solid #30363d; background: transparent; color: #8b949e; cursor: pointer; font-size: 11px; font-weight: 600; transition: all .15s; white-space: nowrap; }
+.pf:hover { border-color: #484f58; color: #c9d1d9; }
+.pf.on { background: #388bfd1a; border-color: #388bfd; color: #58a6ff; }
+.pf[data-p="0"].on { background: #8b949e18; border-color: #8b949e; color: #c9d1d9; }
+.pf[data-p="1"].on { background: #3fb95018; border-color: #3fb950; color: #3fb950; }
+.pf[data-p="2"].on { background: #e3b34118; border-color: #e3b341; color: #e3b341; }
+.pf[data-p="3"].on { background: #a371f718; border-color: #a371f7; color: #a371f7; }
+.pf[data-p="ai"].on { background: #58a6ff18; border-color: #58a6ff; color: #58a6ff; }
+
+.dept-scroll { flex: 1; overflow: auto; }
+.dept-grid { display: flex; gap: 12px; padding: 18px; align-items: flex-start; min-width: max-content; }
+
+.dcol { width: 232px; flex-shrink: 0; background: #161b22; border: 1px solid #30363d; border-radius: 12px; overflow: hidden; transition: border-color .2s; }
+.dcol:hover { border-color: #484f58; }
+.dcol-hdr { padding: 13px 14px 11px; border-bottom: 1px solid #21262d; }
+.dcol-name { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 800; margin-bottom: 3px; }
+.dcol-icon { width: 26px; height: 26px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.dcol-co { font-size: 9px; color: #8b949e; line-height: 1.4; }
+
+.dsec { padding: 10px 14px; border-bottom: 1px solid #21262d; }
+.dsec-lbl { font-size: 9px; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 7px; }
+.dsec:last-child { border-bottom: none; }
+
+/* Lead card */
+.lead-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.mini-av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; flex-shrink: 0; }
+.lead-n { font-size: 11px; font-weight: 700; }
+.lead-r { font-size: 9px; color: #8b949e; }
+.dept-note { font-size: 9px; color: #ffa65788; margin-top: 5px; line-height: 1.4; }
+
+/* Brain */
+.brain-card { display: flex; align-items: center; gap: 8px; background: #1c2128; border-radius: 8px; padding: 8px 10px; }
+.brain-ic { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.brain-n { font-size: 11px; font-weight: 700; }
+.brain-d { font-size: 9px; color: #8b949e; }
+
+/* Phase cards */
+.pc { border-radius: 8px; padding: 9px; margin-bottom: 5px; border: 1px solid transparent; transition: opacity .25s; }
+.pc.p0 { background: #1c2128; border-color: #30363d; }
+.pc.p1 { background: #3fb95012; border-color: #3fb95030; }
+.pc.p2 { background: #e3b34112; border-color: #e3b34130; }
+.pc.p3 { background: #a371f712; border-color: #a371f730; }
+.pc.pai { background: #58a6ff12; border-color: #58a6ff30; }
+.pc.dim { opacity: 0.15; }
+.pc-hdr { display: flex; align-items: center; gap: 5px; margin-bottom: 5px; }
+.pc-dot { width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: 800; flex-shrink: 0; }
+.p0 .pc-dot { background: #30363d; color: #8b949e; }
+.p1 .pc-dot { background: #3fb95030; color: #3fb950; }
+.p2 .pc-dot { background: #e3b34130; color: #e3b341; }
+.p3 .pc-dot { background: #a371f730; color: #a371f7; }
+.pai .pc-dot { background: #58a6ff30; color: #58a6ff; }
+.pc-lbl { font-size: 10px; font-weight: 700; }
+.p0 .pc-lbl { color: #c9d1d9; }
+.p1 .pc-lbl { color: #3fb950; }
+.p2 .pc-lbl { color: #e3b341; }
+.p3 .pc-lbl { color: #a371f7; }
+.pai .pc-lbl { color: #58a6ff; }
+.pc-sub { font-size: 9px; color: #8b949e; margin-bottom: 5px; line-height: 1.4; }
+.pc-item { font-size: 9px; color: #c9d1d9; padding: 1px 0 1px 10px; position: relative; line-height: 1.4; }
+.pc-item::before { content: '·'; position: absolute; left: 2px; color: #8b949e; }
+
+/* Agents */
+.agent-chips { display: flex; flex-wrap: wrap; gap: 3px; }
+.ach { display: flex; align-items: center; gap: 3px; padding: 3px 7px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+
+/* Tools */
+.tools-row { display: flex; flex-wrap: wrap; gap: 3px; }
+.tool-now { font-size: 9px; color: #8b949e; background: #21262d; border-radius: 4px; padding: 2px 6px; }
+.tool-fut { font-size: 9px; color: #388bfd; background: #388bfd12; border: 1px solid #388bfd30; border-radius: 4px; padding: 2px 6px; }
+
+/* Team hier */
+.tm-hier { display: flex; flex-direction: column; gap: 5px; }
+.tm-row { display: flex; align-items: center; gap: 6px; }
+.tm-indent { width: 14px; height: 1px; background: #30363d; flex-shrink: 0; }
+.tm-card { flex: 1; display: flex; align-items: center; gap: 6px; background: #21262d; border-radius: 6px; padding: 4px 8px; }
+.tm-n { font-size: 10px; font-weight: 700; }
+.tm-r { font-size: 9px; color: #8b949e; }
+.tm-prop { font-size: 8px; color: #ffa657; }
+
+/* ══════════════════════════════════════════════════
+   AI ROADMAP VIEW
+══════════════════════════════════════════════════ */
+.rm-top { background: #161b22; border-bottom: 1px solid #30363d; padding: 13px 22px; flex-shrink: 0; }
+.rm-top h2 { font-size: 14px; font-weight: 700; color: #c9d1d9; margin-bottom: 3px; }
+.rm-top p { font-size: 11px; color: #8b949e; }
+
+/* Principles */
+.principles { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; padding: 18px 22px 10px; }
+.pcard { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 13px 14px; transition: border-color .15s; }
+.pcard:hover { border-color: #388bfd55; }
+.pcard-num { font-size: 24px; font-weight: 900; color: #388bfd18; line-height: 1; margin-bottom: 5px; }
+.pcard-t { font-size: 12px; font-weight: 700; color: #e6edf3; margin-bottom: 4px; }
+.pcard-d { font-size: 10px; color: #8b949e; line-height: 1.5; }
+
+/* Swimlane */
+.sl-wrap { padding: 0 22px 40px; }
+.sl-title { font-size: 12px; font-weight: 700; color: #c9d1d9; padding: 14px 0 10px; }
+.sl-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+.sl-ph { text-align: left; padding: 9px 12px; font-size: 10px; font-weight: 700; border-bottom: 2px solid; white-space: nowrap; min-width: 180px; }
+.sl-ph-sub { font-size: 8px; font-weight: 400; opacity: .65; display: block; margin-top: 2px; }
+.sl-cat { background: #1c2128; font-size: 9px; font-weight: 800; color: #58a6ff; text-transform: uppercase; letter-spacing: 1px; padding: 6px 12px; }
+.sl-row-lbl { padding: 9px 12px; font-size: 10px; font-weight: 700; color: #8b949e; white-space: nowrap; background: #161b22; border-right: 1px solid #30363d; vertical-align: top; border-top: 1px solid #21262d; }
+.sl-cell { padding: 9px 11px; vertical-align: top; border: 1px solid #21262d; line-height: 1.5; }
+.sl-cell ul { list-style: none; }
+.sl-cell li { color: #8b949e; padding: 1px 0 1px 11px; position: relative; font-size: 10px; }
+.sl-cell li::before { content: '✓'; position: absolute; left: 0; color: #3fb950; font-size: 8px; top: 3px; }
+.sl-cell li.warn::before { content: '⚠'; color: #ffa657; }
+.sl-cell li.key::before { content: '★'; color: #e3b341; }
+.sl-empty { color: #484f58; font-size: 10px; font-style: italic; }
+
+/* ══════════════════════════════════════════════════
+   TEAM PROFILES VIEW
+══════════════════════════════════════════════════ */
+.team-wrap { display: flex; height: 100%; overflow: hidden; }
+.team-sb { width: 215px; flex-shrink: 0; background: #161b22; border-right: 1px solid #30363d; overflow-y: auto; padding: 14px 10px; }
+.sb-lbl { font-size: 9px; color: #484f58; text-transform: uppercase; letter-spacing: 1px; margin: 10px 4px 4px; }
+.sb-lbl:first-child { margin-top: 0; }
+.sb-card { padding: 8px 9px; border-radius: 8px; cursor: pointer; transition: all .15s; display: flex; align-items: center; gap: 8px; margin-bottom: 2px; }
+.sb-card:hover { background: #21262d; }
+.sb-card.sel { background: #388bfd12; }
+.sb-av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; flex-shrink: 0; }
+.sb-n { font-size: 11px; font-weight: 700; }
+.sb-r { font-size: 9px; color: #8b949e; }
+.team-main { flex: 1; overflow-y: auto; padding: 22px 26px; }
+.team-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #8b949e; gap: 8px; font-size: 13px; }
+
+.pro-top { display: flex; align-items: flex-start; gap: 18px; padding: 18px 20px; background: #161b22; border: 1px solid #30363d; border-radius: 12px; margin-bottom: 14px; }
+.pro-av { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; flex-shrink: 0; }
+.pro-name { font-size: 18px; font-weight: 800; margin-bottom: 2px; }
+.pro-role { font-size: 12px; color: #8b949e; margin-bottom: 6px; }
+.co-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-bottom: 6px; }
+.co-chip { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 9px; font-weight: 700; }
+.pro-note { font-size: 10px; color: #8b949e; line-height: 1.5; }
+
+.pro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+.pro-card { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 13px; }
+.pro-card.wide { grid-column: 1 / -1; }
+.pro-card-lbl { font-size: 9px; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid #21262d; }
+.pro-item { font-size: 11px; color: #c9d1d9; padding: 4px 8px; background: #21262d; border-radius: 5px; margin-bottom: 3px; }
+.ai-c { display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px; border-radius: 6px; margin: 2px; font-size: 10px; font-weight: 700; }
+.kb-g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+.kb-i { background: #21262d; border-radius: 7px; padding: 9px; }
+.kb-it { font-size: 10px; font-weight: 700; color: #58a6ff; margin-bottom: 3px; }
+.kb-id { font-size: 9px; color: #8b949e; line-height: 1.4; }
+
+/* ══════════════════════════════════════════════════
+   PLATFORM ROADMAP VIEW
+══════════════════════════════════════════════════ */
+.plat-top { background: #161b22; border-bottom: 1px solid #30363d; padding: 13px 22px; flex-shrink: 0; }
+.plat-top h2 { font-size: 14px; font-weight: 700; color: #c9d1d9; margin-bottom: 3px; }
+.plat-top p { font-size: 11px; color: #8b949e; }
+.plat-body { padding: 20px 22px 50px; }
+.ph-grp { margin-bottom: 30px; }
+.ph-h { font-size: 13px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.ph-badge { font-size: 9px; padding: 2px 8px; border-radius: 8px; font-weight: 700; }
+.plat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 11px; }
+.plat-c { background: #161b22; border: 1px solid #30363d; border-radius: 11px; padding: 15px; cursor: pointer; transition: all .15s; }
+.plat-c:hover { border-color: #388bfd; transform: translateY(-2px); box-shadow: 0 5px 18px rgba(56,139,253,.1); }
+.plat-c-top { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 9px; }
+.plat-ic { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.plat-t { font-size: 13px; font-weight: 800; margin-bottom: 2px; }
+.plat-s { font-size: 9px; color: #8b949e; }
+.plat-d { font-size: 11px; color: #8b949e; line-height: 1.5; margin-bottom: 9px; }
+.feat-l { list-style: none; }
+.feat-l li { font-size: 10px; color: #8b949e; padding: 1px 0; display: flex; align-items: flex-start; gap: 5px; }
+.feat-l li::before { content: '✓'; color: #3fb950; font-size: 8px; margin-top: 2px; flex-shrink: 0; }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #484f58; }
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="logo">K<span class="b">8</span>H<span class="d">.</span>ai</div>
+  <nav class="nav">
+    <button class="nb active" onclick="switchView('departments',this)">Departments</button>
+    <button class="nb" onclick="switchView('ai-roadmap',this)">AI Roadmap</button>
+    <button class="nb" onclick="switchView('team',this)">Team Profiles</button>
+    <button class="nb" onclick="switchView('platforms',this)">Platforms</button>
+  </nav>
+  <div class="hdr-right">v0.2 · Research Preview</div>
+</div>
+
+<div class="app">
+
+  <!-- ══ DEPARTMENTS ══ -->
+  <div class="view active" id="view-departments">
+    <div class="dept-bar">
+      <h2>Org &amp; Departments</h2>
+      <div class="pf-wrap">
+        <button class="pf on" data-p="all" onclick="filterPhase('all',this)">All Phases</button>
+        <button class="pf" data-p="0" onclick="filterPhase('0',this)">Current State</button>
+        <button class="pf" data-p="1" onclick="filterPhase('1',this)">Phase 1</button>
+        <button class="pf" data-p="2" onclick="filterPhase('2',this)">Phase 2</button>
+        <button class="pf" data-p="3" onclick="filterPhase('3',this)">Phase 3</button>
+        <button class="pf" data-p="ai" onclick="filterPhase('ai',this)">AI-Native</button>
+      </div>
+    </div>
+    <div class="dept-scroll"><div class="dept-grid" id="dept-grid"></div></div>
+  </div>
+
+  <!-- ══ AI ROADMAP ══ -->
+  <div class="view" id="view-ai-roadmap">
+    <div class="rm-top">
+      <h2>AI Implementation Roadmap</h2>
+      <p>10 guiding principles + a phase-by-phase implementation plan tailored to K8H Ventures.</p>
+    </div>
+    <div class="scroll">
+      <div style="padding:16px 22px 4px;font-size:12px;font-weight:700;color:#c9d1d9">10 Implementation Principles</div>
+      <div class="principles" id="principles"></div>
+      <div class="sl-wrap">
+        <div class="sl-title">Phase-by-Phase Implementation Plan</div>
+        <table class="sl-table" id="sl-table"></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TEAM PROFILES ══ -->
+  <div class="view" id="view-team">
+    <div class="team-wrap">
+      <div class="team-sb" id="team-sb"></div>
+      <div class="team-main" id="team-main">
+        <div class="team-empty"><div style="font-size:36px;opacity:.35">👤</div><div>Select a team member</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PLATFORMS ══ -->
+  <div class="view" id="view-platforms">
+    <div class="plat-top">
+      <h2>Platform Build Roadmap</h2>
+      <p>9 platforms replacing third-party tools with fully owned, AI-native solutions across 3 phases.</p>
+    </div>
+    <div class="scroll"><div class="plat-body" id="plat-body"></div></div>
+  </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════════════════════
+
+const DEPARTMENTS = [
+  {
+    id: 'executive',
+    name: 'Executive & Strategy',
+    color: '#58a6ff',
+    icon: '👑',
+    companies: 'All Companies',
+    lead: { id:'kevin', name:'Kevin Mims', role:'CEO — All Companies', init:'KM', color:'#58a6ff' },
+    colead: { id:'harry', name:'Harry Winslow', role:'COO — All Companies', init:'HW', color:'#58a6ff' },
+    brain: { name:'EVA', icon:'👁️', color:'#a371f7', desc:'Execution & Visibility' },
+    phases: [
+      { cls:'p0', num:'Now', label:'Current State', sub:'Spreadsheets, manual reports, no real-time visibility',
+        items:['Email-based coordination','Entity P&L done manually in Excel','No unified view across companies','Reporting takes hours weekly'] },
+      { cls:'p1', num:'1', label:'AI-Assisted Leadership', sub:'Personal AI for Kevin & Harry, unified exec dashboard',
+        items:['Kevin & Harry personal AI agents live','EVA executive dashboard (real-time KPIs)','FINN multi-entity P&L replaces spreadsheets','Comms Suite for executive-level comms'] },
+      { cls:'p2', num:'2', label:'Cross-Entity Intelligence', sub:'Automated briefings, digital EOS, investor automation',
+        items:['Weekly AI briefings auto-generated','EOS digital scorecard & rocks live','Investor update automation via IRIS','Cross-entity blocker visibility'] },
+      { cls:'p3', num:'3', label:'Predictive Strategy', sub:'AI-driven forecasting and strategic support',
+        items:['Predictive KPIs & anomaly alerts','Autonomous board/investor reporting','AI scenario planning for acquisitions','Zero-lag visibility across all entities'] },
+      { cls:'pai', num:'∞', label:'AI-Native', sub:'Self-reporting organization, AI drives strategy support',
+        items:['Organization learns faster than individuals','Strategic AI surfaces opportunities proactively','No manual reporting — all automated','New entity onboarding in days, not months'] },
+    ],
+    tools: { now:['Gmail','Excel','Phone','Manual reports'], future:['EVA','FINN','EOS Platform','IRIS','Comms Suite'] },
+    agents: [{ name:'EVA', icon:'👁️', color:'#a371f7' },{ name:'FINN', icon:'💰', color:'#3fb950' },{ name:'Harriett', icon:'👩‍💼', color:'#f78166' }],
+    team: [
+      { id:'kevin', name:'Kevin Mims', role:'CEO', init:'KM', color:'#58a6ff', lead:true },
+      { id:'harry', name:'Harry Winslow', role:'COO', init:'HW', color:'#58a6ff', lead:false },
+    ],
+  },
+  {
+    id: 'operations',
+    name: 'Operations',
+    color: '#3fb950',
+    icon: '🏘️',
+    companies: 'Affinal RE Services · Affinal Homes · Roots Homes',
+    lead: { id:'tiffany', name:'Tiffany Williams', role:'EVP of Operations', init:'TW', color:'#3fb950' },
+    brain: { name:'IRIS', icon:'🏢', color:'#58a6ff', desc:'Property & Ops AI' },
+    phases: [
+      { cls:'p0', num:'Now', label:'Current State', sub:'AppFolio, manual maintenance tracking, email-based ops',
+        items:['AppFolio (expensive, not owned)','Maintenance tracked via email/text','Investor reports built manually','No AI integration in any workflow'] },
+      { cls:'p1', num:'1', label:'IRIS Launch', sub:'Replace AppFolio, property dashboards live',
+        items:['IRIS replaces AppFolio completely','Kytsia & Jessica PM dashboards live','Tiffany operations overview dashboard','Basic maintenance work order system'] },
+      { cls:'p2', num:'2', label:'Operations Automation', sub:'Maintenance automation, lease renewals, HSP integration',
+        items:['Automated maintenance dispatch','Lease renewal workflows & reminders','HSP ↔ IRIS integration for Affinal Homes','NOI & property-level reporting in FINN'] },
+      { cls:'p3', num:'3', label:'Predictive Operations', sub:'AI predicts vacancies, maintenance, and renewals',
+        items:['Predictive occupancy modeling','AI-driven preventive maintenance scheduling','Automated tenant communications','Portfolio performance benchmarking'] },
+      { cls:'pai', num:'∞', label:'AI-Native', sub:'Properties nearly self-managing',
+        items:['Routine maintenance dispatched autonomously','Lease renewals initiated without staff action','Investor updates fully automated','AI flags issues before tenants do'] },
+    ],
+    tools: { now:['AppFolio','Email','Excel','Phone'], future:['IRIS','HSP Agent','FINN','FieldCam','Comms Suite'] },
+    agents: [{ name:'IRIS', icon:'🏢', color:'#58a6ff' },{ name:'HSP', icon:'🏡', color:'#79c0ff' },{ name:'EVA', icon:'👁️', color:'#a371f7' }],
+    team: [
+      { id:'tiffany', name:'Tiffany Williams', role:'EVP Operations', init:'TW', color:'#3fb950', lead:true },
+      { id:'kytsia', name:'Kytsia Keep', role:'PM · Piney Woods MHC', init:'KK', color:'#ffa657', indent:true, prop:'ARS → paid by property' },
+      { id:'jessica', name:'Jessica Gisick', role:'PM · Post Oak', init:'JG', color:'#ffa657', indent:true, prop:'ARS → paid by property' },
+    ],
+  },
+  {
+    id: 'construction',
+    name: 'Construction',
+    color: '#ffa657',
+    icon: '🏗️',
+    companies: 'Affinal RE Services',
+    lead: { id:'brittanie', name:'Brittanie Martin', role:'EVP of Construction', init:'BM', color:'#ffa657' },
+    brain: { name:'CADE', icon:'🏗️', color:'#ffa657', desc:'Construction Dev Engine' },
+    phases: [
+      { cls:'p0', num:'Now', label:'Current State', sub:'Planner, CompanyCam, manual Excel budgets',
+        items:['Microsoft Planner for project tracking','CompanyCam for site photos','Budget tracking in separate spreadsheets','No permit/entitlement tracking system'] },
+      { cls:'p1', num:'1', label:'CADE & FieldCam Launch', sub:'Replace Planner & CompanyCam, dashboards live',
+        items:['CADE replaces Microsoft Planner','FieldCam replaces CompanyCam','Brittanie & Brad dashboards live','All active projects migrated'] },
+      { cls:'p2', num:'2', label:'Construction Intelligence', sub:'Permit automation, subcontractor workflows, budget sync',
+        items:['Automated permit status tracking','Subcontractor bid & scheduling workflows','Budget variance alerts via FINN','AI punch list from site photos'] },
+      { cls:'p3', num:'3', label:'Predictive Construction', sub:'AI predicts delays, costs, and generates reports',
+        items:['Schedule risk alerts before delays happen','AI-generated inspection reports','Subcontractor performance scoring','Cost-to-complete forecasting'] },
+      { cls:'pai', num:'∞', label:'AI-Native', sub:'Construction managed by exception, not oversight',
+        items:['AI monitors all sites and flags anomalies','Automated subcontractor comms','Permit submissions auto-drafted','Construction intelligence feeds acquisitions'] },
+    ],
+    tools: { now:['Microsoft Planner','CompanyCam','Excel','Email'], future:['CADE','FieldCam','FINN','Comms Suite'] },
+    agents: [{ name:'CADE', icon:'🏗️', color:'#ffa657' },{ name:'FieldCam', icon:'📷', color:'#3fb950' },{ name:'EVA', icon:'👁️', color:'#a371f7' }],
+    team: [
+      { id:'brittanie', name:'Brittanie Martin', role:'EVP Construction', init:'BM', color:'#ffa657', lead:true },
+      { id:'brad', name:'Brad Weston', role:'Construction Manager', init:'BW', color:'#79c0ff', indent:true },
+    ],
+  },
+  {
+    id: 'marketing',
+    name: 'Marketing',
+    color: '#e3b341',
+    icon: '📣',
+    companies: 'Affinal RE · Affinal Homes · Roots Homes',
+    lead: { id:'david', name:'David Mims', role:'EVP of Marketing', init:'DM', color:'#e3b341' },
+    brain: { name:'MP Agent', icon:'📣', color:'#e3b341', desc:'CRM & Marketing AI' },
+    phases: [
+      { cls:'p0', num:'Now', label:'Current State', sub:'GoHighLevel CRM, manual campaigns, weak attribution',
+        items:['GoHighLevel (not owned, expensive)','Manual campaign management','Attribution tracking is fragmented','No AI-assisted content or lead scoring'] },
+      { cls:'p1', num:'1', label:'Marketing Platform Launch', sub:'Replace GoHighLevel, unified CRM & pipeline',
+        items:['Marketing Platform replaces GoHighLevel','All leads & contacts migrated','David dashboard live','Basic campaign analytics'] },
+      { cls:'p2', num:'2', label:'Campaign Intelligence', sub:'AI-assisted content, multi-channel attribution',
+        items:['AI email & SMS drafting','Multi-channel attribution tracking','HSP ↔ MP lead handoff automation','Community-level marketing dashboards'] },
+      { cls:'p3', num:'3', label:'AI-Native Marketing', sub:'AI generates and runs campaigns, minimal human input',
+        items:['AI-generated ad copy & creative briefs','Autonomous A/B testing','Predictive lead scoring','AI-driven content calendar'] },
+      { cls:'pai', num:'∞', label:'AI-Native', sub:'Marketing compounds without linear headcount',
+        items:['Campaigns run autonomously','AI adjusts spend in real time','Every lead touchpoint personalized','Marketing self-optimizes across communities'] },
+    ],
+    tools: { now:['GoHighLevel','Email','Social media tools','Manual reports'], future:['Marketing Platform','HSP Agent','Comms Suite','FINN'] },
+    agents: [{ name:'MP Agent', icon:'📣', color:'#e3b341' },{ name:'HSP Agent', icon:'🏡', color:'#79c0ff' }],
+    team: [
+      { id:'david', name:'David Mims', role:'EVP Marketing', init:'DM', color:'#e3b341', lead:true },
+    ],
+    note: 'Marketing team will grow as platform scales. AI scales output without proportional headcount.',
+  },
+  {
+    id: 'finance',
+    name: 'Finance',
+    color: '#79c0ff',
+    icon: '💰',
+    companies: 'All Companies',
+    lead: { id:'kevin', name:'Kevin Mims', role:'Finance Oversight (CEO)', init:'KM', color:'#58a6ff' },
+    note: 'No dedicated CFO yet. Kevin oversees; Brittanie manages construction budgets. FINN + Harriett cover the gap.',
+    brain: { name:'FINN', icon:'💰', color:'#3fb950', desc:'Financial Intelligence AI' },
+    phases: [
+      { cls:'p0', num:'Now', label:'Current State', sub:'Syft, entity-by-entity reconciliation, manual investor reports',
+        items:['Syft for financial reporting (not owned)','Entity-by-entity manual reconciliation','Property cost allocation done in Excel','Investor reports built ad hoc'] },
+      { cls:'p1', num:'1', label:'FINN Launch', sub:'Replace Syft, multi-entity P&L, property cost allocation',
+        items:['FINN replaces Syft','Multi-entity P&L dashboard live','Property-level cost allocation (ARS → properties)','Kevin & Brittanie finance dashboards'] },
+      { cls:'p2', num:'2', label:'Financial Automation', sub:'Automated reporting, budget tracking, investor distributions',
+        items:['Automated monthly P&L reports','Budget vs actuals with variance alerts','Investor distribution tracking & reporting','Cash flow dashboard (real-time)'] },
+      { cls:'p3', num:'3', label:'Predictive Finance', sub:'AI forecasting, anomaly detection, autonomous reporting',
+        items:['90-day cash flow forecasting','AI expense anomaly detection','Autonomous investor reports','Scenario modeling for acquisitions'] },
+      { cls:'pai', num:'∞', label:'AI-Native', sub:'Finance operates with minimal manual intervention',
+        items:['All routine reporting fully automated','AI flags financial risks proactively','Investor distributions auto-calculated','CFO-level intelligence without a CFO'] },
+    ],
+    tools: { now:['Syft','Excel','Email','Manual reconciliation'], future:['FINN','IRIS','EVA','Comms Suite'] },
+    agents: [{ name:'FINN', icon:'💰', color:'#3fb950' },{ name:'EVA', icon:'👁️', color:'#a371f7' }],
+    team: [
+      { id:'kevin', name:'Kevin Mims', role:'Finance Oversight', init:'KM', color:'#58a6ff', lead:true },
+      { id:'brittanie', name:'Brittanie Martin', role:'Construction Budgets', init:'BM', color:'#ffa657', indent:true },
+    ],
+  },
+  {
+    id: 'hr',
+    name: 'Human Resources',
+    color: '#f78166',
+    icon: '👥',
+    companies: 'All Companies',
+    lead: { id:'harry', name:'Harry Winslow', role:'HR Oversight (COO)', init:'HW', color:'#58a6ff' },
+    note: 'No dedicated HR director. Harriett AI handles most HR functions. Bianca provides admin support to all EVPs.',
+    brain: { name:'Harriett', icon:'👩‍💼', color:'#f78166', desc:'HR AI Agent' },
+    phases: [
+      { cls:'p0', num:'Now', label:'Current State', sub:'Email-based HR, paper policies, no tracking system',
+        items:['Onboarding is inconsistent across hires','Policy questions go to Harry or Bianca','No formal performance tracking','PTO tracked informally'] },
+      { cls:'p1', num:'1', label:'Harriett Launch', sub:'Digital policies, automated onboarding, PTO tracking',
+        items:['Harriett AI live for all 9 team members','Digital policy handbook (searchable)','Automated onboarding for next hire','PTO request & tracking system'] },
+      { cls:'p2', num:'2', label:'People Operations', sub:'Performance reviews, hiring pipeline, org chart',
+        items:['Performance review workflow','Job posting & hiring pipeline','Org chart & reporting structure in-system','Benefits & compliance tracking'] },
+      { cls:'p3', num:'3', label:'AI-Driven People Ops', sub:'Predictive retention, AI-assisted hiring',
+        items:['Predictive retention risk alerts','AI-assisted candidate screening','Autonomous compliance monitoring','Culture & engagement pulse tracking'] },
+      { cls:'pai', num:'∞', label:'AI-Native', sub:'HR scales with the org without linear headcount',
+        items:['New hire onboarded in <1 day by AI','Culture and performance tracked continuously','HR compliance fully automated','Harriett handles 90% of HR requests autonomously'] },
+    ],
+    tools: { now:['Email','Google Docs','Manual processes','Phone'], future:['Harriett','Comms Suite','EOS Platform'] },
+    agents: [{ name:'Harriett', icon:'👩‍💼', color:'#f78166' }],
+    team: [
+      { id:'harry', name:'Harry Winslow', role:'HR Oversight', init:'HW', color:'#58a6ff', lead:true },
+      { id:'bianca', name:'Bianca Biagini', role:'Asst. to all EVPs', init:'BB', color:'#79c0ff', indent:true },
+    ],
+  },
+];
+
+const PRINCIPLES = [
+  { t:'Document First, Automate Second', d:'Every SOP must be written before AI can assist with it. Don\'t automate chaos — document the process, then let AI scale it.' },
+  { t:'Top-Down Adoption', d:'Kevin and Harry must use AI daily before asking the team to adopt it. Leadership sets the standard. If the CEO isn\'t using it, the team won\'t either.' },
+  { t:'One Department at a Time', d:'Full transformation of one department beats partial transformation of all. Pick the highest-pain area, prove the value, then expand.' },
+  { t:'AI Assists, Humans Decide (Phase 1)', d:'In Phase 1, AI drafts and recommends. Humans confirm every action. As trust is earned, the balance shifts. You never give up oversight — you choose what to delegate.' },
+  { t:'Measure Before and After', d:'Establish time-on-task baselines for key workflows before automating them. "Hours saved per week per person" is your primary ROI metric.' },
+  { t:'Data Quality is Non-Negotiable', d:'AI is only as good as the data it sees. Clean, structured, consistent data must come before intelligence. Garbage in, garbage out — at scale.' },
+  { t:'Build for 3x Scale', d:'Design every system assuming 3x your current team size. A personalized AI agent should be as easy to set up for the 30th hire as the 6th.' },
+  { t:'Own Your Data', d:'Every platform you build replaces a third-party tool where you don\'t own your data. Data ownership is a competitive moat — and it compounds over time.' },
+  { t:'Integrate Everything', d:'Siloed AI tools create siloed intelligence. Every platform must share data with the others through the shared KB. An AI that can\'t see the full picture gives partial answers.' },
+  { t:'Treat AI Like a Team Member', d:'Give every AI agent context, train it on SOPs, review its work, correct its mistakes, and promote it as it improves. Onboarding an AI is not a one-time setup.' },
+];
+
+const SWIMLANE_PHASES = [
+  { id:'p0', label:'Foundation', timeline:'Month 1–2', color:'#8b949e' },
+  { id:'p1', label:'Phase 1', timeline:'Month 2–4', color:'#3fb950' },
+  { id:'p2', label:'Phase 2', timeline:'Month 4–8', color:'#e3b341' },
+  { id:'p3', label:'Phase 3', timeline:'Month 8–14', color:'#a371f7' },
+  { id:'pai', label:'AI-Native', timeline:'Month 14+', color:'#58a6ff' },
+];
+
+const SWIMLANE = [
+  {
+    cat: 'Foundation',
+    rows: [
+      { lbl: 'SOPs & Knowledge', cells: [
+        { items: [{t:'All 9 team members document top 10 workflows',k:true},{t:'Identify highest-pain repetitive tasks'},{t:'Define SOP format & templates'},{t:'Establish data governance rules',w:true}] },
+        { items: [{t:'SOPs for all department workflows complete',k:true},{t:'Shared KB architecture live'},{t:'Personal KB built for Kevin & Harry first'}] },
+        { items: [{t:'SOPs for all 9 team members complete'},{t:'KB continuously updated by AI'},{t:'Cross-entity knowledge sharing live'}] },
+        { items: [{t:'AI generates new SOPs from operational patterns'},{t:'KB self-improving with each interaction'},{t:'Institutional knowledge fully captured'}] },
+        { items: [{t:'Organization learns faster than any individual'},{t:'Zero knowledge loss on turnover'},{t:'SOPs auto-maintained'}] },
+      ]},
+      { lbl: 'Data & Systems', cells: [
+        { items: [{t:'Audit data quality in AppFolio, GHL, Syft',w:true},{t:'Map data flows between current systems'},{t:'Baseline all key KPIs (time-on-task per person)',k:true},{t:'Identify data cleanup needed'}] },
+        { items: [{t:'Data migrated to IRIS (from AppFolio)',k:true},{t:'CRM migrated to Marketing Platform (from GHL)'},{t:'Financial data migrated to FINN (from Syft)'}] },
+        { items: [{t:'All platforms sharing data via shared KB'},{t:'No more manual data entry across systems',k:true},{t:'Budget vs actuals automated'}] },
+        { items: [{t:'Predictive models trained on 12+ months of data'},{t:'Data quality monitoring automated'},{t:'AI identifies gaps & corrects data'}] },
+        { items: [{t:'Fully integrated data fabric across all entities'},{t:'AI-native data architecture'},{t:'Real-time org intelligence'}] },
+      ]},
+    ],
+  },
+  {
+    cat: 'People & Training',
+    rows: [
+      { lbl: 'AI Literacy', cells: [
+        { items: [{t:'AI literacy workshop for all 9 team members',k:true},{t:'Everyone gets a personal Claude/ChatGPT account'},{t:'Daily AI usage habit-building starts'},{t:'Skeptics identified & engaged directly',w:true}] },
+        { items: [{t:'Kevin & Harry using AI daily',k:true},{t:'AI tools embedded in daily workflows for EVPs'},{t:'Weekly AI wins shared in team meetings'}] },
+        { items: [{t:'All 9 team members using AI tools daily'},{t:'AI suggestions trusted for routine tasks'},{t:'Department-level AI champions identified'}] },
+        { items: [{t:'Team trains the AI (corrections, feedback loops)'},{t:'New hires onboard to AI-first culture in <1 week'}] },
+        { items: [{t:'AI-first culture fully embedded'},{t:'Team can\'t imagine working without AI'},{t:'AI literacy is a hiring filter'}] },
+      ]},
+      { lbl: 'Change Management', cells: [
+        { items: [{t:'Communicate the "why" — data ownership, efficiency',k:true},{t:'Identify which tasks AI will take over (vs augment)'},{t:'Address fears: "Will AI replace me?"',w:true}] },
+        { items: [{t:'Show quick wins to skeptics (hours saved)',k:true},{t:'Celebrate first AI-generated deliverable per person'},{t:'Bianca AI workflow reduces EVP admin by 30%'}] },
+        { items: [{t:'Team members become AI coaches to each other'},{t:'Resistance resolves through demonstrated value'}] },
+        { items: [{t:'AI handles everything routine; humans own judgment'},{t:'Team focuses on high-value, creative work'}] },
+        { items: [{t:'Culture is AI-native — no transition needed for new hires'}] },
+      ]},
+    ],
+  },
+  {
+    cat: 'Personal AI Layer',
+    rows: [
+      { lbl: 'Personal AI Agents', cells: [
+        { items: [{t:'Design personal KB structure (roles, SOPs, context)',k:true},{t:'Define what each person\'s AI "knows"'}] },
+        { items: [{t:'Kevin personal AI agent live (Day 1 of Phase 1)',k:true},{t:'Harry personal AI agent live'},{t:'EVP agents (Tiffany, Brittanie, David) live by end of phase'}] },
+        { items: [{t:'All 9 team members have personal AI agents',k:true},{t:'Kytsia & Jessica PM-specific agents live'},{t:'Bianca cross-EVP AI coordination live'}] },
+        { items: [{t:'AI agents proactively surface tasks & insights'},{t:'Agents improve from daily interaction history'}] },
+        { items: [{t:'Personal AI is indistinguishable from a highly capable EA'},{t:'Agents anticipate needs before they\'re expressed'}] },
+      ]},
+      { lbl: 'Personalized Dashboards', cells: [
+        { items: [{t:'Define KPIs & dashboard elements per role',k:true},{t:'Design lead & lag indicators per person'}] },
+        { items: [{t:'Kevin & Harry executive dashboards live',k:true},{t:'EVP dashboards live (Tiffany, Brittanie, David)'}] },
+        { items: [{t:'All 9 team member dashboards live',k:true},{t:'KPIs pulling from live platform data'},{t:'Automated daily/weekly digest emails'}] },
+        { items: [{t:'Dashboards predict future state (not just current)'},{t:'Anomalies auto-flagged before meetings'}] },
+        { items: [{t:'Dashboard is the primary way every team member starts their day'}] },
+      ]},
+    ],
+  },
+  {
+    cat: 'Platform Builds',
+    rows: [
+      { lbl: 'Phase 1 Platforms', cells: [
+        { items: [{t:'Architecture & vendor decisions for Comms, IRIS, MP',k:true},{t:'Data migration plan from AppFolio, GHL'}] },
+        { items: [{t:'Comms Suite live (email + chat)',k:true},{t:'IRIS live — AppFolio fully replaced',k:true},{t:'Marketing Platform live — GHL replaced',k:true},{t:'Harriett HR agent live for all staff'}] },
+        { items: [{t:'All Phase 1 platforms stable & widely adopted'},{t:'Integration between Comms, IRIS, MP live'}] },
+        { items: [{t:'Phase 1 platforms generate predictive insights'}] },
+        { items: [{t:'Phase 1 platforms largely self-managing'}] },
+      ]},
+      { lbl: 'Phase 2 Platforms', cells: [
+        { items: [{t:'Plan Phase 2 platforms during Phase 1 stable period'}] },
+        { items: [{t:'CADE & FieldCam design started (if Phase 1 on track)'}] },
+        { items: [{t:'CADE live — Planner replaced',k:true},{t:'FieldCam live — CompanyCam replaced',k:true},{t:'HSP live — home sales end-to-end',k:true},{t:'FINN live — Syft replaced',k:true}] },
+        { items: [{t:'All Phase 2 platforms integrated with shared KB'},{t:'Cross-platform data flows fully automated'}] },
+        { items: [{t:'Phase 2 platforms self-improving from usage data'}] },
+      ]},
+      { lbl: 'Phase 3 Platforms', cells: [
+        { items: [] },
+        { items: [] },
+        { items: [{t:'Plan EOS Platform & AES/EVA during Phase 2 stable period'}] },
+        { items: [{t:'EOS Platform live — digital L10, rocks, scorecard',k:true},{t:'AES/EVA full deployment — cross-org visibility',k:true},{t:'Full-org data integration complete'}] },
+        { items: [{t:'All 9 platforms fully integrated'},{t:'New platform additions take weeks, not months'}] },
+      ]},
+    ],
+  },
+  {
+    cat: 'Automation & Intelligence',
+    rows: [
+      { lbl: 'Workflow Automation', cells: [
+        { items: [{t:'Map the 5 highest-volume repetitive workflows',k:true},{t:'Prioritize by time saved × frequency'}] },
+        { items: [{t:'Top 5 workflows partially automated (AI drafts, human confirms)',k:true},{t:'Bianca\'s EVP coordination 40% automated'}] },
+        { items: [{t:'50% of repetitive workflows fully automated',k:true},{t:'Exception-based management model established'},{t:'Each PM handles 2x properties with same hours'}] },
+        { items: [{t:'80% of routine operations run without human initiation'},{t:'Team works on exception & strategy only'}] },
+        { items: [{t:'95%+ of routine operations fully autonomous'},{t:'Team focused entirely on judgment & growth'}] },
+      ]},
+      { lbl: 'Predictive Intelligence', cells: [
+        { items: [{t:'Define what "predictive" means per department',k:true},{t:'Identify data needed for forecasting'}] },
+        { items: [{t:'Basic KPI dashboards (real-time, not predictive)'}] },
+        { items: [{t:'Cash flow forecasting (FINN)',k:true},{t:'Lead conversion prediction (Marketing Platform)'},{t:'Maintenance prediction (IRIS)'}] },
+        { items: [{t:'Occupancy forecasting 90 days out'},{t:'Construction schedule risk modeling'},{t:'Market opportunity identification'}] },
+        { items: [{t:'AI surfaces insights leadership didn\'t know to ask for'},{t:'Org runs ahead of problems, not behind them'}] },
+      ]},
+    ],
+  },
+];
+
+const TEAM = [
+  { id:'kevin',    name:'Kevin Mims',       init:'KM', role:'CEO — All Companies',          co:'K8H Ventures',                  companies:['K8H Ventures','Affinal RE Services','Affinal Homes','Roots Homes','Clear Utilities'], tier:'exec',     color:'#58a6ff' },
+  { id:'harry',    name:'Harry Winslow',    init:'HW', role:'COO — All Companies',          co:'K8H Ventures',                  companies:['K8H Ventures','Affinal RE Services','Affinal Homes','Roots Homes','Clear Utilities'], tier:'exec',     color:'#58a6ff' },
+  { id:'tiffany',  name:'Tiffany Williams', init:'TW', role:'EVP of Operations',            co:'Affinal RE Services + Affinal Homes', companies:['Affinal RE Services','Affinal Homes'],tier:'leadership',color:'#3fb950' },
+  { id:'brittanie',name:'Brittanie Martin', init:'BM', role:'EVP of Construction',          co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'leadership',color:'#ffa657' },
+  { id:'david',    name:'David Mims',       init:'DM', role:'EVP of Marketing',             co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'leadership',color:'#e3b341' },
+  { id:'brad',     name:'Brad Weston',      init:'BW', role:'Construction Manager',         co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'staff',     color:'#79c0ff' },
+  { id:'bianca',   name:'Bianca Biagini',   init:'BB', role:'Assistant to all EVPs',        co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'staff',     color:'#79c0ff' },
+  { id:'kytsia',   name:'Kytsia Keep',      init:'KK', role:'PM — Piney Woods MHC',        co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'property',  color:'#ffa657' },
+  { id:'jessica',  name:'Jessica Gisick',   init:'JG', role:'PM — Post Oak',               co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'property',  color:'#ffa657' },
+];
+
+const PROFILES = {
+  kevin: {
+    tools:['EVA (AES)','FINN (FinTech)','IRIS','EOS Platform','Harriett (HR)','MP Agent'],
+    sops:['Weekly L10 meeting facilitation','Quarterly rock planning with leadership team','Investor update cadence','Entity P&L review (monthly)','Strategic hiring approval','Board / partner communications'],
+    kpis:['Revenue across all entities (lead)','Cash position & runway (lag)','Headcount vs plan (lead)','Rock completion % (lag)','Investor distribution schedule (lag)','Open critical issues (lead)'],
+    dashboard:['All-entity financial summary (FINN)','Active project status across companies (EVA)','Investor portal activity (IRIS)','EOS scorecard & company rocks','Open issues & escalation queue'],
+    note:'CEO of all companies: K8H Ventures, Affinal Real Estate Services, Affinal Homes, Roots Homes, Clear Utilities.',
+  },
+  harry: {
+    tools:['EVA (AES)','CADE (DEP)','HSP Agent','FINN (FinTech)','Harriett (HR)','MP Agent'],
+    sops:['Daily operational standup with EVP team','Weekly project status review (CADE)','Vendor & contractor performance reviews','Hiring coordination with EVPs','Cross-entity issue escalation','L10 meeting co-facilitation'],
+    kpis:['Operational efficiency score (lag)','Project milestone hit rate (lag)','Vendor SLA compliance (lead)','Headcount & capacity vs plan (lead)','Open blocker count (lead)','Revenue per entity (lag)'],
+    dashboard:['All-company operational status (EVA)','Construction pipeline (CADE)','Home sales pipeline (HSP)','Team capacity & blockers','Pending approvals & decisions'],
+    note:'COO of all companies. Primary liaison between Kevin and all EVPs. Owns operational execution across entities.',
+  },
+  tiffany: {
+    tools:['EVA (AES)','IRIS','HSP Agent','FINN (FinTech)','Harriett (HR)','Comms Suite'],
+    sops:['Monthly property operations review','Tenant communication protocols','Home sales handoff from contract to close','Lease renewal workflow','Property manager supervision','Vendor & maintenance coordination'],
+    kpis:['Occupancy rate per property (lag)','Maintenance ticket resolution time (lag)','Lease renewal rate (lag)','Home sales close rate (lead)','Operating expense per unit (lead)','NOI per property (lag)'],
+    dashboard:['Property operations overview (IRIS)','Maintenance & work order queue','Home sales pipeline — Affinal Homes','Property manager activity (Kytsia, Jessica)','Lease renewal calendar'],
+    note:'EVP of Operations for Affinal Real Estate Services and Affinal Homes. Oversees Kytsia Keep and Jessica Gisick.',
+  },
+  brittanie: {
+    tools:['CADE (DEP)','FieldCam','FINN (FinTech)','EVA (AES)','Harriett (HR)'],
+    sops:['Weekly construction site review','Permit & entitlement submission process','Subcontractor bid & selection process','Construction budget variance review','Punch list & closeout protocol','Safety & inspection compliance'],
+    kpis:['Projects on schedule % (lag)','Budget variance per project (lag)','Permit approval turnaround time (lead)','Subcontractor performance score (lead)','Open punch list items (lead)','Cost per sq ft vs budget (lag)'],
+    dashboard:['Active construction projects (CADE)','Site photo log (FieldCam)','Budget vs actuals per project (FINN)','Permit & approval status tracker','Subcontractor work orders'],
+    note:'EVP of Construction for Affinal Real Estate Services. Manages Brad Weston directly.',
+  },
+  david: {
+    tools:['MP Agent','EVA (AES)','HSP Agent','Harriett (HR)','Comms Suite'],
+    sops:['Weekly marketing campaign review','Lead source attribution analysis','Monthly marketing budget reconciliation','Content & campaign approval workflow','New community launch marketing plan','Brand standard compliance review'],
+    kpis:['Cost per lead by channel (lead)','Lead-to-appointment conversion rate (lead)','Marketing spend vs budget (lag)','Website traffic & engagement (lead)','Campaign ROI (lag)','Brand reach & impressions (lead)'],
+    dashboard:['Campaign performance dashboard (MP)','Lead pipeline & source breakdown','Marketing spend tracker (FINN)','Content calendar & approvals','Home sales lead flow (HSP)'],
+    note:'EVP of Marketing for Affinal Real Estate Services. Owns all marketing channels and lead generation.',
+  },
+  brad: {
+    tools:['CADE (DEP)','FieldCam','EVA (AES)','Comms Suite'],
+    sops:['Daily site walk & photo documentation','Subcontractor scheduling & coordination','Material delivery coordination','Weekly construction progress report','Punch list management','Safety incident reporting'],
+    kpis:['Daily tasks completed on schedule (lead)','Site photo documentation compliance (lead)','Subcontractor show rate (lead)','Open punch items per project (lag)','Material delivery lead time (lead)','Weekly milestone progress (lag)'],
+    dashboard:['Active job site status (CADE)','Today\'s site tasks & schedule','Photo log — current projects (FieldCam)','Subcontractor contact & schedule','Open punch list items'],
+    note:'Construction Manager for Affinal Real Estate Services. Reports to Brittanie Martin.',
+  },
+  bianca: {
+    tools:['EVA (AES)','Harriett (HR)','Comms Suite','EOS Platform'],
+    sops:['Daily calendar management for all EVPs','Meeting prep & agenda distribution','L10 meeting notes & action item tracking','Travel & logistics coordination','Expense report processing','Document routing & filing'],
+    kpis:['Meeting prep completion rate (lead)','Action item follow-through rate (lag)','Calendar conflict resolution time (lead)','Document turnaround time (lag)'],
+    dashboard:['EVP calendar & schedule overview','Pending action items from L10s (EOS)','Incoming communications queue (Comms)','Document approvals & routing','Travel & logistics calendar'],
+    note:'Assistant to all EVPs (Tiffany, Brittanie, David). Coordinates across the full leadership team.',
+  },
+  kytsia: {
+    tools:['IRIS','Comms Suite','FieldCam'],
+    sops:['Daily property walkthrough & documentation','Tenant communication & lease inquiries','Maintenance work order intake & dispatch','Rent collection follow-up protocol','Move-in / move-out inspection process','Monthly property report for Tiffany'],
+    kpis:['Occupancy rate — Piney Woods MHC (lag)','Rent collection rate (lag)','Work order resolution time (lag)','Tenant satisfaction score (lag)','Lease renewal rate (lead)','Delinquency rate (lead)'],
+    dashboard:['Piney Woods MHC unit status (IRIS)','Rent roll & collection status','Open maintenance work orders','Tenant communications queue','Move-in / move-out calendar'],
+    note:'Property Manager for Piney Woods MHC. Employed by Affinal RE Services; salary cost allocated to the property.',
+  },
+  jessica: {
+    tools:['IRIS','Comms Suite','FieldCam'],
+    sops:['Daily property walkthrough & documentation','Tenant communication & lease inquiries','Maintenance work order intake & dispatch','Rent collection follow-up protocol','Move-in / move-out inspection process','Monthly property report for Tiffany'],
+    kpis:['Occupancy rate — Post Oak (lag)','Rent collection rate (lag)','Work order resolution time (lag)','Tenant satisfaction score (lag)','Lease renewal rate (lead)','Delinquency rate (lead)'],
+    dashboard:['Post Oak unit status (IRIS)','Rent roll & collection status','Open maintenance work orders','Tenant communications queue','Move-in / move-out calendar'],
+    note:'Property Manager for Post Oak. Employed by Affinal RE Services; salary cost allocated to the property.',
+  },
+};
+
+const PLATFORMS = [
+  { id:'comms',      name:'Comms Suite',    full:'Company Email & Chat',                icon:'💬',color:'#a371f7',phase:1,replaces:'External email / Slack',desc:'Custom internal comms — email, team chat, and file sharing — fully integrated with every AI agent.',features:['Threaded team chat','Email client','File & media sharing','AI-assisted replies','Per-role notification rules','Integrated with all agents'] },
+  { id:'iris',       name:'IRIS',           full:'Investor Relations Info System',      icon:'🏢',color:'#58a6ff',phase:1,replaces:'AppFolio',desc:'Property management + investor portal. Full data ownership and direct AI integration.',features:['Property & unit management','Investor portal & reporting','Rent collection & ledger','Maintenance workflows','Lease tracking','FINN integration'] },
+  { id:'mp',         name:'Marketing Platform',full:'CRM & Marketing Automation',      icon:'📣',color:'#e3b341',phase:1,replaces:'GoHighLevel',desc:'Full-stack CRM, pipeline management, and marketing automation — all data owned in-house.',features:['CRM & lead management','Email & SMS campaigns','Pipeline automation','Landing pages','Analytics & attribution'] },
+  { id:'hsp',        name:'HSP',            full:'Home Sales Platform',                 icon:'🏡',color:'#79c0ff',phase:2,replaces:'AOSP',desc:'End-to-end home sales workflow — buyer inquiry through closing — AI-driven pipeline management.',features:['Buyer journey management','Contract & doc generation','Closing milestone tracking','Sales team dashboards','Builder coordination'] },
+  { id:'cade',       name:'DEP / CADE',     full:'Development & Entitlement Platform', icon:'🏗️',color:'#ffa657',phase:2,replaces:'Microsoft Planner',desc:'Construction project tracking, permit management, and entitlement workflow for land development.',features:['Permit & entitlement tracking','Construction milestone management','Approval workflow routing','Vendor & contractor management','Document control'] },
+  { id:'fieldcam',   name:'FieldCam',       full:'Field Photo & Documentation',        icon:'📷',color:'#3fb950',phase:2,replaces:'CompanyCam',desc:'Site photo management, job documentation, and field reporting — integrated with CADE.',features:['Geo-tagged site photos','Job-level photo albums','Progress documentation','Report generation','AI deficiency detection'] },
+  { id:'finn',       name:'FinTech / FINN', full:'Financial Tracker & Reporting',      icon:'💰',color:'#3fb950',phase:2,replaces:'Syft',desc:'Consolidated financial intelligence across all K8H entities.',features:['Multi-entity P&L','Cash flow forecasting','Budget vs actuals','Investor distributions','CFO dashboard'] },
+  { id:'eos',        name:'EOS Platform',   full:'Entrepreneurial Operating System',   icon:'⚙️',color:'#f78166',phase:3,replaces:'Manual EOS process',desc:'Digital EOS — V/TO, Scorecard, rocks, issues list, and meeting cadence, all AI-assisted.',features:['V/TO (Vision/Traction Organizer)','Weekly scorecard & KPIs','Rock tracking','Issues list (IDS)','L10 meeting facilitator'] },
+  { id:'aes',        name:'AES / EVA',      full:'Affinal Execution System',           icon:'👁️',color:'#a371f7',phase:3,replaces:'Manual reporting',desc:'Cross-platform visibility layer — EVA sees everything across all systems and surfaces blockers to leadership.',features:['Cross-platform status dashboard','Execution gap detection','Leadership briefing generation','KPI roll-up','Alert & escalation routing'] },
+];
+
+const PHASE_META = {
+  1:{ label:'Phase 1 — Foundation',  color:'#58a6ff', desc:'Core communication + highest-leverage platform replacements' },
+  2:{ label:'Phase 2 — Expansion',   color:'#3fb950', desc:'Domain-specific platforms for construction, sales, and finance' },
+  3:{ label:'Phase 3 — Integration', color:'#a371f7', desc:'EOS operating system + full-org visibility layer' },
+};
+
+// ═══════════════════════════════════════════════════════════════════════
+//  RENDER: DEPARTMENTS
+// ═══════════════════════════════════════════════════════════════════════
+
+let currentPhaseFilter = 'all';
+
+function renderDepts() {
+  document.getElementById('dept-grid').innerHTML = DEPARTMENTS.map(d => `
+    <div class="dcol" id="dcol-${d.id}">
+      <div class="dcol-hdr" style="border-top: 3px solid ${d.color}">
+        <div class="dcol-name">
+          <div class="dcol-icon" style="background:${d.color}22">${d.icon}</div>
+          <span style="color:${d.color}">${d.name}</span>
+        </div>
+        <div class="dcol-co">${d.companies}</div>
+      </div>
+
+      <!-- Lead -->
+      <div class="dsec">
+        <div class="dsec-lbl">Leadership</div>
+        <div class="lead-row">
+          <div class="mini-av" style="background:${d.lead.color}22;color:${d.lead.color}">${d.lead.init}</div>
+          <div><div class="lead-n">${d.lead.name}</div><div class="lead-r">${d.lead.role}</div></div>
+        </div>
+        ${d.colead ? `<div class="lead-row" style="margin-top:4px">
+          <div class="mini-av" style="background:${d.colead.color}22;color:${d.colead.color}">${d.colead.init}</div>
+          <div><div class="lead-n">${d.colead.name}</div><div class="lead-r">${d.colead.role}</div></div>
+        </div>` : ''}
+        ${d.note ? `<div class="dept-note">${d.note}</div>` : ''}
+      </div>
+
+      <!-- AI Brain -->
+      <div class="dsec">
+        <div class="dsec-lbl">AI Brain</div>
+        <div class="brain-card">
+          <div class="brain-ic" style="background:${d.brain.color}22">${d.brain.icon}</div>
+          <div><div class="brain-n" style="color:${d.brain.color}">${d.brain.name}</div><div class="brain-d">${d.brain.desc}</div></div>
+        </div>
+      </div>
+
+      <!-- Phases -->
+      <div class="dsec">
+        <div class="dsec-lbl">Phase Progression</div>
+        ${d.phases.map(ph => `
+          <div class="pc ${ph.cls}" data-phase="${ph.cls}">
+            <div class="pc-hdr">
+              <div class="pc-dot">${ph.num}</div>
+              <div class="pc-lbl">${ph.label}</div>
+            </div>
+            <div class="pc-sub">${ph.sub}</div>
+            ${ph.items.map(i => `<div class="pc-item">${i}</div>`).join('')}
+          </div>
+        `).join('')}
+      </div>
+
+      <!-- Agents -->
+      <div class="dsec">
+        <div class="dsec-lbl">AI Agents</div>
+        <div class="agent-chips">
+          ${d.agents.map(a => `<div class="ach" style="background:${a.color}22;color:${a.color}">${a.icon} ${a.name}</div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Tools -->
+      <div class="dsec">
+        <div class="dsec-lbl">Tools</div>
+        <div style="font-size:9px;color:#8b949e;margin-bottom:3px">Current</div>
+        <div class="tools-row" style="margin-bottom:6px">${d.tools.now.map(t=>`<span class="tool-now">${t}</span>`).join('')}</div>
+        <div style="font-size:9px;color:#388bfd;margin-bottom:3px">Future</div>
+        <div class="tools-row">${d.tools.future.map(t=>`<span class="tool-fut">${t}</span>`).join('')}</div>
+      </div>
+
+      <!-- Team -->
+      <div class="dsec">
+        <div class="dsec-lbl">Team</div>
+        <div class="tm-hier">
+          ${d.team.map(m => `
+            <div class="tm-row">
+              ${m.indent ? '<div class="tm-indent"></div>' : ''}
+              <div class="tm-card" style="margin-left:${m.indent?'0':'0'}">
+                <div class="mini-av" style="background:${m.color}22;color:${m.color}">${m.init}</div>
+                <div>
+                  <div class="tm-n">${m.name}</div>
+                  <div class="tm-r">${m.role}</div>
+                  ${m.prop ? `<div class="tm-prop">${m.prop}</div>` : ''}
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        ${d.note && !d.lead ? `<div class="dept-note" style="margin-top:6px">${d.note}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterPhase(phase, btn) {
+  currentPhaseFilter = phase;
+  document.querySelectorAll('.pf').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+
+  const cards = document.querySelectorAll('.pc');
+  if (phase === 'all') {
+    cards.forEach(c => c.classList.remove('dim'));
+    return;
+  }
+  const map = { '0':'p0', '1':'p1', '2':'p2', '3':'p3', 'ai':'pai' };
+  const target = map[phase];
+  cards.forEach(c => {
+    if (c.classList.contains(target)) c.classList.remove('dim');
+    else c.classList.add('dim');
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  RENDER: AI ROADMAP
+// ═══════════════════════════════════════════════════════════════════════
+
+function renderPrinciples() {
+  document.getElementById('principles').innerHTML = PRINCIPLES.map((p,i) => `
+    <div class="pcard">
+      <div class="pcard-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="pcard-t">${p.t}</div>
+      <div class="pcard-d">${p.d}</div>
+    </div>
+  `).join('');
+}
+
+function renderSwimlane() {
+  const ph = SWIMLANE_PHASES;
+  let html = '<thead><tr>';
+  html += `<th class="sl-row-lbl" style="background:#161b22;border:none"></th>`;
+  ph.forEach(p => {
+    html += `<th class="sl-ph" style="color:${p.color};border-color:${p.color}33;background:#161b22">${p.label}<span class="sl-ph-sub">${p.timeline}</span></th>`;
+  });
+  html += '</tr></thead><tbody>';
+
+  SWIMLANE.forEach(cat => {
+    html += `<tr><td class="sl-cat" colspan="${ph.length+1}">${cat.cat}</td></tr>`;
+    cat.rows.forEach(row => {
+      html += `<tr><td class="sl-row-lbl">${row.lbl}</td>`;
+      row.cells.forEach(cell => {
+        html += `<td class="sl-cell">`;
+        if (!cell.items || !cell.items.length) { html += `<span class="sl-empty">—</span>`; }
+        else {
+          html += '<ul>';
+          cell.items.forEach(it => {
+            const cls = it.k ? 'key' : (it.w ? 'warn' : '');
+            html += `<li class="${cls}">${it.t}</li>`;
+          });
+          html += '</ul>';
+        }
+        html += '</td>';
+      });
+      html += '</tr>';
+    });
+  });
+
+  html += '</tbody>';
+  document.getElementById('sl-table').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  RENDER: TEAM PROFILES
+// ═══════════════════════════════════════════════════════════════════════
+
+function renderTeamSB() {
+  const groups = [
+    { label:'Executive', tiers:['exec'] },
+    { label:'Leadership', tiers:['leadership'] },
+    { label:'Staff', tiers:['staff'] },
+    { label:'Property Managers', tiers:['property'] },
+  ];
+  document.getElementById('team-sb').innerHTML = groups.map(g => {
+    const members = TEAM.filter(m => g.tiers.includes(m.tier));
+    if (!members.length) return '';
+    return `<div class="sb-lbl">${g.label}</div>` + members.map(m => `
+      <div class="sb-card" id="sb-${m.id}" onclick="showProfile('${m.id}')">
+        <div class="sb-av" style="background:${m.color}22;color:${m.color}">${m.init}</div>
+        <div><div class="sb-n">${m.name}</div><div class="sb-r">${m.role.split('—')[0].trim()}</div></div>
+      </div>
+    `).join('');
+  }).join('');
+}
+
+function showProfile(id) {
+  document.querySelectorAll('.sb-card').forEach(c => c.classList.remove('sel'));
+  const el = document.getElementById('sb-'+id); if (el) el.classList.add('sel');
+  const m = TEAM.find(t => t.id === id);
+  const p = PROFILES[id];
+  if (!m) return;
+
+  const depts = DEPARTMENTS.filter(d => d.team.some(t => t.id === id));
+  const agents4m = depts.flatMap(d => d.agents);
+  const uniqueAgents = agents4m.filter((a,i,arr) => arr.findIndex(x=>x.name===a.name)===i);
+
+  document.getElementById('team-main').innerHTML = `
+    <div style="max-width:780px">
+      <div class="pro-top">
+        <div class="pro-av" style="background:${m.color}22;color:${m.color}">${m.init}</div>
+        <div style="flex:1">
+          <div class="pro-name">${m.name}</div>
+          <div class="pro-role">${m.role}</div>
+          <div class="co-chips">${m.companies.map(c=>`<span class="co-chip" style="background:${m.color}22;color:${m.color};border:1px solid ${m.color}44">${c}</span>`).join('')}</div>
+          ${p && p.note ? `<div class="pro-note">${p.note}</div>` : ''}
+        </div>
+      </div>
+      <div class="pro-grid">
+        <div class="pro-card">
+          <div class="pro-card-lbl">AI Agents &amp; Tools</div>
+          ${uniqueAgents.map(a=>`<span class="ai-c" style="background:${a.color}22;color:${a.color};border:1px solid ${a.color}44">${a.icon} ${a.name}</span>`).join('')}
+        </div>
+        <div class="pro-card">
+          <div class="pro-card-lbl">Key SOPs</div>
+          ${p ? p.sops.map(s=>`<div class="pro-item">${s}</div>`).join('') : '<div class="pro-item" style="color:#8b949e">TBD</div>'}
+        </div>
+        <div class="pro-card">
+          <div class="pro-card-lbl">KPIs &amp; Indicators</div>
+          ${p ? p.kpis.map(k=>`<div class="pro-item">${k}</div>`).join('') : '<div class="pro-item" style="color:#8b949e">TBD</div>'}
+        </div>
+        <div class="pro-card">
+          <div class="pro-card-lbl">Dashboard Elements</div>
+          ${p ? p.dashboard.map(d=>`<div class="pro-item">${d}</div>`).join('') : '<div class="pro-item" style="color:#8b949e">TBD</div>'}
+        </div>
+      </div>
+      <div class="pro-card wide">
+        <div class="pro-card-lbl">Personal Knowledge Base — What ${m.name.split(' ')[0]}'s AI Sees</div>
+        <div class="kb-g">
+          <div class="kb-i"><div class="kb-it">Role Context</div><div class="kb-id">Responsibilities, reporting structure, access permissions</div></div>
+          <div class="kb-i"><div class="kb-it">SOPs</div><div class="kb-id">Step-by-step procedures for every recurring task</div></div>
+          <div class="kb-i"><div class="kb-it">Communication Style</div><div class="kb-id">Tone, preferred format, escalation rules</div></div>
+          <div class="kb-i"><div class="kb-it">Goals &amp; Rocks</div><div class="kb-id">Current quarterly objectives and success metrics</div></div>
+          <div class="kb-i"><div class="kb-it">Active Projects</div><div class="kb-id">What they're working on, dependencies, blockers</div></div>
+          <div class="kb-i"><div class="kb-it">Live Integrations</div><div class="kb-id">Data sources the AI can query in real time</div></div>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  RENDER: PLATFORMS
+// ═══════════════════════════════════════════════════════════════════════
+
+function renderPlatforms() {
+  document.getElementById('plat-body').innerHTML = [1,2,3].map(ph => {
+    const m = PHASE_META[ph];
+    const plats = PLATFORMS.filter(p => p.phase === ph);
+    return `
+      <div class="ph-grp">
+        <div class="ph-h" style="color:${m.color}">
+          ${m.label}
+          <span class="ph-badge" style="background:${m.color}22;color:${m.color};border:1px solid ${m.color}44">${plats.length} platform${plats.length>1?'s':''}</span>
+        </div>
+        <div style="font-size:11px;color:#8b949e;margin-bottom:12px">${m.desc}</div>
+        <div class="plat-grid">
+          ${plats.map(p=>`
+            <div class="plat-c">
+              <div class="plat-c-top">
+                <div class="plat-ic" style="background:${p.color}22">${p.icon}</div>
+                <div><div class="plat-t">${p.full}</div><div class="plat-s">Replaces <span style="color:${p.color}">${p.replaces}</span></div></div>
+              </div>
+              <div class="plat-d">${p.desc}</div>
+              <ul class="feat-l">${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+              <div style="margin-top:9px"><span style="font-size:9px;padding:2px 8px;border-radius:8px;background:${p.color}22;color:${p.color};border:1px solid ${p.color}44;font-weight:700">Planning</span></div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════
+
+function switchView(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════════════════════
+
+renderDepts();
+renderPrinciples();
+renderSwimlane();
+renderTeamSB();
+renderPlatforms();
+</script>
+</body>
+</html>
