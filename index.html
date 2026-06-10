@@ -320,6 +320,22 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 }
 .ef-delete:hover { background: #f7816622; border-color: #f78166; }
 
+/* ── Multi-select dropdown widget ── */
+.ef-multiselect { position:relative; margin-bottom:14px; }
+.ef-ms-header { display:flex; justify-content:space-between; align-items:center; background:#0d1117; border:1px solid #30363d; border-radius:7px; padding:7px 10px; cursor:pointer; font-size:13px; color:#e6edf3; user-select:none; }
+.ef-ms-header:hover { border-color:#8b949e; }
+.ef-ms-open .ef-ms-header { border-color:#388bfd; border-bottom-left-radius:0; border-bottom-right-radius:0; }
+.ef-ms-dropdown { display:none; position:absolute; top:100%; left:0; right:0; background:#161b22; border:1px solid #388bfd; border-top:none; border-bottom-left-radius:7px; border-bottom-right-radius:7px; z-index:300; box-shadow:0 8px 24px #010409cc; }
+.ef-ms-options { max-height:160px; overflow-y:auto; padding:4px 0; }
+.ef-ms-opt { display:flex; align-items:center; gap:8px; padding:5px 10px; cursor:pointer; font-size:12px; color:#c9d1d9; transition:background .1s; }
+.ef-ms-opt:hover { background:#21262d; }
+.ef-ms-opt input[type=checkbox] { accent-color:#58a6ff; width:13px; height:13px; cursor:pointer; flex-shrink:0; }
+.ef-ms-custom { padding:6px 8px; border-top:1px solid #21262d; display:flex; gap:6px; }
+.ef-ms-add-in { flex:1; background:#0d1117; border:1px solid #30363d; border-radius:5px; padding:4px 8px; color:#e6edf3; font-size:12px; font-family:inherit; outline:none; }
+.ef-ms-add-in:focus { border-color:#58a6ff; }
+.ef-ms-add-btn { background:#21262d; border:1px solid #30363d; border-radius:5px; padding:3px 10px; color:#e6edf3; cursor:pointer; font-size:14px; font-family:inherit; transition:background .1s; }
+.ef-ms-add-btn:hover { background:#30363d; }
+
 /* Add-new buttons (visible only in edit mode) */
 .add-new-btn {
   display: none; width: 100%; padding: 9px; border-radius: 8px;
@@ -1281,6 +1297,110 @@ function deletePrinciple(idx) {
 //  TIER 3: TEAM PROFILE FORMS
 // ═══════════════════════════════════════════════════════════════════════
 
+// ── Master list getters (built dynamically from live data) ──
+function getMasterCompanies() {
+  const s = new Set();
+  TEAM.forEach(t => (t.companies||[]).forEach(c => s.add(c)));
+  return [...s].sort();
+}
+function getMasterTools() {
+  const s = new Set();
+  Object.values(PROFILES).forEach(p => (p.tools||[]).forEach(t => s.add(t)));
+  return [...s].sort();
+}
+function getMasterSOPs() {
+  const s = new Set();
+  Object.values(PROFILES).forEach(p => (p.sops||[]).forEach(v => s.add(v)));
+  return [...s].sort();
+}
+function getMasterKPIs() {
+  const s = new Set();
+  Object.values(PROFILES).forEach(p => (p.kpis||[]).forEach(v => s.add(v)));
+  return [...s].sort();
+}
+function getMasterDashboard() {
+  const s = new Set();
+  Object.values(PROFILES).forEach(p => (p.dashboard||[]).forEach(v => s.add(v)));
+  return [...s].sort();
+}
+
+// ── Multi-select widget ──
+function buildMultiSelect(id, masterList, selected, placeholder) {
+  const selSet = new Set(selected);
+  const allOpts = [...new Set([...masterList, ...selected])];
+  const sum = selSet.size > 0 ? `${selSet.size} selected` : (placeholder || 'Select options…');
+  const rows = allOpts.map(opt =>
+    `<label class="ef-ms-opt"><input type="checkbox" value="${escAttr(opt)}" ${selSet.has(opt)?'checked':''} onchange="updateMSSummary('${id}')"> ${escHtml(opt)}</label>`
+  ).join('');
+  return `<div class="ef-multiselect" id="${id}">
+    <div class="ef-ms-header" onclick="toggleMS('${id}',event)">
+      <span class="ef-ms-summary">${sum}</span><span style="color:#8b949e;font-size:10px">▾</span>
+    </div>
+    <div class="ef-ms-dropdown">
+      <div class="ef-ms-options">${rows}</div>
+      <div class="ef-ms-custom">
+        <input class="ef-ms-add-in" id="${id}-ci" placeholder="Add custom…" onkeydown="if(event.key==='Enter'){event.preventDefault();addMSOpt('${id}');}">
+        <button class="ef-ms-add-btn" onclick="addMSOpt('${id}')">+</button>
+      </div>
+    </div>
+  </div>`;
+}
+function toggleMS(id, e) {
+  if (e) e.stopPropagation();
+  const el = document.getElementById(id);
+  if (!el) return;
+  const isOpen = el.classList.contains('ef-ms-open');
+  // close all
+  document.querySelectorAll('.ef-multiselect.ef-ms-open').forEach(x => {
+    x.classList.remove('ef-ms-open');
+    x.querySelector('.ef-ms-dropdown').style.display = 'none';
+  });
+  if (!isOpen) {
+    el.classList.add('ef-ms-open');
+    el.querySelector('.ef-ms-dropdown').style.display = 'block';
+  }
+}
+function updateMSSummary(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const checked = el.querySelectorAll('input[type=checkbox]:checked');
+  const s = el.querySelector('.ef-ms-summary');
+  if (s) s.textContent = checked.length > 0 ? `${checked.length} selected` : 'Select options…';
+}
+function addMSOpt(id) {
+  const inp = document.getElementById(id+'-ci');
+  if (!inp) return;
+  const val = inp.value.trim();
+  if (!val) return;
+  const opts = document.querySelector(`#${id} .ef-ms-options`);
+  if (!opts) return;
+  const existing = [...opts.querySelectorAll('input[type=checkbox]')].find(c => c.value === val);
+  if (existing) { existing.checked = true; }
+  else {
+    const lbl = document.createElement('label');
+    lbl.className = 'ef-ms-opt';
+    const cb = document.createElement('input');
+    cb.type = 'checkbox'; cb.value = val; cb.checked = true;
+    cb.setAttribute('onchange', `updateMSSummary('${id}')`);
+    lbl.appendChild(cb);
+    lbl.appendChild(document.createTextNode(' '+val));
+    opts.appendChild(lbl);
+  }
+  updateMSSummary(id);
+  inp.value = '';
+}
+function getMSValues(id) {
+  const el = document.getElementById(id);
+  return el ? [...el.querySelectorAll('input[type=checkbox]:checked')].map(c => c.value) : [];
+}
+// Close dropdowns when clicking outside
+document.addEventListener('click', () => {
+  document.querySelectorAll('.ef-multiselect.ef-ms-open').forEach(x => {
+    x.classList.remove('ef-ms-open');
+    x.querySelector('.ef-ms-dropdown').style.display = 'none';
+  });
+});
+
 function buildTeamForm(id) {
   const isNew = id === 'new';
   const m = isNew ? { id:'', name:'', init:'', role:'', co:'', companies:[], tier:'staff', color:'#58a6ff' } : TEAM.find(t => t.id === id);
@@ -1290,6 +1410,8 @@ function buildTeamForm(id) {
   const tierOpts = ['exec','leadership','staff','property'].map(t =>
     `<option value="${t}" ${m.tier===t?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`
   ).join('');
+
+  const coDatalist = getMasterCompanies().map(c => `<option value="${escAttr(c)}">`).join('');
 
   return `
     <div class="ef-sep">${isNew ? 'New Team Member' : `Editing: ${m.name}`}</div>
@@ -1309,10 +1431,11 @@ function buildTeamForm(id) {
     <input class="ef-in" id="ef-tm-role" value="${escAttr(m.role)}" placeholder="e.g. EVP of Operations — Affinal RE Services">
 
     <label class="ef-lbl">Primary Company</label>
-    <input class="ef-in" id="ef-tm-co" value="${escAttr(m.co)}" placeholder="e.g. K8H Ventures">
+    <datalist id="ef-tm-co-list">${coDatalist}</datalist>
+    <input class="ef-in" id="ef-tm-co" list="ef-tm-co-list" value="${escAttr(m.co)}" placeholder="e.g. K8H Ventures">
 
-    <label class="ef-lbl">All Companies (one per line)</label>
-    <textarea class="ef-ta" id="ef-tm-companies" rows="3" placeholder="K8H Ventures&#10;Affinal RE Services">${escHtml(m.companies.join('\n'))}</textarea>
+    <label class="ef-lbl">All Companies</label>
+    ${buildMultiSelect('ef-ms-companies', getMasterCompanies(), m.companies || [], 'Select companies…')}
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 12px">
       <div>
@@ -1333,17 +1456,17 @@ function buildTeamForm(id) {
     <label class="ef-lbl">Bio / Note</label>
     <textarea class="ef-ta" id="ef-tm-note" rows="2" placeholder="Short description of this person's role...">${escHtml(p.note || '')}</textarea>
 
-    <label class="ef-lbl">AI Tools (one per line)</label>
-    <textarea class="ef-ta" id="ef-tm-tools" rows="3" placeholder="EVA (AES)&#10;FINN (FinTech)">${escHtml((p.tools||[]).join('\n'))}</textarea>
+    <label class="ef-lbl">AI Tools / Platforms</label>
+    ${buildMultiSelect('ef-ms-tools', getMasterTools(), p.tools || [], 'Select platforms…')}
 
-    <label class="ef-lbl">Key SOPs (one per line)</label>
-    <textarea class="ef-ta" id="ef-tm-sops" rows="4" placeholder="Weekly standup facilitation&#10;Monthly budget review">${escHtml((p.sops||[]).join('\n'))}</textarea>
+    <label class="ef-lbl">Key SOPs</label>
+    ${buildMultiSelect('ef-ms-sops', getMasterSOPs(), p.sops || [], 'Select SOPs…')}
 
-    <label class="ef-lbl">KPIs &amp; Indicators (one per line)</label>
-    <textarea class="ef-ta" id="ef-tm-kpis" rows="4" placeholder="Revenue vs plan (lag)&#10;Open issues count (lead)">${escHtml((p.kpis||[]).join('\n'))}</textarea>
+    <label class="ef-lbl">KPIs &amp; Indicators</label>
+    ${buildMultiSelect('ef-ms-kpis', getMasterKPIs(), p.kpis || [], 'Select KPIs…')}
 
-    <label class="ef-lbl">Dashboard Elements (one per line)</label>
-    <textarea class="ef-ta" id="ef-tm-dash" rows="4" placeholder="Entity P&amp;L summary (FINN)&#10;Active projects (EVA)">${escHtml((p.dashboard||[]).join('\n'))}</textarea>
+    <label class="ef-lbl">Dashboard Elements</label>
+    ${buildMultiSelect('ef-ms-dash', getMasterDashboard(), p.dashboard || [], 'Select dashboard elements…')}
 
     <div class="ef-actions">
       <button class="ef-save" onclick="saveTeamMember('${id}')">Save</button>
@@ -1359,14 +1482,14 @@ function saveTeamMember(id) {
   const init  = (document.getElementById('ef-tm-init').value || '').trim();
   const role  = (document.getElementById('ef-tm-role').value || '').trim();
   const co    = (document.getElementById('ef-tm-co').value || '').trim();
-  const companies = document.getElementById('ef-tm-companies').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const companies = getMSValues('ef-ms-companies');
   const tier  = document.getElementById('ef-tm-tier').value;
   const color = document.getElementById('ef-tm-color').value;
   const note  = (document.getElementById('ef-tm-note').value || '').trim();
-  const tools = document.getElementById('ef-tm-tools').value.split('\n').map(s=>s.trim()).filter(Boolean);
-  const sops  = document.getElementById('ef-tm-sops').value.split('\n').map(s=>s.trim()).filter(Boolean);
-  const kpis  = document.getElementById('ef-tm-kpis').value.split('\n').map(s=>s.trim()).filter(Boolean);
-  const dashboard = document.getElementById('ef-tm-dash').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const tools = getMSValues('ef-ms-tools');
+  const sops  = getMSValues('ef-ms-sops');
+  const kpis  = getMSValues('ef-ms-kpis');
+  const dashboard = getMSValues('ef-ms-dash');
 
   if (!name) { showToast('❌ Name is required', 'error'); return; }
   if (!init) { showToast('❌ Initials are required', 'error'); return; }
