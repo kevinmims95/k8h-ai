@@ -229,6 +229,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   background: transparent; color: #8b949e; cursor: pointer; font-size: 12px; font-family: inherit;
 }
 #edit-bar-exit:hover { background: #21262d; color: #e6edf3; }
+#publish-btn { padding: 4px 12px; border-radius: 6px; border: 1px solid #3fb95055; background: #3fb95018; color: #3fb950; cursor: pointer; font-size: 12px; font-family: inherit; font-weight: 700; transition: all .15s; }
+#publish-btn:hover:not(:disabled) { background: #3fb95030; border-color: #3fb950; }
+#publish-btn:disabled { opacity: .45; cursor: not-allowed; }
+#pat-btn { padding: 4px 9px; border-radius: 6px; border: 1px solid #30363d; background: transparent; color: #8b949e; cursor: pointer; font-size: 12px; font-family: inherit; transition: all .15s; }
+#pat-btn:hover { background: #21262d; color: #e6edf3; }
+.pub-status { font-size: 11px; color: #8b949e; }
 
 /* Pencil edit buttons — hidden until edit mode is on */
 .ep {
@@ -353,8 +359,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 <!-- Edit toolbar — shown only in edit mode -->
 <div id="edit-bar">
   <span id="edit-bar-label">✏️ Edit Mode</span>
-  <span id="edit-bar-hint">Hover any card and click ✏ to edit it</span>
-  <button id="edit-bar-exit" onclick="toggleEditMode()">✕ Exit Edit Mode</button>
+  <span id="edit-bar-hint">Click ✏ on any card to edit it</span>
+  <button id="publish-btn" onclick="publishToGitHub()">🚀 Publish to Live Site</button>
+  <span class="pub-status" id="pub-status"></span>
+  <button id="pat-btn" onclick="openDrawer('publish-settings','publish-settings','GitHub Settings','Publish')" title="Configure GitHub token">⚙ Token</button>
+  <button id="edit-bar-exit" onclick="toggleEditMode()">✕ Exit</button>
 </div>
 
 <div class="app">
@@ -1178,6 +1187,9 @@ function openDrawer(type, id, label, section) {
     case 'department':
       body = buildDepartmentForm(id);
       break;
+    case 'publish-settings':
+      body = buildPublishSettingsForm();
+      break;
     default:
       body = buildComingSoon(type, id, label);
   }
@@ -1389,6 +1401,162 @@ function deleteTeamMember(id) {
   document.getElementById('team-main').innerHTML = '<div class="team-empty"><div style="font-size:36px;opacity:.35">👤</div><div>Select a team member</div></div>';
   closeDrawer();
   showToast('Team member deleted');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  TIER 6: GITHUB API PUBLISH
+// ═══════════════════════════════════════════════════════════════════════
+
+const GH_OWNER = 'kevinmims95';
+const GH_REPO  = 'k8h-ai';
+const GH_FILE  = 'index.html';
+const GH_BRANCH = 'main';
+
+function getGHToken() { return localStorage.getItem('k8h_gh_pat') || ''; }
+function setGHToken(t) { localStorage.setItem('k8h_gh_pat', t.trim()); }
+
+// Serialize all in-memory data back to JS source
+function serializeData() {
+  return [
+    `const DEPARTMENTS = ${JSON.stringify(DEPARTMENTS, null, 2)};`,
+    `const PRINCIPLES = ${JSON.stringify(PRINCIPLES, null, 2)};`,
+    `const SWIMLANE_PHASES = ${JSON.stringify(SWIMLANE_PHASES, null, 2)};`,
+    `const SWIMLANE = ${JSON.stringify(SWIMLANE, null, 2)};`,
+    `const TEAM = ${JSON.stringify(TEAM, null, 2)};`,
+    `const PROFILES = ${JSON.stringify(PROFILES, null, 2)};`,
+    `const PLATFORMS = ${JSON.stringify(PLATFORMS, null, 2)};`,
+    `const PHASE_META = ${JSON.stringify(PHASE_META, null, 2)};`,
+  ].join('\n\n');
+}
+
+// Base64 encode/decode with full UTF-8 support
+function b64Encode(str) { return btoa(unescape(encodeURIComponent(str))); }
+function b64Decode(b64) { return decodeURIComponent(escape(atob(b64))); }
+
+function setPubStatus(msg, color) {
+  const el = document.getElementById('pub-status');
+  if (el) { el.textContent = msg; el.style.color = color || '#8b949e'; }
+}
+
+async function publishToGitHub() {
+  const token = getGHToken();
+  if (!token) {
+    openDrawer('publish-settings', 'publish-settings', 'GitHub Settings', 'Publish');
+    showToast('⚙ Please enter your GitHub token first', 'error');
+    return;
+  }
+
+  const btn = document.getElementById('publish-btn');
+  btn.disabled = true;
+  setPubStatus('Fetching current file…', '#e3b341');
+
+  try {
+    const apiBase = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`;
+    const headers = {
+      'Authorization': `token ${token}`,
+      'Accept': 'application/vnd.github+json',
+      'Content-Type': 'application/json',
+    };
+
+    // Step 1: Get current SHA + raw content
+    const metaRes = await fetch(apiBase, { headers });
+    if (!metaRes.ok) {
+      const err = await metaRes.json().catch(() => ({}));
+      throw new Error(err.message || `GitHub API error ${metaRes.status}`);
+    }
+    const meta = await metaRes.json();
+    const sha = meta.sha;
+    const currentHTML = b64Decode(meta.content.replace(/\n/g, ''));
+
+    setPubStatus('Injecting updated data…', '#e3b341');
+
+    // Step 2: Replace the data section between markers
+    const newData = serializeData();
+    const marker = '// @EDITABLE_DATA_START';
+    const markerEnd = '// @EDITABLE_DATA_END';
+    const startIdx = currentHTML.indexOf(marker);
+    const endIdx   = currentHTML.indexOf(markerEnd);
+    if (startIdx === -1 || endIdx === -1) throw new Error('Data markers not found in file.');
+
+    const newHTML =
+      currentHTML.slice(0, startIdx) +
+      marker + '\n// ═══════════════════════════════════════════════════════════════════════\n\n' +
+      newData + '\n\n' +
+      markerEnd +
+      currentHTML.slice(endIdx + markerEnd.length);
+
+    setPubStatus('Committing to GitHub…', '#e3b341');
+
+    // Step 3: Commit via GitHub API
+    const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
+    const commitRes = await fetch(apiBase, {
+      method: 'PUT',
+      headers,
+      body: JSON.stringify({
+        message: `Site update via editor — ${now}`,
+        content: b64Encode(newHTML),
+        sha,
+        branch: GH_BRANCH,
+      }),
+    });
+
+    if (!commitRes.ok) {
+      const err = await commitRes.json().catch(() => ({}));
+      throw new Error(err.message || `Commit failed (${commitRes.status})`);
+    }
+
+    setPubStatus('✅ Published! Deploying in ~60s…', '#3fb950');
+    showToast('🚀 Published! GitHub Pages deploying now.');
+    setTimeout(() => setPubStatus(''), 8000);
+
+  } catch (e) {
+    setPubStatus(`❌ ${e.message}`, '#f78166');
+    showToast(`❌ Publish failed: ${e.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ── Publish Settings Form ──
+function buildPublishSettingsForm() {
+  const tok = getGHToken();
+  const masked = tok ? '•'.repeat(Math.min(tok.length - 4, 28)) + tok.slice(-4) : '';
+  return `
+    <div class="ef-sep">GitHub Publish Settings</div>
+    <div style="font-size:12px;color:#8b949e;line-height:1.7;margin-bottom:16px">
+      To publish edits directly to the live site, enter a GitHub Personal Access Token (PAT)
+      with <strong style="color:#e6edf3">Contents: Read &amp; Write</strong> permission for the <strong style="color:#e6edf3">k8h-ai</strong> repo.
+      The token is stored only in this browser.
+    </div>
+    <label class="ef-lbl">Personal Access Token</label>
+    <input class="ef-in" id="ef-pat" type="password" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+           value="${escAttr(tok)}" autocomplete="off">
+    ${tok ? `<div style="font-size:11px;color:#8b949e;margin-top:-10px;margin-bottom:14px">Current: ${escHtml(masked)}</div>` : ''}
+    <div style="font-size:11px;color:#8b949e;margin-bottom:16px;line-height:1.6">
+      Generate a token at <strong style="color:#58a6ff">github.com → Settings → Developer Settings → Fine-grained tokens</strong>.
+      Scope: <em>kevinmims95/k8h-ai</em> → Contents: Read &amp; Write.
+    </div>
+    <div class="ef-actions">
+      <button class="ef-save" onclick="savePublishSettings()">Save Token</button>
+      <button class="ef-cancel" onclick="closeDrawer()">Cancel</button>
+      ${tok ? `<button class="ef-delete" onclick="clearPublishToken()">Clear Token</button>` : ''}
+    </div>
+  `;
+}
+
+function savePublishSettings() {
+  const tok = (document.getElementById('ef-pat').value || '').trim();
+  if (!tok) { showToast('❌ Token cannot be empty', 'error'); return; }
+  setGHToken(tok);
+  closeDrawer();
+  showToast('✅ Token saved — ready to publish!');
+}
+
+function clearPublishToken() {
+  if (!confirm('Clear the saved GitHub token?')) return;
+  localStorage.removeItem('k8h_gh_pat');
+  closeDrawer();
+  showToast('Token cleared');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
