@@ -480,393 +480,2231 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 
 const DEPARTMENTS = [
   {
-    id: 'executive',
-    name: 'Executive & Strategy',
-    color: '#58a6ff',
-    icon: '👑',
-    companies: 'All Companies',
-    lead: { id:'kevin', name:'Kevin Mims', role:'CEO — All Companies', init:'KM', color:'#58a6ff' },
-    colead: { id:'harry', name:'Harry Winslow', role:'COO — All Companies', init:'HW', color:'#58a6ff' },
-    brain: { name:'EVA', icon:'👁️', color:'#a371f7', desc:'Execution & Visibility' },
-    phases: [
-      { cls:'p0', num:'Now', label:'Current State', sub:'Spreadsheets, manual reports, no real-time visibility',
-        items:['Email-based coordination','Entity P&L done manually in Excel','No unified view across companies','Reporting takes hours weekly'] },
-      { cls:'p1', num:'1', label:'AI-Assisted Leadership', sub:'Personal AI for Kevin & Harry, unified exec dashboard',
-        items:['Kevin & Harry personal AI agents live','EVA executive dashboard (real-time KPIs)','FINN multi-entity P&L replaces spreadsheets','Comms Suite for executive-level comms'] },
-      { cls:'p2', num:'2', label:'Cross-Entity Intelligence', sub:'Automated briefings, digital EOS, investor automation',
-        items:['Weekly AI briefings auto-generated','EOS digital scorecard & rocks live','Investor update automation via IRIS','Cross-entity blocker visibility'] },
-      { cls:'p3', num:'3', label:'Predictive Strategy', sub:'AI-driven forecasting and strategic support',
-        items:['Predictive KPIs & anomaly alerts','Autonomous board/investor reporting','AI scenario planning for acquisitions','Zero-lag visibility across all entities'] },
-      { cls:'pai', num:'∞', label:'AI-Native', sub:'Self-reporting organization, AI drives strategy support',
-        items:['Organization learns faster than individuals','Strategic AI surfaces opportunities proactively','No manual reporting — all automated','New entity onboarding in days, not months'] },
+    "id": "executive",
+    "name": "Executive & Strategy",
+    "color": "#58a6ff",
+    "icon": "👑",
+    "companies": "All Companies",
+    "lead": {
+      "id": "kevin",
+      "name": "Kevin Mims",
+      "role": "CEO — All Companies",
+      "init": "KM",
+      "color": "#58a6ff"
+    },
+    "colead": {
+      "id": "harry",
+      "name": "Harry Winslow",
+      "role": "COO — All Companies",
+      "init": "HW",
+      "color": "#58a6ff"
+    },
+    "brain": {
+      "name": "EVA",
+      "icon": "👁️",
+      "color": "#a371f7",
+      "desc": "Execution & Visibility"
+    },
+    "phases": [
+      {
+        "cls": "p0",
+        "num": "Now",
+        "label": "Current State",
+        "sub": "Spreadsheets, manual reports, no real-time visibility",
+        "items": [
+          "Email-based coordination",
+          "Entity P&L done manually in Excel",
+          "No unified view across companies",
+          "Reporting takes hours weekly"
+        ]
+      },
+      {
+        "cls": "p1",
+        "num": "1",
+        "label": "AI-Assisted Leadership",
+        "sub": "Personal AI for Kevin & Harry, unified exec dashboard",
+        "items": [
+          "Kevin & Harry personal AI agents live",
+          "EVA executive dashboard (real-time KPIs)",
+          "FINN multi-entity P&L replaces spreadsheets",
+          "Comms Suite for executive-level comms"
+        ]
+      },
+      {
+        "cls": "p2",
+        "num": "2",
+        "label": "Cross-Entity Intelligence",
+        "sub": "Automated briefings, digital EOS, investor automation",
+        "items": [
+          "Weekly AI briefings auto-generated",
+          "EOS digital scorecard & rocks live",
+          "Investor update automation via IRIS",
+          "Cross-entity blocker visibility"
+        ]
+      },
+      {
+        "cls": "p3",
+        "num": "3",
+        "label": "Predictive Strategy",
+        "sub": "AI-driven forecasting and strategic support",
+        "items": [
+          "Predictive KPIs & anomaly alerts",
+          "Autonomous board/investor reporting",
+          "AI scenario planning for acquisitions",
+          "Zero-lag visibility across all entities"
+        ]
+      },
+      {
+        "cls": "pai",
+        "num": "∞",
+        "label": "AI-Native",
+        "sub": "Self-reporting organization, AI drives strategy support",
+        "items": [
+          "Organization learns faster than individuals",
+          "Strategic AI surfaces opportunities proactively",
+          "No manual reporting — all automated",
+          "New entity onboarding in days, not months"
+        ]
+      }
     ],
-    tools: { now:['Gmail','Excel','Phone','Manual reports'], future:['EVA','FINN','EOS Platform','IRIS','Comms Suite'] },
-    agents: [{ name:'EVA', icon:'👁️', color:'#a371f7' },{ name:'FINN', icon:'💰', color:'#3fb950' },{ name:'Harriett', icon:'👩‍💼', color:'#f78166' }],
-    team: [
-      { id:'kevin', name:'Kevin Mims', role:'CEO', init:'KM', color:'#58a6ff', lead:true },
-      { id:'harry', name:'Harry Winslow', role:'COO', init:'HW', color:'#58a6ff', lead:false },
+    "tools": {
+      "now": [
+        "Gmail",
+        "Excel",
+        "Phone",
+        "Manual reports"
+      ],
+      "future": [
+        "EVA",
+        "FINN",
+        "EOS Platform",
+        "IRIS",
+        "Comms Suite"
+      ]
+    },
+    "agents": [
+      {
+        "name": "EVA",
+        "icon": "👁️",
+        "color": "#a371f7"
+      },
+      {
+        "name": "FINN",
+        "icon": "💰",
+        "color": "#3fb950"
+      },
+      {
+        "name": "Harriett",
+        "icon": "👩‍💼",
+        "color": "#f78166"
+      }
     ],
+    "team": [
+      {
+        "id": "kevin",
+        "name": "Kevin Mims",
+        "role": "CEO",
+        "init": "KM",
+        "color": "#58a6ff",
+        "lead": true
+      },
+      {
+        "id": "harry",
+        "name": "Harry Winslow",
+        "role": "COO",
+        "init": "HW",
+        "color": "#58a6ff",
+        "lead": false
+      }
+    ]
   },
   {
-    id: 'operations',
-    name: 'Operations',
-    color: '#3fb950',
-    icon: '🏘️',
-    companies: 'Affinal RE Services · Affinal Homes · Roots Homes',
-    lead: { id:'tiffany', name:'Tiffany Williams', role:'EVP of Operations', init:'TW', color:'#3fb950' },
-    brain: { name:'IRIS', icon:'🏢', color:'#58a6ff', desc:'Property & Ops AI' },
-    phases: [
-      { cls:'p0', num:'Now', label:'Current State', sub:'AppFolio, manual maintenance tracking, email-based ops',
-        items:['AppFolio (expensive, not owned)','Maintenance tracked via email/text','Investor reports built manually','No AI integration in any workflow'] },
-      { cls:'p1', num:'1', label:'IRIS Launch', sub:'Replace AppFolio, property dashboards live',
-        items:['IRIS replaces AppFolio completely','Kytsia & Jessica PM dashboards live','Tiffany operations overview dashboard','Basic maintenance work order system'] },
-      { cls:'p2', num:'2', label:'Operations Automation', sub:'Maintenance automation, lease renewals, HSP integration',
-        items:['Automated maintenance dispatch','Lease renewal workflows & reminders','HSP ↔ IRIS integration for Affinal Homes','NOI & property-level reporting in FINN'] },
-      { cls:'p3', num:'3', label:'Predictive Operations', sub:'AI predicts vacancies, maintenance, and renewals',
-        items:['Predictive occupancy modeling','AI-driven preventive maintenance scheduling','Automated tenant communications','Portfolio performance benchmarking'] },
-      { cls:'pai', num:'∞', label:'AI-Native', sub:'Properties nearly self-managing',
-        items:['Routine maintenance dispatched autonomously','Lease renewals initiated without staff action','Investor updates fully automated','AI flags issues before tenants do'] },
+    "id": "operations",
+    "name": "Operations",
+    "color": "#3fb950",
+    "icon": "🏘️",
+    "companies": "Affinal RE Services · Affinal Homes · Roots Homes",
+    "lead": {
+      "id": "tiffany",
+      "name": "Tiffany Williams",
+      "role": "EVP of Operations",
+      "init": "TW",
+      "color": "#3fb950"
+    },
+    "brain": {
+      "name": "IRIS",
+      "icon": "🏢",
+      "color": "#58a6ff",
+      "desc": "Property & Ops AI"
+    },
+    "phases": [
+      {
+        "cls": "p0",
+        "num": "Now",
+        "label": "Current State",
+        "sub": "AppFolio, manual maintenance tracking, email-based ops",
+        "items": [
+          "AppFolio (expensive, not owned)",
+          "Maintenance tracked via email/text",
+          "Investor reports built manually",
+          "No AI integration in any workflow"
+        ]
+      },
+      {
+        "cls": "p1",
+        "num": "1",
+        "label": "IRIS Launch",
+        "sub": "Replace AppFolio, property dashboards live",
+        "items": [
+          "IRIS replaces AppFolio completely",
+          "Kytsia & Jessica PM dashboards live",
+          "Tiffany operations overview dashboard",
+          "Basic maintenance work order system"
+        ]
+      },
+      {
+        "cls": "p2",
+        "num": "2",
+        "label": "Operations Automation",
+        "sub": "Maintenance automation, lease renewals, HSP integration",
+        "items": [
+          "Automated maintenance dispatch",
+          "Lease renewal workflows & reminders",
+          "HSP ↔ IRIS integration for Affinal Homes",
+          "NOI & property-level reporting in FINN"
+        ]
+      },
+      {
+        "cls": "p3",
+        "num": "3",
+        "label": "Predictive Operations",
+        "sub": "AI predicts vacancies, maintenance, and renewals",
+        "items": [
+          "Predictive occupancy modeling",
+          "AI-driven preventive maintenance scheduling",
+          "Automated tenant communications",
+          "Portfolio performance benchmarking"
+        ]
+      },
+      {
+        "cls": "pai",
+        "num": "∞",
+        "label": "AI-Native",
+        "sub": "Properties nearly self-managing",
+        "items": [
+          "Routine maintenance dispatched autonomously",
+          "Lease renewals initiated without staff action",
+          "Investor updates fully automated",
+          "AI flags issues before tenants do"
+        ]
+      }
     ],
-    tools: { now:['AppFolio','Email','Excel','Phone'], future:['IRIS','HSP Agent','FINN','FieldCam','Comms Suite'] },
-    agents: [{ name:'IRIS', icon:'🏢', color:'#58a6ff' },{ name:'HSP', icon:'🏡', color:'#79c0ff' },{ name:'EVA', icon:'👁️', color:'#a371f7' }],
-    team: [
-      { id:'tiffany', name:'Tiffany Williams', role:'EVP Operations', init:'TW', color:'#3fb950', lead:true },
-      { id:'kytsia', name:'Kytsia Keep', role:'PM · Piney Woods MHC', init:'KK', color:'#ffa657', indent:true, prop:'ARS → paid by property' },
-      { id:'jessica', name:'Jessica Gisick', role:'PM · Post Oak', init:'JG', color:'#ffa657', indent:true, prop:'ARS → paid by property' },
+    "tools": {
+      "now": [
+        "AppFolio",
+        "Email",
+        "Excel",
+        "Phone"
+      ],
+      "future": [
+        "IRIS",
+        "HSP Agent",
+        "FINN",
+        "FieldCam",
+        "Comms Suite"
+      ]
+    },
+    "agents": [
+      {
+        "name": "IRIS",
+        "icon": "🏢",
+        "color": "#58a6ff"
+      },
+      {
+        "name": "HSP",
+        "icon": "🏡",
+        "color": "#79c0ff"
+      },
+      {
+        "name": "EVA",
+        "icon": "👁️",
+        "color": "#a371f7"
+      }
     ],
+    "team": [
+      {
+        "id": "tiffany",
+        "name": "Tiffany Williams",
+        "role": "EVP Operations",
+        "init": "TW",
+        "color": "#3fb950",
+        "lead": true
+      },
+      {
+        "id": "kytsia",
+        "name": "Kytsia Keep",
+        "role": "PM · Piney Woods MHC",
+        "init": "KK",
+        "color": "#ffa657",
+        "indent": true,
+        "prop": "ARS → paid by property"
+      },
+      {
+        "id": "jessica",
+        "name": "Jessica Gisick",
+        "role": "PM · Post Oak",
+        "init": "JG",
+        "color": "#ffa657",
+        "indent": true,
+        "prop": "ARS → paid by property"
+      }
+    ]
   },
   {
-    id: 'construction',
-    name: 'Construction',
-    color: '#ffa657',
-    icon: '🏗️',
-    companies: 'Affinal RE Services',
-    lead: { id:'brittanie', name:'Brittanie Martin', role:'EVP of Construction', init:'BM', color:'#ffa657' },
-    brain: { name:'CADE', icon:'🏗️', color:'#ffa657', desc:'Construction Dev Engine' },
-    phases: [
-      { cls:'p0', num:'Now', label:'Current State', sub:'Planner, CompanyCam, manual Excel budgets',
-        items:['Microsoft Planner for project tracking','CompanyCam for site photos','Budget tracking in separate spreadsheets','No permit/entitlement tracking system'] },
-      { cls:'p1', num:'1', label:'CADE & FieldCam Launch', sub:'Replace Planner & CompanyCam, dashboards live',
-        items:['CADE replaces Microsoft Planner','FieldCam replaces CompanyCam','Brittanie & Brad dashboards live','All active projects migrated'] },
-      { cls:'p2', num:'2', label:'Construction Intelligence', sub:'Permit automation, subcontractor workflows, budget sync',
-        items:['Automated permit status tracking','Subcontractor bid & scheduling workflows','Budget variance alerts via FINN','AI punch list from site photos'] },
-      { cls:'p3', num:'3', label:'Predictive Construction', sub:'AI predicts delays, costs, and generates reports',
-        items:['Schedule risk alerts before delays happen','AI-generated inspection reports','Subcontractor performance scoring','Cost-to-complete forecasting'] },
-      { cls:'pai', num:'∞', label:'AI-Native', sub:'Construction managed by exception, not oversight',
-        items:['AI monitors all sites and flags anomalies','Automated subcontractor comms','Permit submissions auto-drafted','Construction intelligence feeds acquisitions'] },
+    "id": "construction",
+    "name": "Construction",
+    "color": "#ffa657",
+    "icon": "🏗️",
+    "companies": "Affinal RE Services",
+    "lead": {
+      "id": "brittanie",
+      "name": "Brittanie Martin",
+      "role": "EVP of Construction",
+      "init": "BM",
+      "color": "#ffa657"
+    },
+    "brain": {
+      "name": "CADE",
+      "icon": "🏗️",
+      "color": "#ffa657",
+      "desc": "Construction Dev Engine"
+    },
+    "phases": [
+      {
+        "cls": "p0",
+        "num": "Now",
+        "label": "Current State",
+        "sub": "Planner, CompanyCam, manual Excel budgets",
+        "items": [
+          "Microsoft Planner for project tracking",
+          "CompanyCam for site photos",
+          "Budget tracking in separate spreadsheets",
+          "No permit/entitlement tracking system"
+        ]
+      },
+      {
+        "cls": "p1",
+        "num": "1",
+        "label": "CADE & FieldCam Launch",
+        "sub": "Replace Planner & CompanyCam, dashboards live",
+        "items": [
+          "CADE replaces Microsoft Planner",
+          "FieldCam replaces CompanyCam",
+          "Brittanie & Brad dashboards live",
+          "All active projects migrated"
+        ]
+      },
+      {
+        "cls": "p2",
+        "num": "2",
+        "label": "Construction Intelligence",
+        "sub": "Permit automation, subcontractor workflows, budget sync",
+        "items": [
+          "Automated permit status tracking",
+          "Subcontractor bid & scheduling workflows",
+          "Budget variance alerts via FINN",
+          "AI punch list from site photos"
+        ]
+      },
+      {
+        "cls": "p3",
+        "num": "3",
+        "label": "Predictive Construction",
+        "sub": "AI predicts delays, costs, and generates reports",
+        "items": [
+          "Schedule risk alerts before delays happen",
+          "AI-generated inspection reports",
+          "Subcontractor performance scoring",
+          "Cost-to-complete forecasting"
+        ]
+      },
+      {
+        "cls": "pai",
+        "num": "∞",
+        "label": "AI-Native",
+        "sub": "Construction managed by exception, not oversight",
+        "items": [
+          "AI monitors all sites and flags anomalies",
+          "Automated subcontractor comms",
+          "Permit submissions auto-drafted",
+          "Construction intelligence feeds acquisitions"
+        ]
+      }
     ],
-    tools: { now:['Microsoft Planner','CompanyCam','Excel','Email'], future:['CADE','FieldCam','FINN','Comms Suite'] },
-    agents: [{ name:'CADE', icon:'🏗️', color:'#ffa657' },{ name:'FieldCam', icon:'📷', color:'#3fb950' },{ name:'EVA', icon:'👁️', color:'#a371f7' }],
-    team: [
-      { id:'brittanie', name:'Brittanie Martin', role:'EVP Construction', init:'BM', color:'#ffa657', lead:true },
-      { id:'brad', name:'Brad Weston', role:'Construction Manager', init:'BW', color:'#79c0ff', indent:true },
+    "tools": {
+      "now": [
+        "Microsoft Planner",
+        "CompanyCam",
+        "Excel",
+        "Email"
+      ],
+      "future": [
+        "CADE",
+        "FieldCam",
+        "FINN",
+        "Comms Suite"
+      ]
+    },
+    "agents": [
+      {
+        "name": "CADE",
+        "icon": "🏗️",
+        "color": "#ffa657"
+      },
+      {
+        "name": "FieldCam",
+        "icon": "📷",
+        "color": "#3fb950"
+      },
+      {
+        "name": "EVA",
+        "icon": "👁️",
+        "color": "#a371f7"
+      }
     ],
+    "team": [
+      {
+        "id": "brittanie",
+        "name": "Brittanie Martin",
+        "role": "EVP Construction",
+        "init": "BM",
+        "color": "#ffa657",
+        "lead": true
+      },
+      {
+        "id": "brad",
+        "name": "Brad Weston",
+        "role": "Construction Manager",
+        "init": "BW",
+        "color": "#79c0ff",
+        "indent": true
+      }
+    ]
   },
   {
-    id: 'marketing',
-    name: 'Marketing',
-    color: '#e3b341',
-    icon: '📣',
-    companies: 'Affinal RE · Affinal Homes · Roots Homes',
-    lead: { id:'david', name:'David Mims', role:'EVP of Marketing', init:'DM', color:'#e3b341' },
-    brain: { name:'MP Agent', icon:'📣', color:'#e3b341', desc:'CRM & Marketing AI' },
-    phases: [
-      { cls:'p0', num:'Now', label:'Current State', sub:'GoHighLevel CRM, manual campaigns, weak attribution',
-        items:['GoHighLevel (not owned, expensive)','Manual campaign management','Attribution tracking is fragmented','No AI-assisted content or lead scoring'] },
-      { cls:'p1', num:'1', label:'Marketing Platform Launch', sub:'Replace GoHighLevel, unified CRM & pipeline',
-        items:['Marketing Platform replaces GoHighLevel','All leads & contacts migrated','David dashboard live','Basic campaign analytics'] },
-      { cls:'p2', num:'2', label:'Campaign Intelligence', sub:'AI-assisted content, multi-channel attribution',
-        items:['AI email & SMS drafting','Multi-channel attribution tracking','HSP ↔ MP lead handoff automation','Community-level marketing dashboards'] },
-      { cls:'p3', num:'3', label:'AI-Native Marketing', sub:'AI generates and runs campaigns, minimal human input',
-        items:['AI-generated ad copy & creative briefs','Autonomous A/B testing','Predictive lead scoring','AI-driven content calendar'] },
-      { cls:'pai', num:'∞', label:'AI-Native', sub:'Marketing compounds without linear headcount',
-        items:['Campaigns run autonomously','AI adjusts spend in real time','Every lead touchpoint personalized','Marketing self-optimizes across communities'] },
+    "id": "marketing",
+    "name": "Marketing",
+    "color": "#e3b341",
+    "icon": "📣",
+    "companies": "Affinal RE · Affinal Homes · Roots Homes",
+    "lead": {
+      "id": "david",
+      "name": "David Mims",
+      "role": "EVP of Marketing",
+      "init": "DM",
+      "color": "#e3b341"
+    },
+    "brain": {
+      "name": "MP Agent",
+      "icon": "📣",
+      "color": "#e3b341",
+      "desc": "CRM & Marketing AI"
+    },
+    "phases": [
+      {
+        "cls": "p0",
+        "num": "Now",
+        "label": "Current State",
+        "sub": "GoHighLevel CRM, manual campaigns, weak attribution",
+        "items": [
+          "GoHighLevel (not owned, expensive)",
+          "Manual campaign management",
+          "Attribution tracking is fragmented",
+          "No AI-assisted content or lead scoring"
+        ]
+      },
+      {
+        "cls": "p1",
+        "num": "1",
+        "label": "Marketing Platform Launch",
+        "sub": "Replace GoHighLevel, unified CRM & pipeline",
+        "items": [
+          "Marketing Platform replaces GoHighLevel",
+          "All leads & contacts migrated",
+          "David dashboard live",
+          "Basic campaign analytics"
+        ]
+      },
+      {
+        "cls": "p2",
+        "num": "2",
+        "label": "Campaign Intelligence",
+        "sub": "AI-assisted content, multi-channel attribution",
+        "items": [
+          "AI email & SMS drafting",
+          "Multi-channel attribution tracking",
+          "HSP ↔ MP lead handoff automation",
+          "Community-level marketing dashboards"
+        ]
+      },
+      {
+        "cls": "p3",
+        "num": "3",
+        "label": "AI-Native Marketing",
+        "sub": "AI generates and runs campaigns, minimal human input",
+        "items": [
+          "AI-generated ad copy & creative briefs",
+          "Autonomous A/B testing",
+          "Predictive lead scoring",
+          "AI-driven content calendar"
+        ]
+      },
+      {
+        "cls": "pai",
+        "num": "∞",
+        "label": "AI-Native",
+        "sub": "Marketing compounds without linear headcount",
+        "items": [
+          "Campaigns run autonomously",
+          "AI adjusts spend in real time",
+          "Every lead touchpoint personalized",
+          "Marketing self-optimizes across communities"
+        ]
+      }
     ],
-    tools: { now:['GoHighLevel','Email','Social media tools','Manual reports'], future:['Marketing Platform','HSP Agent','Comms Suite','FINN'] },
-    agents: [{ name:'MP Agent', icon:'📣', color:'#e3b341' },{ name:'HSP Agent', icon:'🏡', color:'#79c0ff' }],
-    team: [
-      { id:'david', name:'David Mims', role:'EVP Marketing', init:'DM', color:'#e3b341', lead:true },
+    "tools": {
+      "now": [
+        "GoHighLevel",
+        "Email",
+        "Social media tools",
+        "Manual reports"
+      ],
+      "future": [
+        "Marketing Platform",
+        "HSP Agent",
+        "Comms Suite",
+        "FINN"
+      ]
+    },
+    "agents": [
+      {
+        "name": "MP Agent",
+        "icon": "📣",
+        "color": "#e3b341"
+      },
+      {
+        "name": "HSP Agent",
+        "icon": "🏡",
+        "color": "#79c0ff"
+      }
     ],
-    note: 'Marketing team will grow as platform scales. AI scales output without proportional headcount.',
+    "team": [
+      {
+        "id": "david",
+        "name": "David Mims",
+        "role": "EVP Marketing",
+        "init": "DM",
+        "color": "#e3b341",
+        "lead": true
+      }
+    ],
+    "note": "Marketing team will grow as platform scales. AI scales output without proportional headcount."
   },
   {
-    id: 'finance',
-    name: 'Finance',
-    color: '#79c0ff',
-    icon: '💰',
-    companies: 'All Companies',
-    lead: { id:'kevin', name:'Kevin Mims', role:'Finance Oversight (CEO)', init:'KM', color:'#58a6ff' },
-    note: 'No dedicated CFO yet. Kevin oversees; Brittanie manages construction budgets. FINN + Harriett cover the gap.',
-    brain: { name:'FINN', icon:'💰', color:'#3fb950', desc:'Financial Intelligence AI' },
-    phases: [
-      { cls:'p0', num:'Now', label:'Current State', sub:'Syft, entity-by-entity reconciliation, manual investor reports',
-        items:['Syft for financial reporting (not owned)','Entity-by-entity manual reconciliation','Property cost allocation done in Excel','Investor reports built ad hoc'] },
-      { cls:'p1', num:'1', label:'FINN Launch', sub:'Replace Syft, multi-entity P&L, property cost allocation',
-        items:['FINN replaces Syft','Multi-entity P&L dashboard live','Property-level cost allocation (ARS → properties)','Kevin & Brittanie finance dashboards'] },
-      { cls:'p2', num:'2', label:'Financial Automation', sub:'Automated reporting, budget tracking, investor distributions',
-        items:['Automated monthly P&L reports','Budget vs actuals with variance alerts','Investor distribution tracking & reporting','Cash flow dashboard (real-time)'] },
-      { cls:'p3', num:'3', label:'Predictive Finance', sub:'AI forecasting, anomaly detection, autonomous reporting',
-        items:['90-day cash flow forecasting','AI expense anomaly detection','Autonomous investor reports','Scenario modeling for acquisitions'] },
-      { cls:'pai', num:'∞', label:'AI-Native', sub:'Finance operates with minimal manual intervention',
-        items:['All routine reporting fully automated','AI flags financial risks proactively','Investor distributions auto-calculated','CFO-level intelligence without a CFO'] },
+    "id": "finance",
+    "name": "Finance",
+    "color": "#79c0ff",
+    "icon": "💰",
+    "companies": "All Companies",
+    "lead": {
+      "id": "kevin",
+      "name": "Kevin Mims",
+      "role": "Finance Oversight (CEO)",
+      "init": "KM",
+      "color": "#58a6ff"
+    },
+    "note": "No dedicated CFO yet. Kevin oversees; Brittanie manages construction budgets. FINN + Harriett cover the gap.",
+    "brain": {
+      "name": "FINN",
+      "icon": "💰",
+      "color": "#3fb950",
+      "desc": "Financial Intelligence AI"
+    },
+    "phases": [
+      {
+        "cls": "p0",
+        "num": "Now",
+        "label": "Current State",
+        "sub": "Syft, entity-by-entity reconciliation, manual investor reports",
+        "items": [
+          "Syft for financial reporting (not owned)",
+          "Entity-by-entity manual reconciliation",
+          "Property cost allocation done in Excel",
+          "Investor reports built ad hoc"
+        ]
+      },
+      {
+        "cls": "p1",
+        "num": "1",
+        "label": "FINN Launch",
+        "sub": "Replace Syft, multi-entity P&L, property cost allocation",
+        "items": [
+          "FINN replaces Syft",
+          "Multi-entity P&L dashboard live",
+          "Property-level cost allocation (ARS → properties)",
+          "Kevin & Brittanie finance dashboards"
+        ]
+      },
+      {
+        "cls": "p2",
+        "num": "2",
+        "label": "Financial Automation",
+        "sub": "Automated reporting, budget tracking, investor distributions",
+        "items": [
+          "Automated monthly P&L reports",
+          "Budget vs actuals with variance alerts",
+          "Investor distribution tracking & reporting",
+          "Cash flow dashboard (real-time)"
+        ]
+      },
+      {
+        "cls": "p3",
+        "num": "3",
+        "label": "Predictive Finance",
+        "sub": "AI forecasting, anomaly detection, autonomous reporting",
+        "items": [
+          "90-day cash flow forecasting",
+          "AI expense anomaly detection",
+          "Autonomous investor reports",
+          "Scenario modeling for acquisitions"
+        ]
+      },
+      {
+        "cls": "pai",
+        "num": "∞",
+        "label": "AI-Native",
+        "sub": "Finance operates with minimal manual intervention",
+        "items": [
+          "All routine reporting fully automated",
+          "AI flags financial risks proactively",
+          "Investor distributions auto-calculated",
+          "CFO-level intelligence without a CFO"
+        ]
+      }
     ],
-    tools: { now:['Syft','Excel','Email','Manual reconciliation'], future:['FINN','IRIS','EVA','Comms Suite'] },
-    agents: [{ name:'FINN', icon:'💰', color:'#3fb950' },{ name:'EVA', icon:'👁️', color:'#a371f7' }],
-    team: [
-      { id:'kevin', name:'Kevin Mims', role:'Finance Oversight', init:'KM', color:'#58a6ff', lead:true },
-      { id:'brittanie', name:'Brittanie Martin', role:'Construction Budgets', init:'BM', color:'#ffa657', indent:true },
+    "tools": {
+      "now": [
+        "Syft",
+        "Excel",
+        "Email",
+        "Manual reconciliation"
+      ],
+      "future": [
+        "FINN",
+        "IRIS",
+        "EVA",
+        "Comms Suite"
+      ]
+    },
+    "agents": [
+      {
+        "name": "FINN",
+        "icon": "💰",
+        "color": "#3fb950"
+      },
+      {
+        "name": "EVA",
+        "icon": "👁️",
+        "color": "#a371f7"
+      }
     ],
+    "team": [
+      {
+        "id": "kevin",
+        "name": "Kevin Mims",
+        "role": "Finance Oversight",
+        "init": "KM",
+        "color": "#58a6ff",
+        "lead": true
+      },
+      {
+        "id": "brittanie",
+        "name": "Brittanie Martin",
+        "role": "Construction Budgets",
+        "init": "BM",
+        "color": "#ffa657",
+        "indent": true
+      }
+    ]
   },
   {
-    id: 'hr',
-    name: 'Human Resources',
-    color: '#f78166',
-    icon: '👥',
-    companies: 'All Companies',
-    lead: { id:'harry', name:'Harry Winslow', role:'HR Oversight (COO)', init:'HW', color:'#58a6ff' },
-    note: 'No dedicated HR director. Harriett AI handles most HR functions. Bianca provides admin support to all EVPs.',
-    brain: { name:'Harriett', icon:'👩‍💼', color:'#f78166', desc:'HR AI Agent' },
-    phases: [
-      { cls:'p0', num:'Now', label:'Current State', sub:'Email-based HR, paper policies, no tracking system',
-        items:['Onboarding is inconsistent across hires','Policy questions go to Harry or Bianca','No formal performance tracking','PTO tracked informally'] },
-      { cls:'p1', num:'1', label:'Harriett Launch', sub:'Digital policies, automated onboarding, PTO tracking',
-        items:['Harriett AI live for all 9 team members','Digital policy handbook (searchable)','Automated onboarding for next hire','PTO request & tracking system'] },
-      { cls:'p2', num:'2', label:'People Operations', sub:'Performance reviews, hiring pipeline, org chart',
-        items:['Performance review workflow','Job posting & hiring pipeline','Org chart & reporting structure in-system','Benefits & compliance tracking'] },
-      { cls:'p3', num:'3', label:'AI-Driven People Ops', sub:'Predictive retention, AI-assisted hiring',
-        items:['Predictive retention risk alerts','AI-assisted candidate screening','Autonomous compliance monitoring','Culture & engagement pulse tracking'] },
-      { cls:'pai', num:'∞', label:'AI-Native', sub:'HR scales with the org without linear headcount',
-        items:['New hire onboarded in <1 day by AI','Culture and performance tracked continuously','HR compliance fully automated','Harriett handles 90% of HR requests autonomously'] },
+    "id": "hr",
+    "name": "Human Resources",
+    "color": "#f78166",
+    "icon": "👥",
+    "companies": "All Companies",
+    "lead": {
+      "id": "harry",
+      "name": "Harry Winslow",
+      "role": "HR Oversight (COO)",
+      "init": "HW",
+      "color": "#58a6ff"
+    },
+    "note": "No dedicated HR director. Harriett AI handles most HR functions. Bianca provides admin support to all EVPs.",
+    "brain": {
+      "name": "Harriett",
+      "icon": "👩‍💼",
+      "color": "#f78166",
+      "desc": "HR AI Agent"
+    },
+    "phases": [
+      {
+        "cls": "p0",
+        "num": "Now",
+        "label": "Current State",
+        "sub": "Email-based HR, paper policies, no tracking system",
+        "items": [
+          "Onboarding is inconsistent across hires",
+          "Policy questions go to Harry or Bianca",
+          "No formal performance tracking",
+          "PTO tracked informally"
+        ]
+      },
+      {
+        "cls": "p1",
+        "num": "1",
+        "label": "Harriett Launch",
+        "sub": "Digital policies, automated onboarding, PTO tracking",
+        "items": [
+          "Harriett AI live for all 9 team members",
+          "Digital policy handbook (searchable)",
+          "Automated onboarding for next hire",
+          "PTO request & tracking system"
+        ]
+      },
+      {
+        "cls": "p2",
+        "num": "2",
+        "label": "People Operations",
+        "sub": "Performance reviews, hiring pipeline, org chart",
+        "items": [
+          "Performance review workflow",
+          "Job posting & hiring pipeline",
+          "Org chart & reporting structure in-system",
+          "Benefits & compliance tracking"
+        ]
+      },
+      {
+        "cls": "p3",
+        "num": "3",
+        "label": "AI-Driven People Ops",
+        "sub": "Predictive retention, AI-assisted hiring",
+        "items": [
+          "Predictive retention risk alerts",
+          "AI-assisted candidate screening",
+          "Autonomous compliance monitoring",
+          "Culture & engagement pulse tracking"
+        ]
+      },
+      {
+        "cls": "pai",
+        "num": "∞",
+        "label": "AI-Native",
+        "sub": "HR scales with the org without linear headcount",
+        "items": [
+          "New hire onboarded in <1 day by AI",
+          "Culture and performance tracked continuously",
+          "HR compliance fully automated",
+          "Harriett handles 90% of HR requests autonomously"
+        ]
+      }
     ],
-    tools: { now:['Email','Google Docs','Manual processes','Phone'], future:['Harriett','Comms Suite','EOS Platform'] },
-    agents: [{ name:'Harriett', icon:'👩‍💼', color:'#f78166' }],
-    team: [
-      { id:'harry', name:'Harry Winslow', role:'HR Oversight', init:'HW', color:'#58a6ff', lead:true },
-      { id:'bianca', name:'Bianca Biagini', role:'Asst. to all EVPs', init:'BB', color:'#79c0ff', indent:true },
+    "tools": {
+      "now": [
+        "Email",
+        "Google Docs",
+        "Manual processes",
+        "Phone"
+      ],
+      "future": [
+        "Harriett",
+        "Comms Suite",
+        "EOS Platform"
+      ]
+    },
+    "agents": [
+      {
+        "name": "Harriett",
+        "icon": "👩‍💼",
+        "color": "#f78166"
+      }
     ],
+    "team": [
+      {
+        "id": "harry",
+        "name": "Harry Winslow",
+        "role": "HR Oversight",
+        "init": "HW",
+        "color": "#58a6ff",
+        "lead": true
+      },
+      {
+        "id": "bianca",
+        "name": "Bianca Biagini",
+        "role": "Asst. to all EVPs",
+        "init": "BB",
+        "color": "#79c0ff",
+        "indent": true
+      }
+    ]
   },
+  {
+    "id": "sales",
+    "name": "Sales",
+    "icon": "🏢",
+    "color": "#58a6ff",
+    "companies": "Affinal Homes Roots Homes",
+    "lead": {
+      "id": "",
+      "name": "",
+      "init": "",
+      "role": "",
+      "color": "#58a6ff"
+    },
+    "colead": null,
+    "brain": {
+      "name": "",
+      "icon": "🤖",
+      "desc": "",
+      "color": "#58a6ff"
+    },
+    "phases": [
+      {
+        "cls": "p0",
+        "num": "Now",
+        "label": "Current State",
+        "sub": "Describe current tools and pain points",
+        "items": []
+      },
+      {
+        "cls": "p1",
+        "num": "1",
+        "label": "Phase 1",
+        "sub": "Initial AI and platform launch",
+        "items": []
+      },
+      {
+        "cls": "p2",
+        "num": "2",
+        "label": "Phase 2",
+        "sub": "Expanded automation and integration",
+        "items": []
+      },
+      {
+        "cls": "p3",
+        "num": "3",
+        "label": "Phase 3",
+        "sub": "Predictive and intelligent workflows",
+        "items": []
+      },
+      {
+        "cls": "pai",
+        "num": "∞",
+        "label": "AI-Native",
+        "sub": "Fully autonomous, self-managing dept",
+        "items": []
+      }
+    ],
+    "tools": {
+      "now": [],
+      "future": []
+    },
+    "agents": [],
+    "team": []
+  }
 ];
 
 const PRINCIPLES = [
-  { t:'Document First, Automate Second', d:'Every SOP must be written before AI can assist with it. Don\'t automate chaos — document the process, then let AI scale it.' },
-  { t:'Top-Down Adoption', d:'Kevin and Harry must use AI daily before asking the team to adopt it. Leadership sets the standard. If the CEO isn\'t using it, the team won\'t either.' },
-  { t:'One Department at a Time', d:'Full transformation of one department beats partial transformation of all. Pick the highest-pain area, prove the value, then expand.' },
-  { t:'AI Assists, Humans Decide (Phase 1)', d:'In Phase 1, AI drafts and recommends. Humans confirm every action. As trust is earned, the balance shifts. You never give up oversight — you choose what to delegate.' },
-  { t:'Measure Before and After', d:'Establish time-on-task baselines for key workflows before automating them. "Hours saved per week per person" is your primary ROI metric.' },
-  { t:'Data Quality is Non-Negotiable', d:'AI is only as good as the data it sees. Clean, structured, consistent data must come before intelligence. Garbage in, garbage out — at scale.' },
-  { t:'Build for 3x Scale', d:'Design every system assuming 3x your current team size. A personalized AI agent should be as easy to set up for the 30th hire as the 6th.' },
-  { t:'Own Your Data', d:'Every platform you build replaces a third-party tool where you don\'t own your data. Data ownership is a competitive moat — and it compounds over time.' },
-  { t:'Integrate Everything', d:'Siloed AI tools create siloed intelligence. Every platform must share data with the others through the shared KB. An AI that can\'t see the full picture gives partial answers.' },
-  { t:'Treat AI Like a Team Member', d:'Give every AI agent context, train it on SOPs, review its work, correct its mistakes, and promote it as it improves. Onboarding an AI is not a one-time setup.' },
+  {
+    "t": "Document First, Automate Second",
+    "d": "Every SOP must be written before AI can assist with it. Don't automate chaos — document the process, then let AI scale it."
+  },
+  {
+    "t": "Top-Down Adoption",
+    "d": "Kevin and Harry must use AI daily before asking the team to adopt it. Leadership sets the standard. If the CEO isn't using it, the team won't either."
+  },
+  {
+    "t": "One Department at a Time",
+    "d": "Full transformation of one department beats partial transformation of all. Pick the highest-pain area, prove the value, then expand."
+  },
+  {
+    "t": "AI Assists, Humans Decide (Phase 1)",
+    "d": "In Phase 1, AI drafts and recommends. Humans confirm every action. As trust is earned, the balance shifts. You never give up oversight — you choose what to delegate."
+  },
+  {
+    "t": "Measure Before and After",
+    "d": "Establish time-on-task baselines for key workflows before automating them. \"Hours saved per week per person\" is your primary ROI metric."
+  },
+  {
+    "t": "Data Quality is Non-Negotiable",
+    "d": "AI is only as good as the data it sees. Clean, structured, consistent data must come before intelligence. Garbage in, garbage out — at scale."
+  },
+  {
+    "t": "Build for 3x Scale",
+    "d": "Design every system assuming 3x your current team size. A personalized AI agent should be as easy to set up for the 30th hire as the 6th."
+  },
+  {
+    "t": "Own Your Data",
+    "d": "Every platform you build replaces a third-party tool where you don't own your data. Data ownership is a competitive moat — and it compounds over time."
+  },
+  {
+    "t": "Integrate Everything",
+    "d": "Siloed AI tools create siloed intelligence. Every platform must share data with the others through the shared KB. An AI that can't see the full picture gives partial answers."
+  },
+  {
+    "t": "Treat AI Like a Team Member",
+    "d": "Give every AI agent context, train it on SOPs, review its work, correct its mistakes, and promote it as it improves. Onboarding an AI is not a one-time setup."
+  }
 ];
 
 const SWIMLANE_PHASES = [
-  { id:'p0', label:'Foundation', timeline:'Month 1–2', color:'#8b949e' },
-  { id:'p1', label:'Phase 1', timeline:'Month 2–4', color:'#3fb950' },
-  { id:'p2', label:'Phase 2', timeline:'Month 4–8', color:'#e3b341' },
-  { id:'p3', label:'Phase 3', timeline:'Month 8–14', color:'#a371f7' },
-  { id:'pai', label:'AI-Native', timeline:'Month 14+', color:'#58a6ff' },
+  {
+    "id": "p0",
+    "label": "Foundation",
+    "timeline": "Month 1–2",
+    "color": "#8b949e"
+  },
+  {
+    "id": "p1",
+    "label": "Phase 1",
+    "timeline": "Month 2–4",
+    "color": "#3fb950"
+  },
+  {
+    "id": "p2",
+    "label": "Phase 2",
+    "timeline": "Month 4–8",
+    "color": "#e3b341"
+  },
+  {
+    "id": "p3",
+    "label": "Phase 3",
+    "timeline": "Month 8–14",
+    "color": "#a371f7"
+  },
+  {
+    "id": "pai",
+    "label": "AI-Native",
+    "timeline": "Month 14+",
+    "color": "#58a6ff"
+  }
 ];
 
 const SWIMLANE = [
   {
-    cat: 'Foundation',
-    rows: [
-      { lbl: 'SOPs & Knowledge', cells: [
-        { items: [{t:'All 9 team members document top 10 workflows',k:true},{t:'Identify highest-pain repetitive tasks'},{t:'Define SOP format & templates'},{t:'Establish data governance rules',w:true}] },
-        { items: [{t:'SOPs for all department workflows complete',k:true},{t:'Shared KB architecture live'},{t:'Personal KB built for Kevin & Harry first'}] },
-        { items: [{t:'SOPs for all 9 team members complete'},{t:'KB continuously updated by AI'},{t:'Cross-entity knowledge sharing live'}] },
-        { items: [{t:'AI generates new SOPs from operational patterns'},{t:'KB self-improving with each interaction'},{t:'Institutional knowledge fully captured'}] },
-        { items: [{t:'Organization learns faster than any individual'},{t:'Zero knowledge loss on turnover'},{t:'SOPs auto-maintained'}] },
-      ]},
-      { lbl: 'Data & Systems', cells: [
-        { items: [{t:'Audit data quality in AppFolio, GHL, Syft',w:true},{t:'Map data flows between current systems'},{t:'Baseline all key KPIs (time-on-task per person)',k:true},{t:'Identify data cleanup needed'}] },
-        { items: [{t:'Data migrated to IRIS (from AppFolio)',k:true},{t:'CRM migrated to Marketing Platform (from GHL)'},{t:'Financial data migrated to FINN (from Syft)'}] },
-        { items: [{t:'All platforms sharing data via shared KB'},{t:'No more manual data entry across systems',k:true},{t:'Budget vs actuals automated'}] },
-        { items: [{t:'Predictive models trained on 12+ months of data'},{t:'Data quality monitoring automated'},{t:'AI identifies gaps & corrects data'}] },
-        { items: [{t:'Fully integrated data fabric across all entities'},{t:'AI-native data architecture'},{t:'Real-time org intelligence'}] },
-      ]},
-    ],
+    "cat": "Foundation",
+    "rows": [
+      {
+        "lbl": "SOPs & Knowledge",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "All 9 team members document top 10 workflows",
+                "k": true
+              },
+              {
+                "t": "Identify highest-pain repetitive tasks"
+              },
+              {
+                "t": "Define SOP format & templates"
+              },
+              {
+                "t": "Establish data governance rules",
+                "w": true
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "SOPs for all department workflows complete",
+                "k": true
+              },
+              {
+                "t": "Shared KB architecture live"
+              },
+              {
+                "t": "Personal KB built for Kevin & Harry first"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "SOPs for all 9 team members complete"
+              },
+              {
+                "t": "KB continuously updated by AI"
+              },
+              {
+                "t": "Cross-entity knowledge sharing live"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "AI generates new SOPs from operational patterns"
+              },
+              {
+                "t": "KB self-improving with each interaction"
+              },
+              {
+                "t": "Institutional knowledge fully captured"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Organization learns faster than any individual"
+              },
+              {
+                "t": "Zero knowledge loss on turnover"
+              },
+              {
+                "t": "SOPs auto-maintained"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lbl": "Data & Systems",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "Audit data quality in AppFolio, GHL, Syft",
+                "w": true
+              },
+              {
+                "t": "Map data flows between current systems"
+              },
+              {
+                "t": "Baseline all key KPIs (time-on-task per person)",
+                "k": true
+              },
+              {
+                "t": "Identify data cleanup needed"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Data migrated to IRIS (from AppFolio)",
+                "k": true
+              },
+              {
+                "t": "CRM migrated to Marketing Platform (from GHL)"
+              },
+              {
+                "t": "Financial data migrated to FINN (from Syft)"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "All platforms sharing data via shared KB"
+              },
+              {
+                "t": "No more manual data entry across systems",
+                "k": true
+              },
+              {
+                "t": "Budget vs actuals automated"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Predictive models trained on 12+ months of data"
+              },
+              {
+                "t": "Data quality monitoring automated"
+              },
+              {
+                "t": "AI identifies gaps & corrects data"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Fully integrated data fabric across all entities"
+              },
+              {
+                "t": "AI-native data architecture"
+              },
+              {
+                "t": "Real-time org intelligence"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    cat: 'People & Training',
-    rows: [
-      { lbl: 'AI Literacy', cells: [
-        { items: [{t:'AI literacy workshop for all 9 team members',k:true},{t:'Everyone gets a personal Claude/ChatGPT account'},{t:'Daily AI usage habit-building starts'},{t:'Skeptics identified & engaged directly',w:true}] },
-        { items: [{t:'Kevin & Harry using AI daily',k:true},{t:'AI tools embedded in daily workflows for EVPs'},{t:'Weekly AI wins shared in team meetings'}] },
-        { items: [{t:'All 9 team members using AI tools daily'},{t:'AI suggestions trusted for routine tasks'},{t:'Department-level AI champions identified'}] },
-        { items: [{t:'Team trains the AI (corrections, feedback loops)'},{t:'New hires onboard to AI-first culture in <1 week'}] },
-        { items: [{t:'AI-first culture fully embedded'},{t:'Team can\'t imagine working without AI'},{t:'AI literacy is a hiring filter'}] },
-      ]},
-      { lbl: 'Change Management', cells: [
-        { items: [{t:'Communicate the "why" — data ownership, efficiency',k:true},{t:'Identify which tasks AI will take over (vs augment)'},{t:'Address fears: "Will AI replace me?"',w:true}] },
-        { items: [{t:'Show quick wins to skeptics (hours saved)',k:true},{t:'Celebrate first AI-generated deliverable per person'},{t:'Bianca AI workflow reduces EVP admin by 30%'}] },
-        { items: [{t:'Team members become AI coaches to each other'},{t:'Resistance resolves through demonstrated value'}] },
-        { items: [{t:'AI handles everything routine; humans own judgment'},{t:'Team focuses on high-value, creative work'}] },
-        { items: [{t:'Culture is AI-native — no transition needed for new hires'}] },
-      ]},
-    ],
+    "cat": "People & Training",
+    "rows": [
+      {
+        "lbl": "AI Literacy",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "AI literacy workshop for all 9 team members",
+                "k": true
+              },
+              {
+                "t": "Everyone gets a personal Claude/ChatGPT account"
+              },
+              {
+                "t": "Daily AI usage habit-building starts"
+              },
+              {
+                "t": "Skeptics identified & engaged directly",
+                "w": true
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Kevin & Harry using AI daily",
+                "k": true
+              },
+              {
+                "t": "AI tools embedded in daily workflows for EVPs"
+              },
+              {
+                "t": "Weekly AI wins shared in team meetings"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "All 9 team members using AI tools daily"
+              },
+              {
+                "t": "AI suggestions trusted for routine tasks"
+              },
+              {
+                "t": "Department-level AI champions identified"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Team trains the AI (corrections, feedback loops)"
+              },
+              {
+                "t": "New hires onboard to AI-first culture in <1 week"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "AI-first culture fully embedded"
+              },
+              {
+                "t": "Team can't imagine working without AI"
+              },
+              {
+                "t": "AI literacy is a hiring filter"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lbl": "Change Management",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "Communicate the \"why\" — data ownership, efficiency",
+                "k": true
+              },
+              {
+                "t": "Identify which tasks AI will take over (vs augment)"
+              },
+              {
+                "t": "Address fears: \"Will AI replace me?\"",
+                "w": true
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Show quick wins to skeptics (hours saved)",
+                "k": true
+              },
+              {
+                "t": "Celebrate first AI-generated deliverable per person"
+              },
+              {
+                "t": "Bianca AI workflow reduces EVP admin by 30%"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Team members become AI coaches to each other"
+              },
+              {
+                "t": "Resistance resolves through demonstrated value"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "AI handles everything routine; humans own judgment"
+              },
+              {
+                "t": "Team focuses on high-value, creative work"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Culture is AI-native — no transition needed for new hires"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    cat: 'Personal AI Layer',
-    rows: [
-      { lbl: 'Personal AI Agents', cells: [
-        { items: [{t:'Design personal KB structure (roles, SOPs, context)',k:true},{t:'Define what each person\'s AI "knows"'}] },
-        { items: [{t:'Kevin personal AI agent live (Day 1 of Phase 1)',k:true},{t:'Harry personal AI agent live'},{t:'EVP agents (Tiffany, Brittanie, David) live by end of phase'}] },
-        { items: [{t:'All 9 team members have personal AI agents',k:true},{t:'Kytsia & Jessica PM-specific agents live'},{t:'Bianca cross-EVP AI coordination live'}] },
-        { items: [{t:'AI agents proactively surface tasks & insights'},{t:'Agents improve from daily interaction history'}] },
-        { items: [{t:'Personal AI is indistinguishable from a highly capable EA'},{t:'Agents anticipate needs before they\'re expressed'}] },
-      ]},
-      { lbl: 'Personalized Dashboards', cells: [
-        { items: [{t:'Define KPIs & dashboard elements per role',k:true},{t:'Design lead & lag indicators per person'}] },
-        { items: [{t:'Kevin & Harry executive dashboards live',k:true},{t:'EVP dashboards live (Tiffany, Brittanie, David)'}] },
-        { items: [{t:'All 9 team member dashboards live',k:true},{t:'KPIs pulling from live platform data'},{t:'Automated daily/weekly digest emails'}] },
-        { items: [{t:'Dashboards predict future state (not just current)'},{t:'Anomalies auto-flagged before meetings'}] },
-        { items: [{t:'Dashboard is the primary way every team member starts their day'}] },
-      ]},
-    ],
+    "cat": "Personal AI Layer",
+    "rows": [
+      {
+        "lbl": "Personal AI Agents",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "Design personal KB structure (roles, SOPs, context)",
+                "k": true
+              },
+              {
+                "t": "Define what each person's AI \"knows\""
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Kevin personal AI agent live (Day 1 of Phase 1)",
+                "k": true
+              },
+              {
+                "t": "Harry personal AI agent live"
+              },
+              {
+                "t": "EVP agents (Tiffany, Brittanie, David) live by end of phase"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "All 9 team members have personal AI agents",
+                "k": true
+              },
+              {
+                "t": "Kytsia & Jessica PM-specific agents live"
+              },
+              {
+                "t": "Bianca cross-EVP AI coordination live"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "AI agents proactively surface tasks & insights"
+              },
+              {
+                "t": "Agents improve from daily interaction history"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Personal AI is indistinguishable from a highly capable EA"
+              },
+              {
+                "t": "Agents anticipate needs before they're expressed"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lbl": "Personalized Dashboards",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "Define KPIs & dashboard elements per role",
+                "k": true
+              },
+              {
+                "t": "Design lead & lag indicators per person"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Kevin & Harry executive dashboards live",
+                "k": true
+              },
+              {
+                "t": "EVP dashboards live (Tiffany, Brittanie, David)"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "All 9 team member dashboards live",
+                "k": true
+              },
+              {
+                "t": "KPIs pulling from live platform data"
+              },
+              {
+                "t": "Automated daily/weekly digest emails"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Dashboards predict future state (not just current)"
+              },
+              {
+                "t": "Anomalies auto-flagged before meetings"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Dashboard is the primary way every team member starts their day"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    cat: 'Platform Builds',
-    rows: [
-      { lbl: 'Phase 1 Platforms', cells: [
-        { items: [{t:'Architecture & vendor decisions for Comms, IRIS, MP',k:true},{t:'Data migration plan from AppFolio, GHL'}] },
-        { items: [{t:'Comms Suite live (email + chat)',k:true},{t:'IRIS live — AppFolio fully replaced',k:true},{t:'Marketing Platform live — GHL replaced',k:true},{t:'Harriett HR agent live for all staff'}] },
-        { items: [{t:'All Phase 1 platforms stable & widely adopted'},{t:'Integration between Comms, IRIS, MP live'}] },
-        { items: [{t:'Phase 1 platforms generate predictive insights'}] },
-        { items: [{t:'Phase 1 platforms largely self-managing'}] },
-      ]},
-      { lbl: 'Phase 2 Platforms', cells: [
-        { items: [{t:'Plan Phase 2 platforms during Phase 1 stable period'}] },
-        { items: [{t:'CADE & FieldCam design started (if Phase 1 on track)'}] },
-        { items: [{t:'CADE live — Planner replaced',k:true},{t:'FieldCam live — CompanyCam replaced',k:true},{t:'HSP live — home sales end-to-end',k:true},{t:'FINN live — Syft replaced',k:true}] },
-        { items: [{t:'All Phase 2 platforms integrated with shared KB'},{t:'Cross-platform data flows fully automated'}] },
-        { items: [{t:'Phase 2 platforms self-improving from usage data'}] },
-      ]},
-      { lbl: 'Phase 3 Platforms', cells: [
-        { items: [] },
-        { items: [] },
-        { items: [{t:'Plan EOS Platform & AES/EVA during Phase 2 stable period'}] },
-        { items: [{t:'EOS Platform live — digital L10, rocks, scorecard',k:true},{t:'AES/EVA full deployment — cross-org visibility',k:true},{t:'Full-org data integration complete'}] },
-        { items: [{t:'All 9 platforms fully integrated'},{t:'New platform additions take weeks, not months'}] },
-      ]},
-    ],
+    "cat": "Platform Builds",
+    "rows": [
+      {
+        "lbl": "Phase 1 Platforms",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "Architecture & vendor decisions for Comms, IRIS, MP",
+                "k": true
+              },
+              {
+                "t": "Data migration plan from AppFolio, GHL"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Comms Suite live (email + chat)",
+                "k": true
+              },
+              {
+                "t": "IRIS live — AppFolio fully replaced",
+                "k": true
+              },
+              {
+                "t": "Marketing Platform live — GHL replaced",
+                "k": true
+              },
+              {
+                "t": "Harriett HR agent live for all staff"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "All Phase 1 platforms stable & widely adopted"
+              },
+              {
+                "t": "Integration between Comms, IRIS, MP live"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Phase 1 platforms generate predictive insights"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Phase 1 platforms largely self-managing"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lbl": "Phase 2 Platforms",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "Plan Phase 2 platforms during Phase 1 stable period"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "CADE & FieldCam design started (if Phase 1 on track)"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "CADE live — Planner replaced",
+                "k": true
+              },
+              {
+                "t": "FieldCam live — CompanyCam replaced",
+                "k": true
+              },
+              {
+                "t": "HSP live — home sales end-to-end",
+                "k": true
+              },
+              {
+                "t": "FINN live — Syft replaced",
+                "k": true
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "All Phase 2 platforms integrated with shared KB"
+              },
+              {
+                "t": "Cross-platform data flows fully automated"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Phase 2 platforms self-improving from usage data"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lbl": "Phase 3 Platforms",
+        "cells": [
+          {
+            "items": []
+          },
+          {
+            "items": []
+          },
+          {
+            "items": [
+              {
+                "t": "Plan EOS Platform & AES/EVA during Phase 2 stable period"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "EOS Platform live — digital L10, rocks, scorecard",
+                "k": true
+              },
+              {
+                "t": "AES/EVA full deployment — cross-org visibility",
+                "k": true
+              },
+              {
+                "t": "Full-org data integration complete"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "All 9 platforms fully integrated"
+              },
+              {
+                "t": "New platform additions take weeks, not months"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
-    cat: 'Automation & Intelligence',
-    rows: [
-      { lbl: 'Workflow Automation', cells: [
-        { items: [{t:'Map the 5 highest-volume repetitive workflows',k:true},{t:'Prioritize by time saved × frequency'}] },
-        { items: [{t:'Top 5 workflows partially automated (AI drafts, human confirms)',k:true},{t:'Bianca\'s EVP coordination 40% automated'}] },
-        { items: [{t:'50% of repetitive workflows fully automated',k:true},{t:'Exception-based management model established'},{t:'Each PM handles 2x properties with same hours'}] },
-        { items: [{t:'80% of routine operations run without human initiation'},{t:'Team works on exception & strategy only'}] },
-        { items: [{t:'95%+ of routine operations fully autonomous'},{t:'Team focused entirely on judgment & growth'}] },
-      ]},
-      { lbl: 'Predictive Intelligence', cells: [
-        { items: [{t:'Define what "predictive" means per department',k:true},{t:'Identify data needed for forecasting'}] },
-        { items: [{t:'Basic KPI dashboards (real-time, not predictive)'}] },
-        { items: [{t:'Cash flow forecasting (FINN)',k:true},{t:'Lead conversion prediction (Marketing Platform)'},{t:'Maintenance prediction (IRIS)'}] },
-        { items: [{t:'Occupancy forecasting 90 days out'},{t:'Construction schedule risk modeling'},{t:'Market opportunity identification'}] },
-        { items: [{t:'AI surfaces insights leadership didn\'t know to ask for'},{t:'Org runs ahead of problems, not behind them'}] },
-      ]},
-    ],
-  },
+    "cat": "Automation & Intelligence",
+    "rows": [
+      {
+        "lbl": "Workflow Automation",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "Map the 5 highest-volume repetitive workflows",
+                "k": true
+              },
+              {
+                "t": "Prioritize by time saved × frequency"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Top 5 workflows partially automated (AI drafts, human confirms)",
+                "k": true
+              },
+              {
+                "t": "Bianca's EVP coordination 40% automated"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "50% of repetitive workflows fully automated",
+                "k": true
+              },
+              {
+                "t": "Exception-based management model established"
+              },
+              {
+                "t": "Each PM handles 2x properties with same hours"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "80% of routine operations run without human initiation"
+              },
+              {
+                "t": "Team works on exception & strategy only"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "95%+ of routine operations fully autonomous"
+              },
+              {
+                "t": "Team focused entirely on judgment & growth"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "lbl": "Predictive Intelligence",
+        "cells": [
+          {
+            "items": [
+              {
+                "t": "Define what \"predictive\" means per department",
+                "k": true
+              },
+              {
+                "t": "Identify data needed for forecasting"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Basic KPI dashboards (real-time, not predictive)"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Cash flow forecasting (FINN)",
+                "k": true
+              },
+              {
+                "t": "Lead conversion prediction (Marketing Platform)"
+              },
+              {
+                "t": "Maintenance prediction (IRIS)"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "Occupancy forecasting 90 days out"
+              },
+              {
+                "t": "Construction schedule risk modeling"
+              },
+              {
+                "t": "Market opportunity identification"
+              }
+            ]
+          },
+          {
+            "items": [
+              {
+                "t": "AI surfaces insights leadership didn't know to ask for"
+              },
+              {
+                "t": "Org runs ahead of problems, not behind them"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
 ];
 
 const TEAM = [
-  { id:'kevin',    name:'Kevin Mims',       init:'KM', role:'CEO — All Companies',          co:'K8H Ventures',                  companies:['K8H Ventures','Affinal RE Services','Affinal Homes','Roots Homes','Clear Utilities'], tier:'exec',     color:'#58a6ff' },
-  { id:'harry',    name:'Harry Winslow',    init:'HW', role:'COO — All Companies',          co:'K8H Ventures',                  companies:['K8H Ventures','Affinal RE Services','Affinal Homes','Roots Homes','Clear Utilities'], tier:'exec',     color:'#58a6ff' },
-  { id:'tiffany',  name:'Tiffany Williams', init:'TW', role:'EVP of Operations',            co:'Affinal RE Services + Affinal Homes', companies:['Affinal RE Services','Affinal Homes'],tier:'leadership',color:'#3fb950' },
-  { id:'brittanie',name:'Brittanie Martin', init:'BM', role:'EVP of Construction',          co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'leadership',color:'#ffa657' },
-  { id:'david',    name:'David Mims',       init:'DM', role:'EVP of Marketing',             co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'leadership',color:'#e3b341' },
-  { id:'brad',     name:'Brad Weston',      init:'BW', role:'Construction Manager',         co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'staff',     color:'#79c0ff' },
-  { id:'bianca',   name:'Bianca Biagini',   init:'BB', role:'Assistant to all EVPs',        co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'staff',     color:'#79c0ff' },
-  { id:'kytsia',   name:'Kytsia Keep',      init:'KK', role:'PM — Piney Woods MHC',        co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'property',  color:'#ffa657' },
-  { id:'jessica',  name:'Jessica Gisick',   init:'JG', role:'PM — Post Oak',               co:'Affinal RE Services',           companies:['Affinal RE Services'],           tier:'property',  color:'#ffa657' },
+  {
+    "id": "kevin",
+    "name": "Kevin Mims",
+    "init": "KM",
+    "role": "CEO — All Companies",
+    "co": "K8H Ventures",
+    "companies": [
+      "K8H Ventures",
+      "Affinal RE Services",
+      "Affinal Homes",
+      "Roots Homes",
+      "Clear Utilities"
+    ],
+    "tier": "exec",
+    "color": "#58a6ff"
+  },
+  {
+    "id": "harry",
+    "name": "Harry Winslow",
+    "init": "HW",
+    "role": "COO — All Companies",
+    "co": "K8H Ventures",
+    "companies": [
+      "K8H Ventures",
+      "Affinal RE Services",
+      "Affinal Homes",
+      "Roots Homes",
+      "Clear Utilities"
+    ],
+    "tier": "exec",
+    "color": "#58a6ff"
+  },
+  {
+    "id": "tiffany",
+    "name": "Tiffany Williams",
+    "init": "TW",
+    "role": "EVP of Operations",
+    "co": "Affinal RE Services + Affinal Homes",
+    "companies": [
+      "Affinal RE Services",
+      "Affinal Homes"
+    ],
+    "tier": "leadership",
+    "color": "#3fb950"
+  },
+  {
+    "id": "brittanie",
+    "name": "Brittanie Martin",
+    "init": "BM",
+    "role": "EVP of Construction",
+    "co": "Affinal RE Services",
+    "companies": [
+      "Affinal RE Services"
+    ],
+    "tier": "leadership",
+    "color": "#ffa657"
+  },
+  {
+    "id": "david",
+    "name": "David Mims",
+    "init": "DM",
+    "role": "EVP of Marketing",
+    "co": "Affinal RE Services",
+    "companies": [
+      "Affinal RE Services"
+    ],
+    "tier": "leadership",
+    "color": "#e3b341"
+  },
+  {
+    "id": "brad",
+    "name": "Brad Weston",
+    "init": "BW",
+    "role": "Construction Manager",
+    "co": "Affinal RE Services",
+    "companies": [
+      "Affinal RE Services"
+    ],
+    "tier": "staff",
+    "color": "#79c0ff"
+  },
+  {
+    "id": "bianca",
+    "name": "Bianca Biagini",
+    "init": "BB",
+    "role": "Assistant to all EVPs",
+    "co": "Affinal RE Services",
+    "companies": [
+      "Affinal RE Services"
+    ],
+    "tier": "staff",
+    "color": "#79c0ff"
+  },
+  {
+    "id": "kytsia",
+    "name": "Kytsia Keep",
+    "init": "KK",
+    "role": "PM — Piney Woods MHC",
+    "co": "Affinal RE Services",
+    "companies": [
+      "Affinal RE Services"
+    ],
+    "tier": "property",
+    "color": "#ffa657"
+  },
+  {
+    "id": "jessica",
+    "name": "Jessica Gisick",
+    "init": "JG",
+    "role": "PM — Post Oak",
+    "co": "Affinal RE Services",
+    "companies": [
+      "Affinal RE Services"
+    ],
+    "tier": "property",
+    "color": "#ffa657"
+  }
 ];
 
 const PROFILES = {
-  kevin: {
-    tools:['EVA (AES)','FINN (FinTech)','IRIS','EOS Platform','Harriett (HR)','MP Agent'],
-    sops:['Weekly L10 meeting facilitation','Quarterly rock planning with leadership team','Investor update cadence','Entity P&L review (monthly)','Strategic hiring approval','Board / partner communications'],
-    kpis:['Revenue across all entities (lead)','Cash position & runway (lag)','Headcount vs plan (lead)','Rock completion % (lag)','Investor distribution schedule (lag)','Open critical issues (lead)'],
-    dashboard:['All-entity financial summary (FINN)','Active project status across companies (EVA)','Investor portal activity (IRIS)','EOS scorecard & company rocks','Open issues & escalation queue'],
-    note:'CEO of all companies: K8H Ventures, Affinal Real Estate Services, Affinal Homes, Roots Homes, Clear Utilities.',
+  "kevin": {
+    "tools": [
+      "EVA (AES)",
+      "FINN (FinTech)",
+      "IRIS",
+      "EOS Platform",
+      "Harriett (HR)",
+      "MP Agent"
+    ],
+    "sops": [
+      "Weekly L10 meeting facilitation",
+      "Quarterly rock planning with leadership team",
+      "Investor update cadence",
+      "Entity P&L review (monthly)",
+      "Strategic hiring approval",
+      "Board / partner communications"
+    ],
+    "kpis": [
+      "Revenue across all entities (lead)",
+      "Cash position & runway (lag)",
+      "Headcount vs plan (lead)",
+      "Rock completion % (lag)",
+      "Investor distribution schedule (lag)",
+      "Open critical issues (lead)"
+    ],
+    "dashboard": [
+      "All-entity financial summary (FINN)",
+      "Active project status across companies (EVA)",
+      "Investor portal activity (IRIS)",
+      "EOS scorecard & company rocks",
+      "Open issues & escalation queue"
+    ],
+    "note": "CEO of all companies: K8H Ventures, Affinal Real Estate Services, Affinal Homes, Roots Homes, Clear Utilities."
   },
-  harry: {
-    tools:['EVA (AES)','CADE (DEP)','HSP Agent','FINN (FinTech)','Harriett (HR)','MP Agent'],
-    sops:['Daily operational standup with EVP team','Weekly project status review (CADE)','Vendor & contractor performance reviews','Hiring coordination with EVPs','Cross-entity issue escalation','L10 meeting co-facilitation'],
-    kpis:['Operational efficiency score (lag)','Project milestone hit rate (lag)','Vendor SLA compliance (lead)','Headcount & capacity vs plan (lead)','Open blocker count (lead)','Revenue per entity (lag)'],
-    dashboard:['All-company operational status (EVA)','Construction pipeline (CADE)','Home sales pipeline (HSP)','Team capacity & blockers','Pending approvals & decisions'],
-    note:'COO of all companies. Primary liaison between Kevin and all EVPs. Owns operational execution across entities.',
+  "harry": {
+    "tools": [
+      "EVA (AES)",
+      "CADE (DEP)",
+      "HSP Agent",
+      "FINN (FinTech)",
+      "Harriett (HR)",
+      "MP Agent"
+    ],
+    "sops": [
+      "Daily operational standup with EVP team",
+      "Weekly project status review (CADE)",
+      "Vendor & contractor performance reviews",
+      "Hiring coordination with EVPs",
+      "Cross-entity issue escalation",
+      "L10 meeting co-facilitation"
+    ],
+    "kpis": [
+      "Operational efficiency score (lag)",
+      "Project milestone hit rate (lag)",
+      "Vendor SLA compliance (lead)",
+      "Headcount & capacity vs plan (lead)",
+      "Open blocker count (lead)",
+      "Revenue per entity (lag)"
+    ],
+    "dashboard": [
+      "All-company operational status (EVA)",
+      "Construction pipeline (CADE)",
+      "Home sales pipeline (HSP)",
+      "Team capacity & blockers",
+      "Pending approvals & decisions"
+    ],
+    "note": "COO of all companies. Primary liaison between Kevin and all EVPs. Owns operational execution across entities."
   },
-  tiffany: {
-    tools:['EVA (AES)','IRIS','HSP Agent','FINN (FinTech)','Harriett (HR)','Comms Suite'],
-    sops:['Monthly property operations review','Tenant communication protocols','Home sales handoff from contract to close','Lease renewal workflow','Property manager supervision','Vendor & maintenance coordination'],
-    kpis:['Occupancy rate per property (lag)','Maintenance ticket resolution time (lag)','Lease renewal rate (lag)','Home sales close rate (lead)','Operating expense per unit (lead)','NOI per property (lag)'],
-    dashboard:['Property operations overview (IRIS)','Maintenance & work order queue','Home sales pipeline — Affinal Homes','Property manager activity (Kytsia, Jessica)','Lease renewal calendar'],
-    note:'EVP of Operations for Affinal Real Estate Services and Affinal Homes. Oversees Kytsia Keep and Jessica Gisick.',
+  "tiffany": {
+    "tools": [
+      "EVA (AES)",
+      "IRIS",
+      "HSP Agent",
+      "FINN (FinTech)",
+      "Harriett (HR)",
+      "Comms Suite"
+    ],
+    "sops": [
+      "Monthly property operations review",
+      "Tenant communication protocols",
+      "Home sales handoff from contract to close",
+      "Lease renewal workflow",
+      "Property manager supervision",
+      "Vendor & maintenance coordination"
+    ],
+    "kpis": [
+      "Occupancy rate per property (lag)",
+      "Maintenance ticket resolution time (lag)",
+      "Lease renewal rate (lag)",
+      "Home sales close rate (lead)",
+      "Operating expense per unit (lead)",
+      "NOI per property (lag)"
+    ],
+    "dashboard": [
+      "Property operations overview (IRIS)",
+      "Maintenance & work order queue",
+      "Home sales pipeline — Affinal Homes",
+      "Property manager activity (Kytsia, Jessica)",
+      "Lease renewal calendar"
+    ],
+    "note": "EVP of Operations for Affinal Real Estate Services and Affinal Homes. Oversees Kytsia Keep and Jessica Gisick."
   },
-  brittanie: {
-    tools:['CADE (DEP)','FieldCam','FINN (FinTech)','EVA (AES)','Harriett (HR)'],
-    sops:['Weekly construction site review','Permit & entitlement submission process','Subcontractor bid & selection process','Construction budget variance review','Punch list & closeout protocol','Safety & inspection compliance'],
-    kpis:['Projects on schedule % (lag)','Budget variance per project (lag)','Permit approval turnaround time (lead)','Subcontractor performance score (lead)','Open punch list items (lead)','Cost per sq ft vs budget (lag)'],
-    dashboard:['Active construction projects (CADE)','Site photo log (FieldCam)','Budget vs actuals per project (FINN)','Permit & approval status tracker','Subcontractor work orders'],
-    note:'EVP of Construction for Affinal Real Estate Services. Manages Brad Weston directly.',
+  "brittanie": {
+    "tools": [
+      "CADE (DEP)",
+      "FieldCam",
+      "FINN (FinTech)",
+      "EVA (AES)",
+      "Harriett (HR)"
+    ],
+    "sops": [
+      "Weekly construction site review",
+      "Permit & entitlement submission process",
+      "Subcontractor bid & selection process",
+      "Construction budget variance review",
+      "Punch list & closeout protocol",
+      "Safety & inspection compliance"
+    ],
+    "kpis": [
+      "Projects on schedule % (lag)",
+      "Budget variance per project (lag)",
+      "Permit approval turnaround time (lead)",
+      "Subcontractor performance score (lead)",
+      "Open punch list items (lead)",
+      "Cost per sq ft vs budget (lag)"
+    ],
+    "dashboard": [
+      "Active construction projects (CADE)",
+      "Site photo log (FieldCam)",
+      "Budget vs actuals per project (FINN)",
+      "Permit & approval status tracker",
+      "Subcontractor work orders"
+    ],
+    "note": "EVP of Construction for Affinal Real Estate Services. Manages Brad Weston directly."
   },
-  david: {
-    tools:['MP Agent','EVA (AES)','HSP Agent','Harriett (HR)','Comms Suite'],
-    sops:['Weekly marketing campaign review','Lead source attribution analysis','Monthly marketing budget reconciliation','Content & campaign approval workflow','New community launch marketing plan','Brand standard compliance review'],
-    kpis:['Cost per lead by channel (lead)','Lead-to-appointment conversion rate (lead)','Marketing spend vs budget (lag)','Website traffic & engagement (lead)','Campaign ROI (lag)','Brand reach & impressions (lead)'],
-    dashboard:['Campaign performance dashboard (MP)','Lead pipeline & source breakdown','Marketing spend tracker (FINN)','Content calendar & approvals','Home sales lead flow (HSP)'],
-    note:'EVP of Marketing for Affinal Real Estate Services. Owns all marketing channels and lead generation.',
+  "david": {
+    "tools": [
+      "MP Agent",
+      "EVA (AES)",
+      "HSP Agent",
+      "Harriett (HR)",
+      "Comms Suite"
+    ],
+    "sops": [
+      "Weekly marketing campaign review",
+      "Lead source attribution analysis",
+      "Monthly marketing budget reconciliation",
+      "Content & campaign approval workflow",
+      "New community launch marketing plan",
+      "Brand standard compliance review"
+    ],
+    "kpis": [
+      "Cost per lead by channel (lead)",
+      "Lead-to-appointment conversion rate (lead)",
+      "Marketing spend vs budget (lag)",
+      "Website traffic & engagement (lead)",
+      "Campaign ROI (lag)",
+      "Brand reach & impressions (lead)"
+    ],
+    "dashboard": [
+      "Campaign performance dashboard (MP)",
+      "Lead pipeline & source breakdown",
+      "Marketing spend tracker (FINN)",
+      "Content calendar & approvals",
+      "Home sales lead flow (HSP)"
+    ],
+    "note": "EVP of Marketing for Affinal Real Estate Services. Owns all marketing channels and lead generation."
   },
-  brad: {
-    tools:['CADE (DEP)','FieldCam','EVA (AES)','Comms Suite'],
-    sops:['Daily site walk & photo documentation','Subcontractor scheduling & coordination','Material delivery coordination','Weekly construction progress report','Punch list management','Safety incident reporting'],
-    kpis:['Daily tasks completed on schedule (lead)','Site photo documentation compliance (lead)','Subcontractor show rate (lead)','Open punch items per project (lag)','Material delivery lead time (lead)','Weekly milestone progress (lag)'],
-    dashboard:['Active job site status (CADE)','Today\'s site tasks & schedule','Photo log — current projects (FieldCam)','Subcontractor contact & schedule','Open punch list items'],
-    note:'Construction Manager for Affinal Real Estate Services. Reports to Brittanie Martin.',
+  "brad": {
+    "tools": [
+      "CADE (DEP)",
+      "FieldCam",
+      "EVA (AES)",
+      "Comms Suite"
+    ],
+    "sops": [
+      "Daily site walk & photo documentation",
+      "Subcontractor scheduling & coordination",
+      "Material delivery coordination",
+      "Weekly construction progress report",
+      "Punch list management",
+      "Safety incident reporting"
+    ],
+    "kpis": [
+      "Daily tasks completed on schedule (lead)",
+      "Site photo documentation compliance (lead)",
+      "Subcontractor show rate (lead)",
+      "Open punch items per project (lag)",
+      "Material delivery lead time (lead)",
+      "Weekly milestone progress (lag)"
+    ],
+    "dashboard": [
+      "Active job site status (CADE)",
+      "Today's site tasks & schedule",
+      "Photo log — current projects (FieldCam)",
+      "Subcontractor contact & schedule",
+      "Open punch list items"
+    ],
+    "note": "Construction Manager for Affinal Real Estate Services. Reports to Brittanie Martin."
   },
-  bianca: {
-    tools:['EVA (AES)','Harriett (HR)','Comms Suite','EOS Platform'],
-    sops:['Daily calendar management for all EVPs','Meeting prep & agenda distribution','L10 meeting notes & action item tracking','Travel & logistics coordination','Expense report processing','Document routing & filing'],
-    kpis:['Meeting prep completion rate (lead)','Action item follow-through rate (lag)','Calendar conflict resolution time (lead)','Document turnaround time (lag)'],
-    dashboard:['EVP calendar & schedule overview','Pending action items from L10s (EOS)','Incoming communications queue (Comms)','Document approvals & routing','Travel & logistics calendar'],
-    note:'Assistant to all EVPs (Tiffany, Brittanie, David). Coordinates across the full leadership team.',
+  "bianca": {
+    "tools": [
+      "EVA (AES)",
+      "Harriett (HR)",
+      "Comms Suite",
+      "EOS Platform"
+    ],
+    "sops": [
+      "Daily calendar management for all EVPs",
+      "Meeting prep & agenda distribution",
+      "L10 meeting notes & action item tracking",
+      "Travel & logistics coordination",
+      "Expense report processing",
+      "Document routing & filing"
+    ],
+    "kpis": [
+      "Meeting prep completion rate (lead)",
+      "Action item follow-through rate (lag)",
+      "Calendar conflict resolution time (lead)",
+      "Document turnaround time (lag)"
+    ],
+    "dashboard": [
+      "EVP calendar & schedule overview",
+      "Pending action items from L10s (EOS)",
+      "Incoming communications queue (Comms)",
+      "Document approvals & routing",
+      "Travel & logistics calendar"
+    ],
+    "note": "Assistant to all EVPs (Tiffany, Brittanie, David). Coordinates across the full leadership team."
   },
-  kytsia: {
-    tools:['IRIS','Comms Suite','FieldCam'],
-    sops:['Daily property walkthrough & documentation','Tenant communication & lease inquiries','Maintenance work order intake & dispatch','Rent collection follow-up protocol','Move-in / move-out inspection process','Monthly property report for Tiffany'],
-    kpis:['Occupancy rate — Piney Woods MHC (lag)','Rent collection rate (lag)','Work order resolution time (lag)','Tenant satisfaction score (lag)','Lease renewal rate (lead)','Delinquency rate (lead)'],
-    dashboard:['Piney Woods MHC unit status (IRIS)','Rent roll & collection status','Open maintenance work orders','Tenant communications queue','Move-in / move-out calendar'],
-    note:'Property Manager for Piney Woods MHC. Employed by Affinal RE Services; salary cost allocated to the property.',
+  "kytsia": {
+    "tools": [
+      "IRIS",
+      "Comms Suite",
+      "FieldCam"
+    ],
+    "sops": [
+      "Daily property walkthrough & documentation",
+      "Tenant communication & lease inquiries",
+      "Maintenance work order intake & dispatch",
+      "Rent collection follow-up protocol",
+      "Move-in / move-out inspection process",
+      "Monthly property report for Tiffany"
+    ],
+    "kpis": [
+      "Occupancy rate — Piney Woods MHC (lag)",
+      "Rent collection rate (lag)",
+      "Work order resolution time (lag)",
+      "Tenant satisfaction score (lag)",
+      "Lease renewal rate (lead)",
+      "Delinquency rate (lead)"
+    ],
+    "dashboard": [
+      "Piney Woods MHC unit status (IRIS)",
+      "Rent roll & collection status",
+      "Open maintenance work orders",
+      "Tenant communications queue",
+      "Move-in / move-out calendar"
+    ],
+    "note": "Property Manager for Piney Woods MHC. Employed by Affinal RE Services; salary cost allocated to the property."
   },
-  jessica: {
-    tools:['IRIS','Comms Suite','FieldCam'],
-    sops:['Daily property walkthrough & documentation','Tenant communication & lease inquiries','Maintenance work order intake & dispatch','Rent collection follow-up protocol','Move-in / move-out inspection process','Monthly property report for Tiffany'],
-    kpis:['Occupancy rate — Post Oak (lag)','Rent collection rate (lag)','Work order resolution time (lag)','Tenant satisfaction score (lag)','Lease renewal rate (lead)','Delinquency rate (lead)'],
-    dashboard:['Post Oak unit status (IRIS)','Rent roll & collection status','Open maintenance work orders','Tenant communications queue','Move-in / move-out calendar'],
-    note:'Property Manager for Post Oak. Employed by Affinal RE Services; salary cost allocated to the property.',
-  },
+  "jessica": {
+    "tools": [
+      "IRIS",
+      "Comms Suite",
+      "FieldCam"
+    ],
+    "sops": [
+      "Daily property walkthrough & documentation",
+      "Tenant communication & lease inquiries",
+      "Maintenance work order intake & dispatch",
+      "Rent collection follow-up protocol",
+      "Move-in / move-out inspection process",
+      "Monthly property report for Tiffany"
+    ],
+    "kpis": [
+      "Occupancy rate — Post Oak (lag)",
+      "Rent collection rate (lag)",
+      "Work order resolution time (lag)",
+      "Tenant satisfaction score (lag)",
+      "Lease renewal rate (lead)",
+      "Delinquency rate (lead)"
+    ],
+    "dashboard": [
+      "Post Oak unit status (IRIS)",
+      "Rent roll & collection status",
+      "Open maintenance work orders",
+      "Tenant communications queue",
+      "Move-in / move-out calendar"
+    ],
+    "note": "Property Manager for Post Oak. Employed by Affinal RE Services; salary cost allocated to the property."
+  }
 };
 
 const PLATFORMS = [
-  { id:'comms',      name:'Comms Suite',    full:'Company Email & Chat',                icon:'💬',color:'#a371f7',phase:1,replaces:'External email / Slack',desc:'Custom internal comms — email, team chat, and file sharing — fully integrated with every AI agent.',features:['Threaded team chat','Email client','File & media sharing','AI-assisted replies','Per-role notification rules','Integrated with all agents'] },
-  { id:'iris',       name:'IRIS',           full:'Investor Relations Info System',      icon:'🏢',color:'#58a6ff',phase:1,replaces:'AppFolio',desc:'Property management + investor portal. Full data ownership and direct AI integration.',features:['Property & unit management','Investor portal & reporting','Rent collection & ledger','Maintenance workflows','Lease tracking','FINN integration'] },
-  { id:'mp',         name:'Marketing Platform',full:'CRM & Marketing Automation',      icon:'📣',color:'#e3b341',phase:1,replaces:'GoHighLevel',desc:'Full-stack CRM, pipeline management, and marketing automation — all data owned in-house.',features:['CRM & lead management','Email & SMS campaigns','Pipeline automation','Landing pages','Analytics & attribution'] },
-  { id:'hsp',        name:'HSP',            full:'Home Sales Platform',                 icon:'🏡',color:'#79c0ff',phase:2,replaces:'AOSP',desc:'End-to-end home sales workflow — buyer inquiry through closing — AI-driven pipeline management.',features:['Buyer journey management','Contract & doc generation','Closing milestone tracking','Sales team dashboards','Builder coordination'] },
-  { id:'cade',       name:'DEP / CADE',     full:'Development & Entitlement Platform', icon:'🏗️',color:'#ffa657',phase:2,replaces:'Microsoft Planner',desc:'Construction project tracking, permit management, and entitlement workflow for land development.',features:['Permit & entitlement tracking','Construction milestone management','Approval workflow routing','Vendor & contractor management','Document control'] },
-  { id:'fieldcam',   name:'FieldCam',       full:'Field Photo & Documentation',        icon:'📷',color:'#3fb950',phase:2,replaces:'CompanyCam',desc:'Site photo management, job documentation, and field reporting — integrated with CADE.',features:['Geo-tagged site photos','Job-level photo albums','Progress documentation','Report generation','AI deficiency detection'] },
-  { id:'finn',       name:'FinTech / FINN', full:'Financial Tracker & Reporting',      icon:'💰',color:'#3fb950',phase:2,replaces:'Syft',desc:'Consolidated financial intelligence across all K8H entities.',features:['Multi-entity P&L','Cash flow forecasting','Budget vs actuals','Investor distributions','CFO dashboard'] },
-  { id:'eos',        name:'EOS Platform',   full:'Entrepreneurial Operating System',   icon:'⚙️',color:'#f78166',phase:3,replaces:'Manual EOS process',desc:'Digital EOS — V/TO, Scorecard, rocks, issues list, and meeting cadence, all AI-assisted.',features:['V/TO (Vision/Traction Organizer)','Weekly scorecard & KPIs','Rock tracking','Issues list (IDS)','L10 meeting facilitator'] },
-  { id:'aes',        name:'AES / EVA',      full:'Affinal Execution System',           icon:'👁️',color:'#a371f7',phase:3,replaces:'Manual reporting',desc:'Cross-platform visibility layer — EVA sees everything across all systems and surfaces blockers to leadership.',features:['Cross-platform status dashboard','Execution gap detection','Leadership briefing generation','KPI roll-up','Alert & escalation routing'] },
+  {
+    "id": "comms",
+    "name": "Comms Suite",
+    "full": "Company Email & Chat",
+    "icon": "💬",
+    "color": "#a371f7",
+    "phase": 1,
+    "replaces": "External email / Slack",
+    "desc": "Custom internal comms — email, team chat, and file sharing — fully integrated with every AI agent.",
+    "features": [
+      "Threaded team chat",
+      "Email client",
+      "File & media sharing",
+      "AI-assisted replies",
+      "Per-role notification rules",
+      "Integrated with all agents"
+    ]
+  },
+  {
+    "id": "iris",
+    "name": "IRIS",
+    "full": "Investor Relations Info System",
+    "icon": "🏢",
+    "color": "#58a6ff",
+    "phase": 1,
+    "replaces": "AppFolio",
+    "desc": "Property management + investor portal. Full data ownership and direct AI integration.",
+    "features": [
+      "Property & unit management",
+      "Investor portal & reporting",
+      "Rent collection & ledger",
+      "Maintenance workflows",
+      "Lease tracking",
+      "FINN integration"
+    ]
+  },
+  {
+    "id": "mp",
+    "name": "Marketing Platform",
+    "full": "CRM & Marketing Automation",
+    "icon": "📣",
+    "color": "#e3b341",
+    "phase": 1,
+    "replaces": "GoHighLevel",
+    "desc": "Full-stack CRM, pipeline management, and marketing automation — all data owned in-house.",
+    "features": [
+      "CRM & lead management",
+      "Email & SMS campaigns",
+      "Pipeline automation",
+      "Landing pages",
+      "Analytics & attribution"
+    ]
+  },
+  {
+    "id": "hsp",
+    "name": "HSP",
+    "full": "Home Sales Platform",
+    "icon": "🏡",
+    "color": "#79c0ff",
+    "phase": 2,
+    "replaces": "AOSP",
+    "desc": "End-to-end home sales workflow — buyer inquiry through closing — AI-driven pipeline management.",
+    "features": [
+      "Buyer journey management",
+      "Contract & doc generation",
+      "Closing milestone tracking",
+      "Sales team dashboards",
+      "Builder coordination"
+    ]
+  },
+  {
+    "id": "cade",
+    "name": "DEP / CADE",
+    "full": "Development & Entitlement Platform",
+    "icon": "🏗️",
+    "color": "#ffa657",
+    "phase": 2,
+    "replaces": "Microsoft Planner",
+    "desc": "Construction project tracking, permit management, and entitlement workflow for land development.",
+    "features": [
+      "Permit & entitlement tracking",
+      "Construction milestone management",
+      "Approval workflow routing",
+      "Vendor & contractor management",
+      "Document control"
+    ]
+  },
+  {
+    "id": "fieldcam",
+    "name": "FieldCam",
+    "full": "Field Photo & Documentation",
+    "icon": "📷",
+    "color": "#3fb950",
+    "phase": 2,
+    "replaces": "CompanyCam",
+    "desc": "Site photo management, job documentation, and field reporting — integrated with CADE.",
+    "features": [
+      "Geo-tagged site photos",
+      "Job-level photo albums",
+      "Progress documentation",
+      "Report generation",
+      "AI deficiency detection"
+    ]
+  },
+  {
+    "id": "finn",
+    "name": "FinTech / FINN",
+    "full": "Financial Tracker & Reporting",
+    "icon": "💰",
+    "color": "#3fb950",
+    "phase": 2,
+    "replaces": "Syft",
+    "desc": "Consolidated financial intelligence across all K8H entities.",
+    "features": [
+      "Multi-entity P&L",
+      "Cash flow forecasting",
+      "Budget vs actuals",
+      "Investor distributions",
+      "CFO dashboard"
+    ]
+  },
+  {
+    "id": "eos",
+    "name": "EOS Platform",
+    "full": "Entrepreneurial Operating System",
+    "icon": "⚙️",
+    "color": "#f78166",
+    "phase": 3,
+    "replaces": "Manual EOS process",
+    "desc": "Digital EOS — V/TO, Scorecard, rocks, issues list, and meeting cadence, all AI-assisted.",
+    "features": [
+      "V/TO (Vision/Traction Organizer)",
+      "Weekly scorecard & KPIs",
+      "Rock tracking",
+      "Issues list (IDS)",
+      "L10 meeting facilitator"
+    ]
+  },
+  {
+    "id": "aes",
+    "name": "AES / EVA",
+    "full": "Affinal Execution System",
+    "icon": "👁️",
+    "color": "#a371f7",
+    "phase": 3,
+    "replaces": "Manual reporting",
+    "desc": "Cross-platform visibility layer — EVA sees everything across all systems and surfaces blockers to leadership.",
+    "features": [
+      "Cross-platform status dashboard",
+      "Execution gap detection",
+      "Leadership briefing generation",
+      "KPI roll-up",
+      "Alert & escalation routing"
+    ]
+  }
 ];
 
 const PHASE_META = {
-  1:{ label:'Phase 1 — Foundation',  color:'#58a6ff', desc:'Core communication + highest-leverage platform replacements' },
-  2:{ label:'Phase 2 — Expansion',   color:'#3fb950', desc:'Domain-specific platforms for construction, sales, and finance' },
-  3:{ label:'Phase 3 — Integration', color:'#a371f7', desc:'EOS operating system + full-org visibility layer' },
+  "1": {
+    "label": "Phase 1 — Foundation",
+    "color": "#58a6ff",
+    "desc": "Core communication + highest-leverage platform replacements"
+  },
+  "2": {
+    "label": "Phase 2 — Expansion",
+    "color": "#3fb950",
+    "desc": "Domain-specific platforms for construction, sales, and finance"
+  },
+  "3": {
+    "label": "Phase 3 — Integration",
+    "color": "#a371f7",
+    "desc": "EOS operating system + full-org visibility layer"
+  }
 };
 
 // @EDITABLE_DATA_END
