@@ -112,13 +112,13 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 /* ══════════════════════════════════════════════════
    AI ROADMAP VIEW
 ══════════════════════════════════════════════════ */
-.rm-top { background: #161b22; border-bottom: 1px solid #30363d; padding: 13px 22px; flex-shrink: 0; }
+.rm-top { background: #161b22; border-bottom: 1px solid #30363d; padding: 13px 22px; flex-shrink: 0; position: relative; }
 .rm-top h2 { font-size: 14px; font-weight: 700; color: #c9d1d9; margin-bottom: 3px; }
 .rm-top p { font-size: 11px; color: #8b949e; }
 
 /* Principles */
 .principles { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 8px; padding: 18px 22px 10px; }
-.pcard { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 13px 14px; transition: border-color .15s; }
+.pcard { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 13px 14px; transition: border-color .15s; position: relative; }
 .pcard:hover { border-color: #388bfd55; }
 .pcard-num { font-size: 24px; font-weight: 900; color: #388bfd18; line-height: 1; margin-bottom: 5px; }
 .pcard-t { font-size: 12px; font-weight: 700; color: #e6edf3; margin-bottom: 4px; }
@@ -156,7 +156,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .team-main { flex: 1; overflow-y: auto; padding: 22px 26px; }
 .team-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #8b949e; gap: 8px; font-size: 13px; }
 
-.pro-top { display: flex; align-items: flex-start; gap: 18px; padding: 18px 20px; background: #161b22; border: 1px solid #30363d; border-radius: 12px; margin-bottom: 14px; }
+.pro-top { display: flex; align-items: flex-start; gap: 18px; padding: 18px 20px; background: #161b22; border: 1px solid #30363d; border-radius: 12px; margin-bottom: 14px; position: relative; }
 .pro-av { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; flex-shrink: 0; }
 .pro-name { font-size: 18px; font-weight: 800; margin-bottom: 2px; }
 .pro-role { font-size: 12px; color: #8b949e; margin-bottom: 6px; }
@@ -178,7 +178,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 /* ══════════════════════════════════════════════════
    PLATFORM ROADMAP VIEW
 ══════════════════════════════════════════════════ */
-.plat-top { background: #161b22; border-bottom: 1px solid #30363d; padding: 13px 22px; flex-shrink: 0; }
+.plat-top { background: #161b22; border-bottom: 1px solid #30363d; padding: 13px 22px; flex-shrink: 0; position: relative; }
 .plat-top h2 { font-size: 14px; font-weight: 700; color: #c9d1d9; margin-bottom: 3px; }
 .plat-top p { font-size: 11px; color: #8b949e; }
 .plat-body { padding: 20px 22px 50px; }
@@ -186,7 +186,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 .ph-h { font-size: 13px; font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
 .ph-badge { font-size: 9px; padding: 2px 8px; border-radius: 8px; font-weight: 700; }
 .plat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 11px; }
-.plat-c { background: #161b22; border: 1px solid #30363d; border-radius: 11px; padding: 15px; cursor: pointer; transition: all .15s; }
+.plat-c { background: #161b22; border: 1px solid #30363d; border-radius: 11px; padding: 15px; cursor: pointer; transition: all .15s; position: relative; }
 .plat-c:hover { border-color: #388bfd; transform: translateY(-2px); box-shadow: 0 5px 18px rgba(56,139,253,.1); }
 .plat-c-top { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 9px; }
 .plat-ic { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
@@ -202,6 +202,94 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+/* ══════════════════════════════════════════════════
+   EDIT SYSTEM — TIER 1
+══════════════════════════════════════════════════ */
+
+/* Edit mode toggle button in header */
+.edit-mode-btn {
+  padding: 4px 11px; border-radius: 6px; border: 1px solid #30363d;
+  background: transparent; color: #8b949e; cursor: pointer; font-size: 12px;
+  transition: all .15s; white-space: nowrap; font-family: inherit;
+}
+.edit-mode-btn:hover { background: #21262d; color: #e6edf3; border-color: #484f58; }
+.edit-mode-btn.on { background: #e3b34118; color: #e3b341; border-color: #e3b34155; }
+
+/* Edit bar (below header, hidden by default) */
+#edit-bar {
+  background: #161b22; border-bottom: 2px solid #e3b34133;
+  padding: 7px 20px; gap: 12px; align-items: center; flex-shrink: 0;
+  display: none;
+}
+#edit-bar-label { font-size: 11px; color: #e3b341; font-weight: 700; }
+#edit-bar-hint { font-size: 11px; color: #8b949e; }
+#edit-bar-exit {
+  margin-left: auto; padding: 4px 11px; border-radius: 6px; border: 1px solid #30363d;
+  background: transparent; color: #8b949e; cursor: pointer; font-size: 12px; font-family: inherit;
+}
+#edit-bar-exit:hover { background: #21262d; color: #e6edf3; }
+
+/* Pencil edit buttons — hidden until edit mode is on */
+.ep {
+  width: 22px; height: 22px; border-radius: 5px;
+  border: 1px solid transparent; background: #0d1117cc;
+  color: #8b949e; cursor: pointer; font-size: 11px;
+  display: none; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+  line-height: 1;
+}
+.ep:hover { background: #e3b34122; border-color: #e3b341; color: #e3b341; }
+
+/* Show pencils only in edit mode */
+.edit-active .ep { display: flex; }
+
+/* Pencil positioned absolutely inside cards */
+.ep-abs {
+  position: absolute; top: 8px; right: 8px; z-index: 10;
+}
+
+/* Sidebar pencil - inline, no absolute */
+.sb-card-inner { flex: 1; min-width: 0; }
+
+/* ── DRAWER ── */
+#drawer {
+  position: fixed; right: -430px; top: 0; width: 410px; height: 100vh;
+  background: #0d1117; border-left: 1px solid #30363d; z-index: 400;
+  display: flex; flex-direction: column;
+  transition: right .25s cubic-bezier(.4,0,.2,1);
+  box-shadow: -8px 0 40px rgba(0,0,0,.6);
+}
+#drawer.open { right: 0; }
+
+.dr-hdr {
+  background: #161b22; border-bottom: 1px solid #30363d;
+  padding: 13px 16px; display: flex; align-items: center;
+  justify-content: space-between; flex-shrink: 0;
+}
+.dr-title { font-size: 13px; font-weight: 700; color: #e6edf3; }
+.dr-subtitle { font-size: 10px; color: #8b949e; margin-top: 1px; }
+.dr-close {
+  width: 28px; height: 28px; border-radius: 6px; border: none;
+  background: #21262d; color: #8b949e; cursor: pointer; font-size: 15px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  font-family: inherit;
+}
+.dr-close:hover { background: #30363d; color: #e6edf3; }
+
+.dr-body { flex: 1; overflow-y: auto; padding: 24px 20px; }
+
+/* ── TOAST ── */
+#toast {
+  position: fixed; bottom: 20px; right: 20px; z-index: 999;
+  background: #21262d; border: 1px solid #30363d; border-radius: 10px;
+  padding: 10px 16px; font-size: 12px; font-weight: 600; color: #e6edf3;
+  pointer-events: none; transform: translateY(60px); opacity: 0;
+  transition: all .3s ease; box-shadow: 0 4px 20px rgba(0,0,0,.5);
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast.success { border-color: #3fb95055; color: #3fb950; }
+#toast.error { border-color: #f7816655; color: #f78166; }
 </style>
 </head>
 <body>
@@ -215,6 +303,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
     <button class="nb" onclick="switchView('platforms',this)">Platforms</button>
   </nav>
   <div class="hdr-right">v0.2 · Research Preview</div>
+  <button id="edit-toggle" class="edit-mode-btn" onclick="toggleEditMode()">✏️ Edit</button>
+</div>
+
+<!-- Edit toolbar — shown only in edit mode -->
+<div id="edit-bar">
+  <span id="edit-bar-label">✏️ Edit Mode</span>
+  <span id="edit-bar-hint">Hover any card and click ✏ to edit it</span>
+  <button id="edit-bar-exit" onclick="toggleEditMode()">✕ Exit Edit Mode</button>
 </div>
 
 <div class="app">
@@ -238,6 +334,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   <!-- ══ AI ROADMAP ══ -->
   <div class="view" id="view-ai-roadmap">
     <div class="rm-top">
+      <button class="ep ep-abs" onclick="openDrawer('roadmap-header','roadmap-header','AI Roadmap Header')">✏</button>
       <h2>AI Implementation Roadmap</h2>
       <p>10 guiding principles + a phase-by-phase implementation plan tailored to K8H Ventures.</p>
     </div>
@@ -264,17 +361,34 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   <!-- ══ PLATFORMS ══ -->
   <div class="view" id="view-platforms">
     <div class="plat-top">
+      <button class="ep ep-abs" onclick="openDrawer('platforms-header','platforms-header','Platforms Header')">✏</button>
       <h2>Platform Build Roadmap</h2>
       <p>9 platforms replacing third-party tools with fully owned, AI-native solutions across 3 phases.</p>
     </div>
     <div class="scroll"><div class="plat-body" id="plat-body"></div></div>
   </div>
 
+</div><!-- /.app -->
+
+<!-- ══ EDIT DRAWER ══ -->
+<div id="drawer">
+  <div class="dr-hdr">
+    <div>
+      <div class="dr-title" id="dr-title">Edit</div>
+      <div class="dr-subtitle" id="dr-subtitle"></div>
+    </div>
+    <button class="dr-close" onclick="closeDrawer()">✕</button>
+  </div>
+  <div class="dr-body" id="dr-body"></div>
 </div>
+
+<!-- ══ TOAST ══ -->
+<div id="toast" id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════════════════════════════
 //  DATA
+// @EDITABLE_DATA_START
 // ═══════════════════════════════════════════════════════════════════════
 
 const DEPARTMENTS = [
@@ -668,6 +782,8 @@ const PHASE_META = {
   3:{ label:'Phase 3 — Integration', color:'#a371f7', desc:'EOS operating system + full-org visibility layer' },
 };
 
+// @EDITABLE_DATA_END
+
 // ═══════════════════════════════════════════════════════════════════════
 //  RENDER: DEPARTMENTS
 // ═══════════════════════════════════════════════════════════════════════
@@ -678,9 +794,12 @@ function renderDepts() {
   document.getElementById('dept-grid').innerHTML = DEPARTMENTS.map(d => `
     <div class="dcol" id="dcol-${d.id}">
       <div class="dcol-hdr" style="border-top: 3px solid ${d.color}">
-        <div class="dcol-name">
-          <div class="dcol-icon" style="background:${d.color}22">${d.icon}</div>
-          <span style="color:${d.color}">${d.name}</span>
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:6px">
+          <div class="dcol-name">
+            <div class="dcol-icon" style="background:${d.color}22">${d.icon}</div>
+            <span style="color:${d.color}">${d.name}</span>
+          </div>
+          <button class="ep" onclick="openDrawer('department','${d.id}','${d.name}','Department')">✏</button>
         </div>
         <div class="dcol-co">${d.companies}</div>
       </div>
@@ -747,7 +866,7 @@ function renderDepts() {
           ${d.team.map(m => `
             <div class="tm-row">
               ${m.indent ? '<div class="tm-indent"></div>' : ''}
-              <div class="tm-card" style="margin-left:${m.indent?'0':'0'}">
+              <div class="tm-card">
                 <div class="mini-av" style="background:${m.color}22;color:${m.color}">${m.init}</div>
                 <div>
                   <div class="tm-n">${m.name}</div>
@@ -758,7 +877,6 @@ function renderDepts() {
             </div>
           `).join('')}
         </div>
-        ${d.note && !d.lead ? `<div class="dept-note" style="margin-top:6px">${d.note}</div>` : ''}
       </div>
     </div>
   `).join('');
@@ -789,6 +907,7 @@ function filterPhase(phase, btn) {
 function renderPrinciples() {
   document.getElementById('principles').innerHTML = PRINCIPLES.map((p,i) => `
     <div class="pcard">
+      <button class="ep ep-abs" onclick="openDrawer('principle',${i},'Principle ${i+1}: ${p.t.split(':')[0]}','AI Principle')">✏</button>
       <div class="pcard-num">${String(i+1).padStart(2,'0')}</div>
       <div class="pcard-t">${p.t}</div>
       <div class="pcard-d">${p.d}</div>
@@ -845,9 +964,12 @@ function renderTeamSB() {
     const members = TEAM.filter(m => g.tiers.includes(m.tier));
     if (!members.length) return '';
     return `<div class="sb-lbl">${g.label}</div>` + members.map(m => `
-      <div class="sb-card" id="sb-${m.id}" onclick="showProfile('${m.id}')">
-        <div class="sb-av" style="background:${m.color}22;color:${m.color}">${m.init}</div>
-        <div><div class="sb-n">${m.name}</div><div class="sb-r">${m.role.split('—')[0].trim()}</div></div>
+      <div class="sb-card" id="sb-${m.id}" style="justify-content:space-between">
+        <div class="sb-card-inner" style="display:flex;align-items:center;gap:8px;flex:1;min-width:0" onclick="showProfile('${m.id}')">
+          <div class="sb-av" style="background:${m.color}22;color:${m.color}">${m.init}</div>
+          <div style="min-width:0"><div class="sb-n">${m.name}</div><div class="sb-r">${m.role.split('—')[0].trim()}</div></div>
+        </div>
+        <button class="ep" style="flex-shrink:0" onclick="openDrawer('team','${m.id}','${m.name}','Team Profile')">✏</button>
       </div>
     `).join('');
   }).join('');
@@ -867,6 +989,7 @@ function showProfile(id) {
   document.getElementById('team-main').innerHTML = `
     <div style="max-width:780px">
       <div class="pro-top">
+        <button class="ep ep-abs" onclick="openDrawer('team','${m.id}','${m.name}','Team Profile')">✏</button>
         <div class="pro-av" style="background:${m.color}22;color:${m.color}">${m.init}</div>
         <div style="flex:1">
           <div class="pro-name">${m.name}</div>
@@ -925,6 +1048,7 @@ function renderPlatforms() {
         <div class="plat-grid">
           ${plats.map(p=>`
             <div class="plat-c">
+              <button class="ep ep-abs" onclick="openDrawer('platform','${p.id}','${p.full}','Platform')">✏</button>
               <div class="plat-c-top">
                 <div class="plat-ic" style="background:${p.color}22">${p.icon}</div>
                 <div><div class="plat-t">${p.full}</div><div class="plat-s">Replaces <span style="color:${p.color}">${p.replaces}</span></div></div>
@@ -948,6 +1072,76 @@ function switchView(id, btn) {
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('active'));
   document.getElementById('view-'+id).classList.add('active');
   btn.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  EDIT SYSTEM — TIER 1: INFRASTRUCTURE
+// ═══════════════════════════════════════════════════════════════════════
+
+let editMode = false;
+
+function toggleEditMode() {
+  editMode = !editMode;
+  document.body.classList.toggle('edit-active', editMode);
+
+  const btn = document.getElementById('edit-toggle');
+  const bar = document.getElementById('edit-bar');
+
+  btn.classList.toggle('on', editMode);
+  btn.textContent = editMode ? '✕ Exit Edit' : '✏️ Edit';
+  bar.style.display = editMode ? 'flex' : 'none';
+
+  if (!editMode) closeDrawer();
+}
+
+// type = 'department' | 'principle' | 'team' | 'platform' | 'roadmap-header' | 'platforms-header'
+// id   = identifier for the specific item
+// label = display title for the drawer
+// section = section name shown as subtitle
+function openDrawer(type, id, label, section) {
+  document.getElementById('dr-title').textContent = label || 'Edit';
+  document.getElementById('dr-subtitle').textContent = section ? `Section: ${section}` : '';
+
+  document.getElementById('dr-body').innerHTML = `
+    <div style="text-align:center;padding:50px 20px 30px;color:#8b949e">
+      <div style="font-size:40px;margin-bottom:16px;opacity:.6">✏️</div>
+      <div style="font-size:15px;font-weight:700;color:#e6edf3;margin-bottom:10px">${label || 'Edit'}</div>
+      <div style="font-size:12px;color:#8b949e;line-height:1.7;max-width:280px;margin:0 auto">
+        Edit forms for this section are being built in <strong style="color:#58a6ff">Tier 2</strong>.
+        <br><br>
+        The edit system infrastructure is live — pencils, drawer, and publish pipeline are all wired up.
+      </div>
+      <div style="margin-top:24px;padding:12px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px;text-align:left">
+        <div style="font-size:9px;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Debug Info</div>
+        <div style="font-size:11px;color:#58a6ff;font-family:monospace">type: ${type}</div>
+        <div style="font-size:11px;color:#58a6ff;font-family:monospace">id: ${id}</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('drawer').classList.add('open');
+}
+
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+}
+
+// Keyboard shortcut: Escape closes drawer
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDrawer();
+});
+
+// ═══════════════════════════════════════════════════════════════════════
+//  TOAST UTILITY
+// ═══════════════════════════════════════════════════════════════════════
+
+let toastTimer = null;
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' ' + type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = ''; }, 3500);
 }
 
 // ═══════════════════════════════════════════════════════════════════════
