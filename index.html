@@ -398,7 +398,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
   <!-- ══ TEAM PROFILES ══ -->
   <div class="view" id="view-team">
     <div class="team-wrap">
-      <div class="team-sb" id="team-sb"></div>
+      <div style="width:215px;flex-shrink:0;display:flex;flex-direction:column;background:#161b22;border-right:1px solid #30363d">
+        <div class="team-sb" id="team-sb" style="flex:1;overflow-y:auto;padding:14px 10px"></div>
+        <div style="padding:10px">
+          <button class="add-new-btn" id="add-team-btn" onclick="openDrawer('team','new','New Team Member','Team Profile')" style="margin:0">+ Add Team Member</button>
+        </div>
+      </div>
       <div class="team-main" id="team-main">
         <div class="team-empty"><div style="font-size:36px;opacity:.35">👤</div><div>Select a team member</div></div>
       </div>
@@ -1154,6 +1159,9 @@ function openDrawer(type, id, label, section) {
     case 'principle':
       body = buildPrincipleForm(id);
       break;
+    case 'team':
+      body = buildTeamForm(id);
+      break;
     default:
       body = buildComingSoon(type, id, label);
   }
@@ -1163,7 +1171,7 @@ function openDrawer(type, id, label, section) {
 }
 
 function buildComingSoon(type, id, label) {
-  const nextTier = { department:'5', team:'3', platform:'4', 'roadmap-header':'5', 'platforms-header':'5' }[type] || '?';
+  const nextTier = { department:'5', platform:'4', 'roadmap-header':'5', 'platforms-header':'5' }[type] || '?';
   return `
     <div style="text-align:center;padding:50px 20px 30px;color:#8b949e">
       <div style="font-size:40px;margin-bottom:16px;opacity:.6">✏️</div>
@@ -1239,6 +1247,132 @@ function deletePrinciple(idx) {
   renderPrinciples();
   closeDrawer();
   showToast('Principle deleted');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  TIER 3: TEAM PROFILE FORMS
+// ═══════════════════════════════════════════════════════════════════════
+
+function buildTeamForm(id) {
+  const isNew = id === 'new';
+  const m = isNew ? { id:'', name:'', init:'', role:'', co:'', companies:[], tier:'staff', color:'#58a6ff' } : TEAM.find(t => t.id === id);
+  const p = isNew ? { tools:[], sops:[], kpis:[], dashboard:[], note:'' } : (PROFILES[id] || { tools:[], sops:[], kpis:[], dashboard:[], note:'' });
+  if (!m) return '<div style="padding:30px;color:#f78166">Member not found.</div>';
+
+  const tierOpts = ['exec','leadership','staff','property'].map(t =>
+    `<option value="${t}" ${m.tier===t?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`
+  ).join('');
+
+  return `
+    <div class="ef-sep">${isNew ? 'New Team Member' : `Editing: ${m.name}`}</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 12px">
+      <div>
+        <label class="ef-lbl">Full Name</label>
+        <input class="ef-in" id="ef-tm-name" value="${escAttr(m.name)}" placeholder="e.g. Jane Smith">
+      </div>
+      <div>
+        <label class="ef-lbl">Initials</label>
+        <input class="ef-in" id="ef-tm-init" value="${escAttr(m.init)}" placeholder="JS" maxlength="3">
+      </div>
+    </div>
+
+    <label class="ef-lbl">Role / Title</label>
+    <input class="ef-in" id="ef-tm-role" value="${escAttr(m.role)}" placeholder="e.g. EVP of Operations — Affinal RE Services">
+
+    <label class="ef-lbl">Primary Company</label>
+    <input class="ef-in" id="ef-tm-co" value="${escAttr(m.co)}" placeholder="e.g. K8H Ventures">
+
+    <label class="ef-lbl">All Companies (one per line)</label>
+    <textarea class="ef-ta" id="ef-tm-companies" rows="3" placeholder="K8H Ventures&#10;Affinal RE Services">${escHtml(m.companies.join('\n'))}</textarea>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 12px">
+      <div>
+        <label class="ef-lbl">Tier</label>
+        <select class="ef-in" id="ef-tm-tier" style="cursor:pointer">${tierOpts}</select>
+      </div>
+      <div>
+        <label class="ef-lbl">Avatar Color</label>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <input type="color" id="ef-tm-color" value="${m.color}" style="width:36px;height:34px;border:1px solid #30363d;border-radius:7px;background:#161b22;cursor:pointer;padding:2px">
+          <span style="font-size:11px;color:#8b949e">Pick color</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ef-sep" style="margin-top:4px">Profile Details</div>
+
+    <label class="ef-lbl">Bio / Note</label>
+    <textarea class="ef-ta" id="ef-tm-note" rows="2" placeholder="Short description of this person's role...">${escHtml(p.note || '')}</textarea>
+
+    <label class="ef-lbl">AI Tools (one per line)</label>
+    <textarea class="ef-ta" id="ef-tm-tools" rows="3" placeholder="EVA (AES)&#10;FINN (FinTech)">${escHtml((p.tools||[]).join('\n'))}</textarea>
+
+    <label class="ef-lbl">Key SOPs (one per line)</label>
+    <textarea class="ef-ta" id="ef-tm-sops" rows="4" placeholder="Weekly standup facilitation&#10;Monthly budget review">${escHtml((p.sops||[]).join('\n'))}</textarea>
+
+    <label class="ef-lbl">KPIs &amp; Indicators (one per line)</label>
+    <textarea class="ef-ta" id="ef-tm-kpis" rows="4" placeholder="Revenue vs plan (lag)&#10;Open issues count (lead)">${escHtml((p.kpis||[]).join('\n'))}</textarea>
+
+    <label class="ef-lbl">Dashboard Elements (one per line)</label>
+    <textarea class="ef-ta" id="ef-tm-dash" rows="4" placeholder="Entity P&amp;L summary (FINN)&#10;Active projects (EVA)">${escHtml((p.dashboard||[]).join('\n'))}</textarea>
+
+    <div class="ef-actions">
+      <button class="ef-save" onclick="saveTeamMember('${id}')">Save</button>
+      <button class="ef-cancel" onclick="closeDrawer()">Cancel</button>
+      ${!isNew ? `<button class="ef-delete" onclick="deleteTeamMember('${id}')">Delete</button>` : ''}
+    </div>
+  `;
+}
+
+function saveTeamMember(id) {
+  const isNew = id === 'new';
+  const name  = (document.getElementById('ef-tm-name').value || '').trim();
+  const init  = (document.getElementById('ef-tm-init').value || '').trim();
+  const role  = (document.getElementById('ef-tm-role').value || '').trim();
+  const co    = (document.getElementById('ef-tm-co').value || '').trim();
+  const companies = document.getElementById('ef-tm-companies').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const tier  = document.getElementById('ef-tm-tier').value;
+  const color = document.getElementById('ef-tm-color').value;
+  const note  = (document.getElementById('ef-tm-note').value || '').trim();
+  const tools = document.getElementById('ef-tm-tools').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const sops  = document.getElementById('ef-tm-sops').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const kpis  = document.getElementById('ef-tm-kpis').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const dashboard = document.getElementById('ef-tm-dash').value.split('\n').map(s=>s.trim()).filter(Boolean);
+
+  if (!name) { showToast('❌ Name is required', 'error'); return; }
+  if (!init) { showToast('❌ Initials are required', 'error'); return; }
+
+  if (isNew) {
+    const newId = name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+    TEAM.push({ id:newId, name, init, role, co, companies, tier, color });
+    PROFILES[newId] = { tools, sops, kpis, dashboard, note };
+    showToast('✅ Team member added');
+    renderTeamSB();
+    closeDrawer();
+    showProfile(newId);
+  } else {
+    const idx = TEAM.findIndex(t => t.id === id);
+    if (idx === -1) return;
+    TEAM[idx] = { ...TEAM[idx], name, init, role, co, companies, tier, color };
+    PROFILES[id] = { tools, sops, kpis, dashboard, note };
+    showToast('✅ Profile saved');
+    renderTeamSB();
+    closeDrawer();
+    showProfile(id);
+  }
+}
+
+function deleteTeamMember(id) {
+  const m = TEAM.find(t => t.id === id);
+  if (!confirm(`Delete ${m ? m.name : id} from the team?`)) return;
+  const idx = TEAM.findIndex(t => t.id === id);
+  if (idx !== -1) TEAM.splice(idx, 1);
+  delete PROFILES[id];
+  renderTeamSB();
+  document.getElementById('team-main').innerHTML = '<div class="team-empty"><div style="font-size:36px;opacity:.35">👤</div><div>Select a team member</div></div>';
+  closeDrawer();
+  showToast('Team member deleted');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
