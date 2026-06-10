@@ -372,7 +372,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
         <button class="pf" data-p="ai" onclick="filterPhase('ai',this)">AI-Native</button>
       </div>
     </div>
-    <div class="dept-scroll"><div class="dept-grid" id="dept-grid"></div></div>
+    <div class="dept-scroll">
+      <div class="dept-grid" id="dept-grid"></div>
+      <div style="padding:0 18px 24px">
+        <button class="add-new-btn" onclick="openDrawer('department','new','New Department','Departments')">+ Add Department</button>
+      </div>
+    </div>
   </div>
 
   <!-- ══ AI ROADMAP ══ -->
@@ -1170,6 +1175,9 @@ function openDrawer(type, id, label, section) {
     case 'platform':
       body = buildPlatformForm(id);
       break;
+    case 'department':
+      body = buildDepartmentForm(id);
+      break;
     default:
       body = buildComingSoon(type, id, label);
   }
@@ -1179,7 +1187,7 @@ function openDrawer(type, id, label, section) {
 }
 
 function buildComingSoon(type, id, label) {
-  const nextTier = { department:'5', 'roadmap-header':'5', 'platforms-header':'5' }[type] || '?';
+  const nextTier = { 'roadmap-header':'6', 'platforms-header':'6' }[type] || '?';
   return `
     <div style="text-align:center;padding:50px 20px 30px;color:#8b949e">
       <div style="font-size:40px;margin-bottom:16px;opacity:.6">✏️</div>
@@ -1381,6 +1389,226 @@ function deleteTeamMember(id) {
   document.getElementById('team-main').innerHTML = '<div class="team-empty"><div style="font-size:36px;opacity:.35">👤</div><div>Select a team member</div></div>';
   closeDrawer();
   showToast('Team member deleted');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  TIER 5: DEPARTMENT FORMS
+// ═══════════════════════════════════════════════════════════════════════
+
+const DEFAULT_PHASES = [
+  { cls:'p0',  num:'Now', label:'Current State',   sub:'Describe current tools and pain points',  items:[] },
+  { cls:'p1',  num:'1',   label:'Phase 1',          sub:'Initial AI and platform launch',          items:[] },
+  { cls:'p2',  num:'2',   label:'Phase 2',          sub:'Expanded automation and integration',     items:[] },
+  { cls:'p3',  num:'3',   label:'Phase 3',          sub:'Predictive and intelligent workflows',    items:[] },
+  { cls:'pai', num:'∞',   label:'AI-Native',        sub:'Fully autonomous, self-managing dept',    items:[] },
+];
+
+function buildDepartmentForm(id) {
+  const isNew = id === 'new';
+  const d = isNew ? {
+    id:'', name:'', icon:'🏢', color:'#58a6ff', companies:'',
+    lead:{ name:'', role:'', init:'', color:'#58a6ff' },
+    colead: null,
+    brain:{ name:'', icon:'🤖', color:'#58a6ff', desc:'' },
+    phases: DEFAULT_PHASES.map(p => ({...p, items:[]})),
+    tools:{ now:[], future:[] },
+    agents:[], team:[],
+  } : DEPARTMENTS.find(x => x.id === id);
+  if (!d) return '<div style="padding:30px;color:#f78166">Department not found.</div>';
+
+  const hasColead = !!d.colead;
+  const cl = d.colead || { name:'', role:'', init:'', color:'#8b949e' };
+
+  const phaseRows = d.phases.map((ph, i) => `
+    <div style="background:#161b22;border:1px solid #21262d;border-radius:8px;padding:10px;margin-bottom:8px">
+      <div style="font-size:9px;color:${['#8b949e','#3fb950','#e3b341','#a371f7','#58a6ff'][i]};text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:7px">
+        ${ph.num === '∞' ? 'AI-Native (∞)' : `Phase ${ph.num === 'Now' ? '0 — Now' : ph.num}`}
+      </div>
+      <label class="ef-lbl" style="margin-top:0">Label</label>
+      <input class="ef-in" id="ef-ph-lbl-${i}" value="${escAttr(ph.label)}" style="margin-bottom:8px">
+      <label class="ef-lbl">Sub-heading</label>
+      <input class="ef-in" id="ef-ph-sub-${i}" value="${escAttr(ph.sub)}">
+      <label class="ef-lbl">Bullet Points (one per line)</label>
+      <textarea class="ef-ta" id="ef-ph-items-${i}" rows="3" style="margin-bottom:0">${escHtml(ph.items.join('\n'))}</textarea>
+    </div>
+  `).join('');
+
+  return `
+    <div class="ef-sep">${isNew ? 'New Department' : `Editing: ${escHtml(d.name)}`}</div>
+
+    <div style="display:grid;grid-template-columns:1fr 60px;gap:0 12px">
+      <div>
+        <label class="ef-lbl">Department Name</label>
+        <input class="ef-in" id="ef-dp-name" value="${escAttr(d.name)}" placeholder="e.g. Operations">
+      </div>
+      <div>
+        <label class="ef-lbl">Icon</label>
+        <input class="ef-in" id="ef-dp-icon" value="${escAttr(d.icon)}" placeholder="🏢" maxlength="4">
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;gap:0 12px;align-items:start">
+      <div>
+        <label class="ef-lbl">Companies</label>
+        <input class="ef-in" id="ef-dp-cos" value="${escAttr(d.companies)}" placeholder="Affinal RE Services · Affinal Homes">
+      </div>
+      <div>
+        <label class="ef-lbl">Color</label>
+        <div style="margin-bottom:14px">
+          <input type="color" id="ef-dp-color" value="${d.color}" style="width:36px;height:34px;border:1px solid #30363d;border-radius:7px;background:#161b22;cursor:pointer;padding:2px">
+        </div>
+      </div>
+    </div>
+
+    <div class="ef-sep" style="margin-top:4px">Lead</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 12px">
+      <div>
+        <label class="ef-lbl">Name</label>
+        <input class="ef-in" id="ef-dp-lead-name" value="${escAttr(d.lead.name)}" placeholder="Full name">
+      </div>
+      <div>
+        <label class="ef-lbl">Initials</label>
+        <input class="ef-in" id="ef-dp-lead-init" value="${escAttr(d.lead.init)}" placeholder="KM" maxlength="3">
+      </div>
+    </div>
+    <label class="ef-lbl">Role</label>
+    <input class="ef-in" id="ef-dp-lead-role" value="${escAttr(d.lead.role)}" placeholder="e.g. EVP of Operations">
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 12px;margin-bottom:14px">
+      <label class="ef-lbl" style="margin:0">Lead color</label>
+      <input type="color" id="ef-dp-lead-color" value="${d.lead.color}" style="width:36px;height:34px;border:1px solid #30363d;border-radius:7px;background:#161b22;cursor:pointer;padding:2px">
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <input type="checkbox" id="ef-dp-has-colead" ${hasColead?'checked':''} onchange="toggleCoLead(this.checked)" style="cursor:pointer">
+      <label for="ef-dp-has-colead" style="font-size:11px;color:#8b949e;cursor:pointer">Add Co-Lead</label>
+    </div>
+    <div id="ef-colead-fields" style="display:${hasColead?'block':'none'}">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 12px">
+        <div>
+          <label class="ef-lbl">Co-Lead Name</label>
+          <input class="ef-in" id="ef-dp-cl-name" value="${escAttr(cl.name)}" placeholder="Full name">
+        </div>
+        <div>
+          <label class="ef-lbl">Initials</label>
+          <input class="ef-in" id="ef-dp-cl-init" value="${escAttr(cl.init)}" placeholder="HW" maxlength="3">
+        </div>
+      </div>
+      <label class="ef-lbl">Co-Lead Role</label>
+      <input class="ef-in" id="ef-dp-cl-role" value="${escAttr(cl.role)}" placeholder="e.g. COO — All Companies">
+      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 12px;margin-bottom:14px">
+        <label class="ef-lbl" style="margin:0">Co-Lead color</label>
+        <input type="color" id="ef-dp-cl-color" value="${cl.color}" style="width:36px;height:34px;border:1px solid #30363d;border-radius:7px;background:#161b22;cursor:pointer;padding:2px">
+      </div>
+    </div>
+
+    <div class="ef-sep">AI Brain</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 12px">
+      <div>
+        <label class="ef-lbl">Name</label>
+        <input class="ef-in" id="ef-dp-brain-name" value="${escAttr(d.brain.name)}" placeholder="e.g. IRIS">
+      </div>
+      <div>
+        <label class="ef-lbl">Icon</label>
+        <input class="ef-in" id="ef-dp-brain-icon" value="${escAttr(d.brain.icon)}" placeholder="🤖" maxlength="4">
+      </div>
+    </div>
+    <label class="ef-lbl">Description</label>
+    <input class="ef-in" id="ef-dp-brain-desc" value="${escAttr(d.brain.desc)}" placeholder="e.g. Property & Ops AI">
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:0 12px;margin-bottom:14px">
+      <label class="ef-lbl" style="margin:0">Brain color</label>
+      <input type="color" id="ef-dp-brain-color" value="${d.brain.color}" style="width:36px;height:34px;border:1px solid #30363d;border-radius:7px;background:#161b22;cursor:pointer;padding:2px">
+    </div>
+
+    <div class="ef-sep">Tools</div>
+    <label class="ef-lbl">Current tools (one per line)</label>
+    <textarea class="ef-ta" id="ef-dp-tools-now" rows="3" placeholder="Email&#10;Excel&#10;Manual processes">${escHtml(d.tools.now.join('\n'))}</textarea>
+    <label class="ef-lbl">Future tools (one per line)</label>
+    <textarea class="ef-ta" id="ef-dp-tools-fut" rows="3" placeholder="IRIS&#10;EVA&#10;FINN">${escHtml(d.tools.future.join('\n'))}</textarea>
+
+    <div class="ef-sep">Phase Roadmap</div>
+    <div style="font-size:11px;color:#8b949e;margin-bottom:12px">Edit labels, sub-headings, and bullet points for each phase.</div>
+    ${phaseRows}
+
+    <div class="ef-actions">
+      <button class="ef-save" onclick="saveDepartment('${id}')">Save</button>
+      <button class="ef-cancel" onclick="closeDrawer()">Cancel</button>
+      ${!isNew ? `<button class="ef-delete" onclick="deleteDepartment('${id}')">Delete</button>` : ''}
+    </div>
+  `;
+}
+
+function toggleCoLead(show) {
+  document.getElementById('ef-colead-fields').style.display = show ? 'block' : 'none';
+}
+
+function saveDepartment(id) {
+  const isNew = id === 'new';
+  const name  = (document.getElementById('ef-dp-name').value  || '').trim();
+  const icon  = (document.getElementById('ef-dp-icon').value  || '🏢').trim();
+  const color = document.getElementById('ef-dp-color').value;
+  const companies = (document.getElementById('ef-dp-cos').value || '').trim();
+
+  const lead = {
+    id:   (isNew ? '' : DEPARTMENTS.find(x=>x.id===id)?.lead?.id || ''),
+    name: (document.getElementById('ef-dp-lead-name').value  || '').trim(),
+    init: (document.getElementById('ef-dp-lead-init').value  || '').trim(),
+    role: (document.getElementById('ef-dp-lead-role').value  || '').trim(),
+    color: document.getElementById('ef-dp-lead-color').value,
+  };
+
+  const hasColead = document.getElementById('ef-dp-has-colead').checked;
+  const colead = hasColead ? {
+    id:   (isNew ? '' : DEPARTMENTS.find(x=>x.id===id)?.colead?.id || ''),
+    name: (document.getElementById('ef-dp-cl-name').value  || '').trim(),
+    init: (document.getElementById('ef-dp-cl-init').value  || '').trim(),
+    role: (document.getElementById('ef-dp-cl-role').value  || '').trim(),
+    color: document.getElementById('ef-dp-cl-color').value,
+  } : null;
+
+  const brain = {
+    name:  (document.getElementById('ef-dp-brain-name').value  || '').trim(),
+    icon:  (document.getElementById('ef-dp-brain-icon').value  || '🤖').trim(),
+    desc:  (document.getElementById('ef-dp-brain-desc').value  || '').trim(),
+    color: document.getElementById('ef-dp-brain-color').value,
+  };
+
+  const toolsNow = document.getElementById('ef-dp-tools-now').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const toolsFut = document.getElementById('ef-dp-tools-fut').value.split('\n').map(s=>s.trim()).filter(Boolean);
+
+  // Read phase labels/subs/items
+  const existing = isNew ? DEFAULT_PHASES : DEPARTMENTS.find(x=>x.id===id).phases;
+  const phases = existing.map((ph, i) => ({
+    ...ph,
+    label: (document.getElementById(`ef-ph-lbl-${i}`)?.value  || ph.label).trim(),
+    sub:   (document.getElementById(`ef-ph-sub-${i}`)?.value  || ph.sub).trim(),
+    items: (document.getElementById(`ef-ph-items-${i}`)?.value || '').split('\n').map(s=>s.trim()).filter(Boolean),
+  }));
+
+  if (!name) { showToast('❌ Department name is required', 'error'); return; }
+
+  if (isNew) {
+    const newId = name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+    DEPARTMENTS.push({ id:newId, name, icon, color, companies, lead, colead, brain, phases, tools:{ now:toolsNow, future:toolsFut }, agents:[], team:[] });
+    showToast('✅ Department added');
+  } else {
+    const idx = DEPARTMENTS.findIndex(x => x.id === id);
+    if (idx === -1) return;
+    DEPARTMENTS[idx] = { ...DEPARTMENTS[idx], name, icon, color, companies, lead, colead, brain, phases, tools:{ now:toolsNow, future:toolsFut } };
+    showToast('✅ Department saved');
+  }
+
+  renderDepts();
+  closeDrawer();
+}
+
+function deleteDepartment(id) {
+  const d = DEPARTMENTS.find(x => x.id === id);
+  if (!confirm(`Delete department "${d ? d.name : id}"?`)) return;
+  const idx = DEPARTMENTS.findIndex(x => x.id === id);
+  if (idx !== -1) DEPARTMENTS.splice(idx, 1);
+  renderDepts();
+  closeDrawer();
+  showToast('Department deleted');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
