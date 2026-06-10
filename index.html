@@ -417,7 +417,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
       <h2>Platform Build Roadmap</h2>
       <p>9 platforms replacing third-party tools with fully owned, AI-native solutions across 3 phases.</p>
     </div>
-    <div class="scroll"><div class="plat-body" id="plat-body"></div></div>
+    <div class="scroll">
+      <div class="plat-body" id="plat-body"></div>
+      <div style="padding:0 22px 30px">
+        <button class="add-new-btn" onclick="openDrawer('platform','new','New Platform','Platforms')">+ Add Platform</button>
+      </div>
+    </div>
   </div>
 
 </div><!-- /.app -->
@@ -1162,6 +1167,9 @@ function openDrawer(type, id, label, section) {
     case 'team':
       body = buildTeamForm(id);
       break;
+    case 'platform':
+      body = buildPlatformForm(id);
+      break;
     default:
       body = buildComingSoon(type, id, label);
   }
@@ -1171,7 +1179,7 @@ function openDrawer(type, id, label, section) {
 }
 
 function buildComingSoon(type, id, label) {
-  const nextTier = { department:'5', platform:'4', 'roadmap-header':'5', 'platforms-header':'5' }[type] || '?';
+  const nextTier = { department:'5', 'roadmap-header':'5', 'platforms-header':'5' }[type] || '?';
   return `
     <div style="text-align:center;padding:50px 20px 30px;color:#8b949e">
       <div style="font-size:40px;margin-bottom:16px;opacity:.6">✏️</div>
@@ -1373,6 +1381,103 @@ function deleteTeamMember(id) {
   document.getElementById('team-main').innerHTML = '<div class="team-empty"><div style="font-size:36px;opacity:.35">👤</div><div>Select a team member</div></div>';
   closeDrawer();
   showToast('Team member deleted');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  TIER 4: PLATFORM FORMS
+// ═══════════════════════════════════════════════════════════════════════
+
+function buildPlatformForm(id) {
+  const isNew = id === 'new';
+  const p = isNew
+    ? { id:'', name:'', full:'', icon:'🔧', color:'#58a6ff', phase:1, replaces:'', desc:'', features:[] }
+    : PLATFORMS.find(x => x.id === id);
+  if (!p) return '<div style="padding:30px;color:#f78166">Platform not found.</div>';
+
+  const phaseOpts = [1,2,3].map(n =>
+    `<option value="${n}" ${p.phase===n?'selected':''}>Phase ${n}</option>`
+  ).join('');
+
+  return `
+    <div class="ef-sep">${isNew ? 'New Platform' : `Editing: ${escHtml(p.full)}`}</div>
+
+    <label class="ef-lbl">Short Name</label>
+    <input class="ef-in" id="ef-pl-name" value="${escAttr(p.name)}" placeholder="e.g. IRIS">
+
+    <label class="ef-lbl">Full Name</label>
+    <input class="ef-in" id="ef-pl-full" value="${escAttr(p.full)}" placeholder="e.g. Investor Relations Info System">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 12px">
+      <div>
+        <label class="ef-lbl">Icon (emoji)</label>
+        <input class="ef-in" id="ef-pl-icon" value="${escAttr(p.icon)}" placeholder="🔧" maxlength="4">
+      </div>
+      <div>
+        <label class="ef-lbl">Color</label>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
+          <input type="color" id="ef-pl-color" value="${p.color}" style="width:36px;height:34px;border:1px solid #30363d;border-radius:7px;background:#161b22;cursor:pointer;padding:2px">
+        </div>
+      </div>
+      <div>
+        <label class="ef-lbl">Phase</label>
+        <select class="ef-in" id="ef-pl-phase" style="cursor:pointer">${phaseOpts}</select>
+      </div>
+    </div>
+
+    <label class="ef-lbl">Replaces</label>
+    <input class="ef-in" id="ef-pl-replaces" value="${escAttr(p.replaces)}" placeholder="e.g. AppFolio">
+
+    <label class="ef-lbl">Description</label>
+    <textarea class="ef-ta" id="ef-pl-desc" rows="3" placeholder="What this platform does and why it matters...">${escHtml(p.desc)}</textarea>
+
+    <label class="ef-lbl">Features (one per line)</label>
+    <textarea class="ef-ta" id="ef-pl-features" rows="6" placeholder="Property &amp; unit management&#10;Investor portal &amp; reporting">${escHtml(p.features.join('\n'))}</textarea>
+
+    <div class="ef-actions">
+      <button class="ef-save" onclick="savePlatform('${id}')">Save</button>
+      <button class="ef-cancel" onclick="closeDrawer()">Cancel</button>
+      ${!isNew ? `<button class="ef-delete" onclick="deletePlatform('${id}')">Delete</button>` : ''}
+    </div>
+  `;
+}
+
+function savePlatform(id) {
+  const isNew = id === 'new';
+  const name     = (document.getElementById('ef-pl-name').value     || '').trim();
+  const full     = (document.getElementById('ef-pl-full').value     || '').trim();
+  const icon     = (document.getElementById('ef-pl-icon').value     || '🔧').trim();
+  const color    = document.getElementById('ef-pl-color').value;
+  const phase    = Number(document.getElementById('ef-pl-phase').value);
+  const replaces = (document.getElementById('ef-pl-replaces').value || '').trim();
+  const desc     = (document.getElementById('ef-pl-desc').value     || '').trim();
+  const features = document.getElementById('ef-pl-features').value.split('\n').map(s=>s.trim()).filter(Boolean);
+
+  if (!name) { showToast('❌ Short name is required', 'error'); return; }
+  if (!full) { showToast('❌ Full name is required',  'error'); return; }
+
+  if (isNew) {
+    const newId = name.toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+    PLATFORMS.push({ id:newId, name, full, icon, color, phase, replaces, desc, features });
+    showToast('✅ Platform added');
+  } else {
+    const idx = PLATFORMS.findIndex(x => x.id === id);
+    if (idx === -1) return;
+    PLATFORMS[idx] = { ...PLATFORMS[idx], name, full, icon, color, phase, replaces, desc, features };
+    showToast('✅ Platform saved');
+  }
+
+  renderPlatforms();
+  closeDrawer();
+}
+
+function deletePlatform(id) {
+  const p = PLATFORMS.find(x => x.id === id);
+  if (!confirm(`Delete platform "${p ? p.full : id}"?`)) return;
+  const idx = PLATFORMS.findIndex(x => x.id === id);
+  if (idx !== -1) PLATFORMS.splice(idx, 1);
+  renderPlatforms();
+  closeDrawer();
+  showToast('Platform deleted');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
