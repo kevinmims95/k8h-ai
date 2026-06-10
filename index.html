@@ -279,6 +279,50 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
 
 .dr-body { flex: 1; overflow-y: auto; padding: 24px 20px; }
 
+/* ── FORM ELEMENTS (used by Tier 2+) ── */
+.ef-sep { font-size: 9px; color: #58a6ff; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; padding-bottom: 8px; border-bottom: 1px solid #21262d; margin-bottom: 16px; margin-top: 4px; }
+.ef-lbl { font-size: 11px; color: #8b949e; display: block; margin-bottom: 5px; }
+.ef-in {
+  width: 100%; background: #161b22; border: 1px solid #30363d; border-radius: 7px;
+  color: #e6edf3; padding: 8px 11px; font-size: 13px; font-family: inherit;
+  outline: none; transition: border-color .15s; margin-bottom: 14px; box-sizing: border-box;
+}
+.ef-in:focus { border-color: #388bfd; }
+.ef-ta {
+  width: 100%; background: #161b22; border: 1px solid #30363d; border-radius: 7px;
+  color: #e6edf3; padding: 8px 11px; font-size: 13px; font-family: inherit;
+  resize: vertical; min-height: 100px; outline: none; transition: border-color .15s;
+  margin-bottom: 14px; line-height: 1.6; box-sizing: border-box;
+}
+.ef-ta:focus { border-color: #388bfd; }
+.ef-hint { font-size: 10px; color: #484f58; margin: -10px 0 12px; line-height: 1.4; }
+.ef-actions { display: flex; gap: 8px; padding-top: 6px; border-top: 1px solid #21262d; margin-top: 6px; }
+.ef-save {
+  flex: 1; padding: 9px; border-radius: 7px; border: 1px solid #3fb95055;
+  background: #3fb95018; color: #3fb950; cursor: pointer; font-size: 13px;
+  font-weight: 700; font-family: inherit; transition: all .15s;
+}
+.ef-save:hover { background: #3fb95030; border-color: #3fb950; }
+.ef-cancel {
+  padding: 9px 14px; border-radius: 7px; border: 1px solid #30363d;
+  background: transparent; color: #8b949e; cursor: pointer; font-size: 13px; font-family: inherit;
+}
+.ef-cancel:hover { background: #21262d; color: #e6edf3; }
+.ef-delete {
+  padding: 9px 11px; border-radius: 7px; border: 1px solid #f7816633;
+  background: #f7816610; color: #f78166; cursor: pointer; font-size: 13px; font-family: inherit;
+}
+.ef-delete:hover { background: #f7816622; border-color: #f78166; }
+
+/* Add-new buttons (visible only in edit mode) */
+.add-new-btn {
+  display: none; width: 100%; padding: 9px; border-radius: 8px;
+  border: 1px dashed #30363d; background: transparent; color: #8b949e;
+  cursor: pointer; font-size: 12px; font-family: inherit; transition: all .15s;
+}
+.edit-active .add-new-btn { display: block; }
+.add-new-btn:hover { border-color: #58a6ff; color: #58a6ff; background: #58a6ff08; }
+
 /* ── TOAST ── */
 #toast {
   position: fixed; bottom: 20px; right: 20px; z-index: 999;
@@ -341,6 +385,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-
     <div class="scroll">
       <div style="padding:16px 22px 4px;font-size:12px;font-weight:700;color:#c9d1d9">10 Implementation Principles</div>
       <div class="principles" id="principles"></div>
+      <div style="padding:0 22px 6px">
+        <button class="add-new-btn" onclick="openDrawer('principle','new','Add New Principle','AI Principle')">+ Add Principle</button>
+      </div>
       <div class="sl-wrap">
         <div class="sl-title">Phase-by-Phase Implementation Plan</div>
         <table class="sl-table" id="sl-table"></table>
@@ -1095,31 +1142,54 @@ function toggleEditMode() {
 }
 
 // type = 'department' | 'principle' | 'team' | 'platform' | 'roadmap-header' | 'platforms-header'
-// id   = identifier for the specific item
+// id   = identifier for the specific item (index for principles, string id for others, 'new' for adds)
 // label = display title for the drawer
 // section = section name shown as subtitle
 function openDrawer(type, id, label, section) {
   document.getElementById('dr-title').textContent = label || 'Edit';
   document.getElementById('dr-subtitle').textContent = section ? `Section: ${section}` : '';
 
-  document.getElementById('dr-body').innerHTML = `
+  let body = '';
+  switch (type) {
+    case 'principle':
+      body = buildPrincipleForm(id);
+      break;
+    default:
+      body = buildComingSoon(type, id, label);
+  }
+
+  document.getElementById('dr-body').innerHTML = body;
+  document.getElementById('drawer').classList.add('open');
+}
+
+function buildComingSoon(type, id, label) {
+  const nextTier = { department:'5', team:'3', platform:'4', 'roadmap-header':'5', 'platforms-header':'5' }[type] || '?';
+  return `
     <div style="text-align:center;padding:50px 20px 30px;color:#8b949e">
       <div style="font-size:40px;margin-bottom:16px;opacity:.6">✏️</div>
       <div style="font-size:15px;font-weight:700;color:#e6edf3;margin-bottom:10px">${label || 'Edit'}</div>
       <div style="font-size:12px;color:#8b949e;line-height:1.7;max-width:280px;margin:0 auto">
-        Edit forms for this section are being built in <strong style="color:#58a6ff">Tier 2</strong>.
-        <br><br>
-        The edit system infrastructure is live — pencils, drawer, and publish pipeline are all wired up.
+        Edit forms for this section are coming in <strong style="color:#58a6ff">Tier ${nextTier}</strong>.
       </div>
-      <div style="margin-top:24px;padding:12px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px;text-align:left">
-        <div style="font-size:9px;color:#8b949e;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px">Debug Info</div>
-        <div style="font-size:11px;color:#58a6ff;font-family:monospace">type: ${type}</div>
-        <div style="font-size:11px;color:#58a6ff;font-family:monospace">id: ${id}</div>
-      </div>
+    </div>`;
+}
+
+// ── PRINCIPLE FORM ──
+function buildPrincipleForm(idx) {
+  const isNew = idx === 'new';
+  const p = isNew ? { t: '', d: '' } : PRINCIPLES[idx];
+  return `
+    <div class="ef-sep">${isNew ? 'New Principle' : `Principle ${Number(idx) + 1} of ${PRINCIPLES.length}`}</div>
+    <label class="ef-lbl">Title</label>
+    <input class="ef-in" id="ef-title" value="${escAttr(p.t)}" placeholder="e.g. Document First, Automate Second">
+    <label class="ef-lbl">Description</label>
+    <textarea class="ef-ta" id="ef-desc" rows="5" placeholder="Explain the principle and why it matters...">${escHtml(p.d)}</textarea>
+    <div class="ef-actions">
+      <button class="ef-save" onclick="savePrinciple('${idx}')">Save</button>
+      <button class="ef-cancel" onclick="closeDrawer()">Cancel</button>
+      ${!isNew ? `<button class="ef-delete" onclick="deletePrinciple(${idx})">Delete</button>` : ''}
     </div>
   `;
-
-  document.getElementById('drawer').classList.add('open');
 }
 
 function closeDrawer() {
@@ -1130,6 +1200,46 @@ function closeDrawer() {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeDrawer();
 });
+
+// ═══════════════════════════════════════════════════════════════════════
+//  HTML ESCAPE HELPERS
+// ═══════════════════════════════════════════════════════════════════════
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escAttr(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+//  TIER 2: PRINCIPLES SAVE / DELETE
+// ═══════════════════════════════════════════════════════════════════════
+
+function savePrinciple(idx) {
+  const title = (document.getElementById('ef-title').value || '').trim();
+  const desc  = (document.getElementById('ef-desc').value  || '').trim();
+  if (!title) { showToast('❌ Title is required', 'error'); return; }
+
+  if (idx === 'new') {
+    PRINCIPLES.push({ t: title, d: desc });
+    showToast('✅ Principle added');
+  } else {
+    PRINCIPLES[idx] = { t: title, d: desc };
+    showToast('✅ Principle saved');
+  }
+
+  renderPrinciples();
+  closeDrawer();
+}
+
+function deletePrinciple(idx) {
+  if (!confirm(`Delete "${PRINCIPLES[idx].t}"?`)) return;
+  PRINCIPLES.splice(idx, 1);
+  renderPrinciples();
+  closeDrawer();
+  showToast('Principle deleted');
+}
 
 // ═══════════════════════════════════════════════════════════════════════
 //  TOAST UTILITY
