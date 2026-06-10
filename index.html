@@ -2535,14 +2535,14 @@ const PLATFORMS = [
   {
     "id": "comms",
     "name": "Comms Suite",
-    "full": "Company Email & Chat",
+    "full": "Company Knowledgebase",
     "icon": "💬",
     "color": "#a371f7",
     "phase": 1,
-    "replaces": "External email / Slack",
-    "desc": "Custom internal comms — email, team chat, and file sharing — fully integrated with every AI agent.",
+    "replaces": "External Email / Teams / Sharepoint",
+    "desc": "Custom internal file storage & comms — email, team chat, and file sharing — fully integrated with every AI agent.",
     "features": [
-      "Threaded team chat",
+      "Threaded team chats",
       "Email client",
       "File & media sharing",
       "AI-assisted replies",
@@ -2556,7 +2556,7 @@ const PLATFORMS = [
     "full": "Investor Relations Info System",
     "icon": "🏢",
     "color": "#58a6ff",
-    "phase": 1,
+    "phase": 3,
     "replaces": "AppFolio",
     "desc": "Property management + investor portal. Full data ownership and direct AI integration.",
     "features": [
@@ -2574,7 +2574,7 @@ const PLATFORMS = [
     "full": "CRM & Marketing Automation",
     "icon": "📣",
     "color": "#e3b341",
-    "phase": 1,
+    "phase": 3,
     "replaces": "GoHighLevel",
     "desc": "Full-stack CRM, pipeline management, and marketing automation — all data owned in-house.",
     "features": [
@@ -2591,7 +2591,7 @@ const PLATFORMS = [
     "full": "Home Sales Platform",
     "icon": "🏡",
     "color": "#79c0ff",
-    "phase": 2,
+    "phase": 3,
     "replaces": "AOSP",
     "desc": "End-to-end home sales workflow — buyer inquiry through closing — AI-driven pipeline management.",
     "features": [
@@ -2608,7 +2608,7 @@ const PLATFORMS = [
     "full": "Development & Entitlement Platform",
     "icon": "🏗️",
     "color": "#ffa657",
-    "phase": 2,
+    "phase": 3,
     "replaces": "Microsoft Planner",
     "desc": "Construction project tracking, permit management, and entitlement workflow for land development.",
     "features": [
@@ -2625,7 +2625,7 @@ const PLATFORMS = [
     "full": "Field Photo & Documentation",
     "icon": "📷",
     "color": "#3fb950",
-    "phase": 2,
+    "phase": 3,
     "replaces": "CompanyCam",
     "desc": "Site photo management, job documentation, and field reporting — integrated with CADE.",
     "features": [
@@ -2642,7 +2642,7 @@ const PLATFORMS = [
     "full": "Financial Tracker & Reporting",
     "icon": "💰",
     "color": "#3fb950",
-    "phase": 2,
+    "phase": 3,
     "replaces": "Syft",
     "desc": "Consolidated financial intelligence across all K8H entities.",
     "features": [
@@ -2654,15 +2654,20 @@ const PLATFORMS = [
     ]
   },
   {
-    "id": "eos",
-    "name": "EOS Platform",
-    "full": "Entrepreneurial Operating System",
-    "icon": "⚙️",
-    "color": "#f78166",
-    "phase": 3,
-    "replaces": "Manual EOS process",
-    "desc": "Digital EOS — V/TO, Scorecard, rocks, issues list, and meeting cadence, all AI-assisted.",
+    "id": "aes",
+    "name": "AES / EVA",
+    "full": "Affinal Execution System",
+    "icon": "👁️",
+    "color": "#a371f7",
+    "phase": 2,
+    "replaces": "Manual reporting",
+    "desc": "Cross-platform visibility layer — EVA sees everything across all systems and surfaces blockers to leadership. Digital EOS — V/TO, Scorecard, rocks, issues list, and meeting cadence, all AI-assisted.",
     "features": [
+      "Cross-platform status dashboard",
+      "Execution gap detection",
+      "Leadership briefing generation",
+      "KPI roll-up",
+      "Alert & escalation routing",
       "V/TO (Vision/Traction Organizer)",
       "Weekly scorecard & KPIs",
       "Rock tracking",
@@ -2671,21 +2676,26 @@ const PLATFORMS = [
     ]
   },
   {
-    "id": "aes",
-    "name": "AES / EVA",
-    "full": "Affinal Execution System",
-    "icon": "👁️",
-    "color": "#a371f7",
-    "phase": 3,
-    "replaces": "Manual reporting",
-    "desc": "Cross-platform visibility layer — EVA sees everything across all systems and surfaces blockers to leadership.",
-    "features": [
-      "Cross-platform status dashboard",
-      "Execution gap detection",
-      "Leadership briefing generation",
-      "KPI roll-up",
-      "Alert & escalation routing"
-    ]
+    "id": "companywide_ai",
+    "name": "Company-wide AI",
+    "full": "Company-wide AI",
+    "icon": "🧑‍",
+    "color": "#58a6ff",
+    "phase": 1,
+    "replaces": "Claude / Open AI / Copilot",
+    "desc": "Our internal AI knows and understands our businesses and helps each human do more value creation and less administrative tasks.",
+    "features": []
+  },
+  {
+    "id": "individual_ais",
+    "name": "Individual AIs",
+    "full": "Individual AIs",
+    "icon": "🥂",
+    "color": "#58a6ff",
+    "phase": 2,
+    "replaces": "Claude / Open AI /Copilot",
+    "desc": "Each individual AI is trained to help only one person in the role that they have within the organization. Each SOP and KPI is pushed forward via both (wo)man and machine. Your very own assistant that you only have to train once.",
+    "features": []
   }
 ];
 
